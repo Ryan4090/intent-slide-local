@@ -70,21 +70,21 @@ class ExecutionSelectionTests(unittest.TestCase):
         second = self.ask()
         self.assertEqual(second.calls[0]["thread_id"], "test-thread-1")
         self.answer()
-        self.command("configure_provider", {"provider": "claude", "model": "sonnet", "effort": "high"})
+        self.command("configure_provider", {"provider": "codex", "model": "fixture-model-a", "effort": "high"})
         third = self.ask()
         self.assertIsNone(third.calls[0]["thread_id"])
-        self.assertEqual((third.calls[0]["model"], third.calls[0]["effort"]), ("sonnet", "high"))
+        self.assertEqual((third.calls[0]["model"], third.calls[0]["effort"]), ("fixture-model-a", "high"))
         self.answer()
-        self.command("configure_provider", {"provider": "claude", "model": "opus", "effort": "high"})
+        self.command("configure_provider", {"provider": "codex", "model": "fixture-model-b", "effort": "high"})
         fourth = self.ask()
         self.assertIsNone(fourth.calls[0]["thread_id"])
 
     def test_registry_receives_queued_provider(self):
-        self.command("configure_provider", {"provider": "claude"})
+        self.command("configure_provider", {"provider": "codex"})
         self.runner.provider_factory = None
         with patch("presentation_agents.v2.runner.make_provider", side_effect=lambda selected: self.factory()) as factory:
             self.ask()
-        factory.assert_called_once_with("claude")
+        factory.assert_called_once_with("codex")
 
     def test_late_response_cannot_cross_job_or_provider(self):
         self.factory.plans.append(lambda p: p.emit("item/tool/requestUserInput", {"questions": []}, request_id=0))
@@ -103,19 +103,18 @@ class ExecutionSelectionTests(unittest.TestCase):
         self.runner.cancel(self.run_id)
 
     def test_http_default_selection_refresh_and_identity_boundary(self):
-        self.runner.default_provider = "claude"
         app = create_app(self.engine, Path(self.temp.name), self.runner, bootstrap_token="test-only")
         client = app.test_client()
         session = client.post("/api/v2/session", json={"bootstrap_token": "test-only"})
         headers = {"X-CSRF-Token": session.json["csrf_token"]}
         created = client.post("/api/v2/runs", headers=headers, json={"request": "테스트", "operation_id": "http-create"})
         self.assertEqual(created.status_code, 201)
-        self.assertEqual(created.json["execution"]["provider"], "claude")
-        self.assertEqual(client.post("/api/v2/capabilities/refresh", json={"provider": "claude"}).status_code, 403)
+        self.assertEqual(created.json["execution"]["provider"], "codex")
+        self.assertEqual(client.post("/api/v2/capabilities/refresh", json={"provider": "codex"}).status_code, 403)
         self.factory.plans.append(lambda p: None)
-        refreshed = client.post("/api/v2/capabilities/refresh", headers=headers, json={"provider": "claude"})
+        refreshed = client.post("/api/v2/capabilities/refresh", headers=headers, json={"provider": "codex"})
         self.assertEqual(refreshed.status_code, 200)
-        self.assertTrue(next(p for p in refreshed.json["providers"] if p["id"] == "claude")["ready"])
+        self.assertTrue(next(p for p in refreshed.json["providers"] if p["id"] == "codex")["ready"])
         unbound = client.post(f"/api/v2/runs/{self.run_id}/commands", headers=headers,
                              json={"command": "provider_answer", "payload": {"request_id": 0, "response": {}}})
         self.assertEqual(unbound.status_code, 422)

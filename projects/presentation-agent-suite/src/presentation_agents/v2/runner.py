@@ -20,7 +20,7 @@ from .engine import Engine
 from .prompts import prompt_for
 from .provider import ProviderError
 from .login import BrowserLogin
-from .provider_registry import normalize_selection, provider_factory as make_provider, provider_metadata
+from .provider_registry import MVP_PROVIDER_IDS, mvp_selection, normalize_selection, provider_factory as make_provider, provider_metadata
 
 _LIVE_JOB_STATUSES = {"RUNNING", "WAITING_USER"}
 _PENDING_QUESTION_STATUSES = {"PENDING", "DISPATCHING"}
@@ -192,8 +192,7 @@ class Runner:
         self.engine = engine
         self.repo_root = repo_root.resolve()
         self.provider_factory = provider_factory
-        self._automatic_provider = default_provider == "auto"
-        self.default_provider = normalize_selection({"provider": "codex" if self._automatic_provider else default_provider})["provider"]
+        self.default_provider = mvp_selection({"provider": "codex" if default_provider == "auto" else default_provider})["provider"]
         self._lock = threading.RLock()
         self._worker = None
         self._provider = None
@@ -224,10 +223,10 @@ class Runner:
         from .verification import renderer_contract
         with self._lock:
             return {**copy.deepcopy(self._capabilities), "default_provider": self.default_provider,
-                    "providers": copy.deepcopy(list(self._provider_capabilities.values())),
+                    "providers": copy.deepcopy([self._provider_capabilities[name] for name in MVP_PROVIDER_IDS]),
                     "discovery": copy.deepcopy(self._discovery),
                     "login": self._login.snapshot(),
-                    "recommended_provider": next((p['id'] for p in self._provider_capabilities.values() if p.get('ready') is True and p.get('auto_connect') is True), None),
+                    "recommended_provider": next((name for name in MVP_PROVIDER_IDS if self._provider_capabilities[name].get('ready') is True and self._provider_capabilities[name].get('auto_connect') is True), None),
                     "platform": {"name": sys.platform, "label": {"darwin":"Mac", "win32":"Windows", "linux":"Linux"}.get(sys.platform, sys.platform)},
                     "rendering": renderer_contract(self.repo_root)}
 
@@ -269,17 +268,12 @@ class Runner:
             except (ProviderError, OSError, RuntimeError, ValueError, ImportError) as exc:
                 return {'ready':False, 'auth_mode':'unknown', 'reason': '설치 또는 공식 로그인을 확인해 주세요', 'code':getattr(exc, 'code', type(exc).__name__)}
         try:
-            with ThreadPoolExecutor(max_workers=4, thread_name_prefix='intent-ai-probe') as pool:
-                pending = {pool.submit(probe, provider_id):provider_id for provider_id in self._provider_capabilities}
+            with ThreadPoolExecutor(max_workers=len(MVP_PROVIDER_IDS), thread_name_prefix='intent-ai-probe') as pool:
+                pending = {pool.submit(probe, provider_id):provider_id for provider_id in MVP_PROVIDER_IDS}
                 for future in as_completed(pending):
                     with self._lock:
                         self._remember_capabilities(pending[future], future.result())
             with self._lock:
-                if self._automatic_provider and not self._active:
-                    ready = [p for p in self._provider_capabilities.values() if p.get('ready') is True and p.get('auto_connect') is True]
-                    if ready:
-                        self.default_provider = ready[0]['id']
-                        self._capabilities.update(copy.deepcopy(ready[0]))
                 self._discovery = {'status':'COMPLETE'}
         except Exception:
             with self._lock:
@@ -296,7 +290,7 @@ class Runner:
             return self._login.start()
 
     def preflight(self, provider_id=None):
-        provider_id = normalize_selection({"provider": provider_id or self.default_provider})["provider"]
+        provider_id = mvp_selection({"provider": provider_id or self.default_provider})["provider"]
         with self._lock:
             if self._active:
                 raise Conflict("AI 실행을 마치거나 취소한 뒤 연결을 다시 확인해 주세요")
@@ -769,6 +763,8 @@ class Runner:
 
     def _execute(self, run_id, job):
         selection = normalize_selection(job.get("provider_selection"))
+        if selection['provider'] not in MVP_PROVIDER_IDS:
+            raise ProviderError('MVP_CODEX_ONLY', '현재 MVP는 Codex 전용입니다. 기존 실행 기록은 보존됩니다. 프로젝트 설정에서 Codex로 전환해 주세요.')
         workspace = self._prepare(run_id, job)
         completed = threading.Event()
         outcome = {}

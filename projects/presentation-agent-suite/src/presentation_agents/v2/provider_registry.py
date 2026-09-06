@@ -7,6 +7,8 @@ from typing import Any
 from .contracts import ContractError
 
 PROVIDER_IDS = ('codex', 'claude', 'gemini', 'opencode')
+# Keep historical selections readable; the current product enables only Codex.
+MVP_PROVIDER_IDS = ('codex',)
 EFFORTS = {
     'codex': ('none', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max', 'ultra'),
     'claude': ('low', 'medium', 'high', 'max'),
@@ -40,6 +42,13 @@ def normalize_selection(value: Any = None) -> dict[str, Any]:
         if model == 'haiku' and effort is not None:
             raise ContractError('Haiku does not expose a verified effort profile; omit effort')
     return {'provider': provider, 'model': model, 'effort': effort}
+
+
+def mvp_selection(value: Any = None) -> dict[str, Any]:
+    selection = normalize_selection(value)
+    if selection['provider'] not in MVP_PROVIDER_IDS:
+        raise ContractError('현재 MVP는 Codex 전용입니다. Claude Code 연동은 MVP 이후 제공할 예정입니다.')
+    return selection
 
 
 def provider_metadata() -> list[dict[str, str]]:

@@ -65,9 +65,9 @@ class LocalMvpTests(unittest.TestCase):
         self.assertFalse((self.root / ".runtime/setup-state.json").exists())
 
     def test_start_preserves_spaces_provider_and_port_without_a_shell(self):
-        command = local_mvp.server_command(self.root, provider="claude", port=4318, no_runner=False)
+        command = local_mvp.server_command(self.root, provider="codex", port=4318, no_runner=False)
         self.assertEqual(command[0], str(self.root / ".venv/bin/python"))
-        self.assertEqual(command[command.index("--provider") + 1], "claude")
+        self.assertEqual(command[command.index("--provider") + 1], "codex")
         self.assertEqual(command[command.index("--port") + 1], "4318")
         self.assertIn("--preflight", command)
         self.assertNotIn("shell", command)
@@ -92,7 +92,7 @@ class LocalMvpTests(unittest.TestCase):
         self.assertFalse(any("install" in c for c in self.commands))
 
     def test_windows_is_supported_but_missing_tools_are_not_ready(self):
-        report = local_mvp.inspect_environment(self.root, provider="claude", which=lambda name: None,
+        report = local_mvp.inspect_environment(self.root, provider="codex", which=lambda name: None,
                                               system="win32", python_version=(3, 12), package_versions={})
         self.assertTrue(report["platform"]["supported"])
         self.assertFalse(report["provider"]["installed"])

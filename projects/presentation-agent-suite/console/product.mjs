@@ -19,7 +19,7 @@ export const ARTIFACT_LABELS = {
 
 export function providersView(capabilities = {}) {
   return (Array.isArray(capabilities?.providers) ? capabilities.providers : [])
-    .filter((provider) => typeof provider?.id === 'string' && /^[a-z][a-z0-9_-]{0,63}$/.test(provider.id))
+    .filter((provider) => provider?.id === 'codex')
     .map((provider) => ({ ...provider,
       ready: provider.ready === true,
       autoConnect: provider.ready === true && provider.auto_connect === true,
@@ -243,17 +243,18 @@ export async function refreshProviderState(api, state, provider, isCurrent = () 
 }
 
 export function initialProvider(capabilities, preferred) {
-  const ready = providersView(capabilities).filter((provider) => provider.autoConnect);
-  return ready.find((provider) => provider.id === preferred)?.id
-    || ready.find((provider) => provider.id === capabilities?.recommended_provider)?.id
-    || ready[0]?.id || null;
+  return providersView(capabilities).find((provider) => provider.autoConnect)?.id || null;
 }
 
 export function applyDiscoverySnapshot(state, capabilities, choiceGeneration) {
   state.capabilities = capabilities;
-  if (choiceGeneration !== state.choiceGeneration || state.explicitProviderChoice) return;
-  const provider = initialProvider(capabilities, state.preferred.provider);
+  if (choiceGeneration !== state.choiceGeneration) return;
+  const provider = initialProvider(capabilities);
   if (provider && provider !== state.preferred.provider) state.preferred = { provider, model: null, effort: null };
+  if (provider && state.welcomeAfterDiscovery && state.screen === 'setup') {
+    state.welcomeAfterDiscovery = false;
+    state.screen = 'home';
+  }
 }
 
 /** Only options actually supplied by the selected provider are offered. */
@@ -283,6 +284,7 @@ export function effortOptions(provider, model) {
 }
 
 export function validateExecutionSelection(provider, selection, previous = null) {
+  if (provider?.id !== 'codex') throw new Error('현재 MVP는 Codex 전용입니다.');
   if (!provider?.ready || !provider.id || selection?.provider !== provider.id) throw new Error('선택한 AI의 연결 상태를 먼저 확인해 주세요.');
   const value = { provider: provider.id, model: selection.model || null, effort: selection.effort || null };
   if (previous && value.provider === previous.provider && value.model === previous.model && value.effort === previous.effort) return value;

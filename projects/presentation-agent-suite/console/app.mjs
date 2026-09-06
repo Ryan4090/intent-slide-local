@@ -6,7 +6,7 @@ import {
 } from './core.mjs';
 import {
   ARTIFACT_LABELS, CHECKPOINTS, checkpointView, currentArtifacts, displayValue, executionSelection,
-  nextAction, providerAnswerPayload, providersView, releaseView, researchSummary, reviewView, stageFiles, startCreatedProject, initialProvider, recoverEventStream, claimCategory, claimConditions,
+  nextAction, providerAnswerPayload, providersView, releaseView, researchSummary, reviewView, stageFiles, startCreatedProject, recoverEventStream, claimCategory, claimConditions,
   modelOptions, effortOptions, validateExecutionSelection, applyDiscoverySnapshot,
 } from './product.mjs';
 import { createDiscovery, createLogin } from './connection.mjs';
@@ -25,46 +25,41 @@ const state = {
   commandAttempt: null, createAttempt: null, uploadAttempt: null,
   bootGeneration: 0,
   changeContext: null,
-  screen: 'work', providerBusy: false, preferred: { provider: null, model: null, effort: null },
+  screen: 'work', providerBusy: false, preferred: { provider: 'codex', model: null, effort: null },
   authExpired: false, streamGeneration: 0,
   evidenceFilter: 'all', reviewContext: null, providerContext: null,
   discovery: null, discoveryGeneration: 0, discoveryState: 'IDLE', discoveryError: '',
-  choiceGeneration: 0, explicitProviderChoice: false, welcomeAfterDiscovery: false,
+  choiceGeneration: 0, welcomeAfterDiscovery: false,
   login: null, loginBusy: false,
 };
-
-try {
-  const provider = localStorage.getItem('intent-slide.provider');
-  if (provider && /^[a-z][a-z0-9_-]{0,63}$/.test(provider)) state.preferred.provider = provider;
-} catch { /* Preferences are optional; no secrets or conversation are stored here. */ }
 
 function selectedProvider(selection = state.preferred) {
   return providersView(state.capabilities).find((provider) => provider.id === selection.provider);
 }
 
 function rememberProvider(id) {
+  if (id !== 'codex') return;
   state.choiceGeneration += 1;
-  state.explicitProviderChoice = true;
   state.preferred = { provider: id, model: null, effort: null };
-  try { localStorage.setItem('intent-slide.provider', id); } catch { /* Optional preference. */ }
 }
 
 function discoveryMarkup() {
-  const ready = providersView(state.capabilities).filter((provider) => provider.ready);
-  const selected = selectedProvider();
+  const codex = providersView(state.capabilities)[0];
   const status = state.discoveryState;
-  const message = status === 'RUNNING' ? '설치된 AI와 로그인 상태를 자동으로 확인하고 있습니다.'
-    : status === 'DEFERRED' ? '현재 AI 작업이 끝난 뒤 연결 상태를 다시 확인할 수 있습니다.'
-      : status === 'TIMEOUT' ? '연결 확인이 오래 걸려 자동 탐색을 멈췄습니다. 확인된 도구는 사용할 수 있습니다.'
-        : status === 'ERROR' ? 'AI 연결을 확인하지 못했습니다. 다시 탐색하거나 진단을 확인해 주세요.'
-          : ready.length ? `${ready.length}개 AI를 사용할 수 있습니다. ${selected?.ready ? `${selected.label}를 선택했습니다.` : '함께 작업할 AI를 선택해 주세요.'}`
-            : '내장 Codex로 시작할 수 있습니다. 처음 한 번 본인 계정으로 로그인해 주세요.';
-  return `<div class="discovery-status" role="status" aria-live="polite" ${status === 'RUNNING' ? 'aria-busy="true"' : ''}><div><strong>${status === 'RUNNING' ? 'AI 자동 탐색 중' : ready.length ? '내 AI 연결' : 'AI 연결 확인'}</strong><p>${e(message)}</p>${ready.length ? `<p class="ready-providers">${ready.map((provider) => e(provider.label)).join(' · ')}</p>` : ''}${state.discoveryError ? `<details><summary>연결 진단 상세</summary><p>${e(state.discoveryError)}</p></details>` : ''}</div>${loginMarkup()}<button class="text-button" data-action="discover-providers" ${state.providerBusy ? 'disabled' : ''}>다시 탐색</button></div>`;
+  const checking = status === 'RUNNING' || (!codex?.checked && !['ERROR', 'TIMEOUT', 'DEFERRED'].includes(status));
+  const message = checking ? '이 컴퓨터의 Codex 로그인 상태를 확인하고 있습니다. 연결되면 자동으로 시작합니다.'
+    : status === 'DEFERRED' ? '현재 작업이 끝나면 Codex 연결 상태를 다시 확인할 수 있습니다.'
+      : status === 'TIMEOUT' ? '연결 확인이 오래 걸립니다. 잠시 후 다시 확인해 주세요.'
+        : status === 'ERROR' ? 'Codex에 연결하지 못했습니다. 다시 확인해 주세요.'
+          : codex?.ready ? '기존 Codex 로그인으로 자동 연결되었습니다. 바로 프로젝트를 시작하세요.'
+            : '처음 한 번 Codex 계정으로 로그인하면 다음 실행부터 자동으로 연결됩니다.';
+  const reason = state.discoveryError || codex?.reason;
+  return `<div class="discovery-status" role="status" aria-live="polite" ${checking ? 'aria-busy="true"' : ''}><div><strong>${checking ? 'Codex 자동 연결 중' : codex?.ready ? 'Codex 연결됨' : 'Codex 연결 확인'}</strong><p>${e(message)}</p>${reason && !codex?.ready && !checking ? `<details><summary>연결 진단 상세</summary><p>${e(reason)}</p></details>` : ''}</div>${loginMarkup()}<button class="text-button" data-action="discover-providers" ${state.providerBusy || state.loginBusy ? 'disabled' : ''}>연결 다시 확인</button></div>`;
 }
 
 function loginMarkup() {
   const codex = providersView(state.capabilities).find((p) => p.id === 'codex');
-  if (!codex || codex.ready) return '';
+  if (!codex || codex.ready || !codex.checked || state.discoveryState === 'RUNNING') return '';
   const status = state.capabilities.login?.status;
   const busy = state.loginBusy || ['STARTING', 'RUNNING'].includes(status);
   const message = busy ? '열린 공식 로그인 창에서 본인 계정으로 로그인해 주세요.'
@@ -84,7 +79,7 @@ async function loginCodex() {
       applyDiscoverySnapshot(state, capabilities, choice);
       state.loginBusy = ['STARTING', 'RUNNING'].includes(capabilities.login?.status);
       state.discoveryState = capabilities.discovery?.status || 'IDLE';
-      if (!state.loginBusy && selectedProvider()?.ready) announce('AI 계정을 연결했습니다. 바로 프로젝트를 시작할 수 있습니다.');
+      if (!state.loginBusy && selectedProvider()?.ready) announce('Codex가 연결되었습니다. 바로 프로젝트를 시작할 수 있습니다.');
       refreshConnectionSurfaces();
     },
     onError(error) { state.loginBusy = false; handleError(error); refreshConnectionSurfaces(); },
@@ -103,7 +98,6 @@ function stopDiscovery() {
 function refreshConnectionSurfaces() {
   if (state.authExpired) return;
   const focusedId = document.activeElement?.id;
-  const focusedProvider = document.activeElement?.name === 'setup-provider' ? document.activeElement.value : null;
   if (state.screen === 'setup') renderSetup();
   else if (!state.run || state.screen === 'home') renderWelcome();
   if ($('#create-dialog').open) {
@@ -112,7 +106,6 @@ function refreshConnectionSurfaces() {
   }
   if ($('#provider-dialog').open) populateProviderSelect('run-provider', readExecutionForm('run-provider'));
   if (focusedId) document.getElementById(focusedId)?.focus({ preventScroll: true });
-  else if (focusedProvider) [...document.querySelectorAll('input[name="setup-provider"]')].find((input) => input.value === focusedProvider)?.focus({ preventScroll: true });
 }
 
 function discoverProviders(refresh = false) {
@@ -127,9 +120,6 @@ function discoverProviders(refresh = false) {
       state.discoveryState = capabilities?.discovery?.status || 'IDLE';
       state.discoveryError = typeof capabilities?.discovery?.reason === 'string' ? capabilities.discovery.reason : '';
       state.providerBusy = state.discoveryState === 'RUNNING';
-      if (state.welcomeAfterDiscovery && selectedProvider()?.ready && state.screen === 'setup') {
-        state.welcomeAfterDiscovery = false; state.screen = 'home';
-      }
       refreshConnectionSurfaces();
     },
     onError(error) {
@@ -192,25 +182,18 @@ function renderSetup() {
   if (state.authExpired) return renderSessionRequired();
   preserveDrafts();
   state.screen = 'setup';
-  const providers = providersView(state.capabilities);
   const selected = selectedProvider();
-  $('#breadcrumb').textContent = 'AI 연결과 준비';
-  $('#main-content').innerHTML = `<section class="setup-page"><span class="eyebrow">시작 준비</span><h1>내 AI 구독으로<br>작업실을 연결하세요.</h1><p class="setup-intro">Intent-Slide는 이 컴퓨터${state.capabilities.platform?.label ? ` (${e(state.capabilities.platform.label)})` : ''}에서 실행됩니다. 설치된 AI 도구의 기존 로그인과 설정을 사용하며, 비밀번호나 API 키를 이 화면에 입력하지 않습니다. 작업에 필요한 요청과 자료는 선택한 AI 제공자에게 전달됩니다.</p><div class="setup-steps"><span>1. 자동 탐색</span><span>2. 내 계정 연결</span><span>3. 첫 대화 시작</span></div>${discoveryMarkup()}<div class="provider-grid">${providers.map((provider) => `<article class="provider-card ${state.preferred.provider === provider.id ? 'selected' : ''}"><label><input type="radio" name="setup-provider" value="${e(provider.id)}" ${state.preferred.provider === provider.id ? 'checked' : ''}><strong>${e(provider.label)}</strong>${provider.beta || provider.id === 'claude' ? '<span class="badge warning">Beta</span>' : ''}</label><p class="provider-status ${provider.ready ? 'ready' : ''}">${e(provider.statusText)}</p>${provider.id === 'claude' ? '<p class="beta-note">실제 슬라이드 제작 검증을 기다리고 있습니다. 연결과 로그인 확인 후 선택할 수 있습니다.</p>' : ''}${provider.billing_notice ? `<p class="billing-notice">${e(provider.billing_notice)}</p>` : ''}${provider.reason ? `<details class="provider-diagnostic"><summary>연결 진단 상세</summary><p>${e(provider.reason)}</p></details>` : ''}${!provider.ready ? `<div class="setup-instructions"><p>준비된 AI 도구와 기존 로그인을 자동으로 찾습니다. 계정 연결이 필요하면 공식 절차에 따라 본인 계정으로 로그인해 주세요.</p>${provider.install_url ? `<details class="optional-tool"><summary>선택 사항 · AI 도구 추가 안내</summary>${safeExternalLink(provider.install_url, '공식 도구 안내 ↗')}</details>` : ''}${provider.login_command && provider.id !== 'codex' ? `<p>로그인 명령</p><code>${e(provider.login_command)}</code>` : ''}${provider.auth_mode === 'api_key' ? '<p>현재 API 키 연결이 감지되었습니다. 정액제 계정으로 로그인한 뒤 다시 확인하세요.</p>' : ''}</div>` : ''}<button class="button secondary" data-check-provider="${e(provider.id)}" ${state.providerBusy ? 'disabled' : ''}>${state.providerBusy ? '연결 확인 중…' : '로그인·연결 다시 확인'}</button></article>`).join('') || '<div class="empty-panel"><h2>AI 연결 정보를 불러오지 못했습니다.</h2><p>작업실 실행 파일이 최신인지 확인하고 다시 연결해 주세요.</p><button class="button secondary" data-action="refresh-capabilities">준비 상태 다시 불러오기</button></div>'}</div><div class="setup-bottom"><div><strong>${selected?.ready ? `${e(selected.label)} 연결 준비 완료` : 'AI 계정 연결을 확인해 주세요'}</strong><p>${selected?.ready ? '이제 첫 이야기를 시작할 수 있습니다.' : '로그인한 뒤 다시 탐색을 눌러 주세요.'}</p></div><button class="button primary" data-action="setup-complete" ${!selected?.ready ? 'disabled' : ''}>작업실 시작하기 →</button>${state.run ? '<button class="text-button" data-action="back-work">현재 프로젝트로 돌아가기</button>' : ''}</div><details class="technical-details"><summary>제작 도구와 진단 상세</summary><p>파일 검사와 미리보기에 사용하는 로컬 도구의 상태입니다.</p><pre class="source-text">${e(JSON.stringify({ rendering: state.capabilities.rendering, ready: state.capabilities.ready, reason: state.capabilities.reason }, null, 2))}</pre></details></section>`;
-}
-
-function safeExternalLink(value, label) {
-  try {
-    const url = new URL(value);
-    if (!['https:', 'http:'].includes(url.protocol) || url.username || url.password) return '';
-    return `<a class="text-button" href="${e(url.href)}" target="_blank" rel="noopener noreferrer">${e(label)}</a>`;
-  } catch { return ''; }
+  $('#breadcrumb').textContent = 'Codex 연결';
+  $('#main-content').innerHTML = `<section class="setup-page"><span class="eyebrow">CODEX · 내 작업실</span><h1>Codex와 바로<br>시작하세요.</h1><p class="setup-intro">작업실이 열리면 이 컴퓨터의 Codex에 자동으로 연결합니다. 기존 로그인이 있으면 별도 설정 없이 시작할 수 있습니다.</p><div class="setup-steps"><span>1. 작업실 실행</span><span>2. Codex 자동 연결</span><span>3. 첫 대화 시작</span></div>${discoveryMarkup()}<div class="setup-bottom"><div><strong>${selected?.ready ? 'Codex 연결 준비 완료' : 'Codex 연결을 기다리고 있습니다'}</strong><p>${selected?.ready ? '이제 첫 이야기를 시작할 수 있습니다.' : '로그인을 마치면 자동으로 작업실에 연결됩니다.'}</p></div>${selected?.ready ? '<button class="button primary" data-action="setup-complete">작업실 시작하기 →</button>' : ''}${state.run ? '<button class="text-button" data-action="back-work">현재 프로젝트로 돌아가기</button>' : ''}</div><p class="setup-intro">MVP는 Codex 전용으로 제공합니다. Claude Code 연동은 MVP 이후 추가할 예정입니다.</p><details class="technical-details"><summary>연결 및 제작 도구 안내</summary><p>작업에 필요한 요청과 자료는 Codex에 전달됩니다. 계정 인증은 공식 로그인 창에서 진행합니다.</p><pre class="source-text">${e(JSON.stringify({ rendering: state.capabilities.rendering, ready: state.capabilities.ready, reason: state.capabilities.reason }, null, 2))}</pre></details></section>`;
 }
 
 function populateProviderSelect(id, selection) {
   const select = document.getElementById(id);
-  const markup = '<option value="">AI를 선택하세요</option>' + providersView(state.capabilities).map((provider) => `<option value="${e(provider.id)}" ${provider.ready ? '' : 'disabled'}>${e(provider.label)}${provider.beta || provider.id === 'claude' ? ' (Beta)' : ''} · ${e(provider.statusText)}</option>`).join('');
+  const legacy = selection?.provider && selection.provider !== 'codex';
+  const markup = legacy ? `<option value="${e(selection.provider)}">기존 ${e(selection.provider)} 설정 · 보존됨</option>` : '<option value="codex">Codex</option>';
   setSelectOptions(select, markup);
-  select.value = selection?.provider || '';
+  select.value = selection?.provider || 'codex';
+  select.disabled = true;
   populateExecutionOptions(id, selection || {});
   updateProviderStatus(id);
   if (id === 'run-provider') lockProviderForm();
@@ -222,12 +205,14 @@ function setSelectOptions(select, markup) {
 
 function lockProviderForm() {
   const busy = state.pending || activeJobs(state.run).length > 0 || state.providerContext?.id !== state.run?.id;
-  $('#run-provider').disabled = busy;
+  $('#run-provider').disabled = true;
   for (const suffix of ['model', 'effort']) {
     const select = document.getElementById(`run-provider-${suffix}`);
     select.disabled = busy || (select.options.length <= 1 && !select.value);
   }
-  $('#provider-form button[type="submit"]').disabled = busy;
+  $('#provider-form button[type="submit"]').disabled = busy || $('#run-provider').value !== 'codex';
+  $('#switch-to-codex').hidden = $('#run-provider').value === 'codex';
+  $('#switch-to-codex').disabled = busy;
 }
 
 function readExecutionForm(id) {
@@ -270,8 +255,7 @@ function checkProvider() {
 function startCreate() {
   if (state.authExpired) return renderSessionRequired();
   if (state.pending) return announce('현재 요청을 처리한 뒤 새 프로젝트를 시작해 주세요.', 'warning');
-  state.welcomeAfterDiscovery = false;
-  if (!selectedProvider()?.ready) { renderSetup(); if (!state.providerBusy) discoverProviders(); return; }
+  if (!selectedProvider()?.ready) { state.welcomeAfterDiscovery = !state.run; renderSetup(); if (!state.providerBusy) discoverProviders(); return; }
   $('#create-error').hidden = true;
   populateProviderSelect('create-provider', state.preferred);
   $('#create-dialog').showModal();
@@ -781,6 +765,12 @@ document.addEventListener('click', async (event) => {
     $('#provider-dialog').showModal();
     return;
   }
+  if (button.id === 'switch-to-codex') {
+    if (state.pending || activeJobs(state.run).length || state.providerContext?.id !== state.run?.id) return;
+    populateProviderSelect('run-provider', { provider: 'codex', model: null, effort: null });
+    $('#run-model-note').textContent = '다음 작업에 적용을 누르면 Codex의 새 대화로 이어갑니다. 기존 실행 기록은 그대로 보존됩니다.';
+    return;
+  }
   if (button.dataset.nextAction) {
     const action = nextAction(state.run);
     if (action.kind !== button.dataset.nextAction) return renderRun();
@@ -789,6 +779,11 @@ document.addEventListener('click', async (event) => {
     if (action.kind === 'history') { state.tab = 'history'; renderRun(); return; }
     if (action.kind === 'refresh') return refreshRun().catch(handleError);
     if (['run', 'resume'].includes(action.kind)) {
+      if (executionSelection(state.run).provider !== 'codex') {
+        announce('기존 프로젝트입니다. 모델 설정에서 Codex로 전환한 뒤 이어서 진행해 주세요.', 'warning');
+        document.querySelector('[data-action="provider-settings"]')?.click();
+        return;
+      }
       if (!selectedProvider(executionSelection(state.run))?.ready) { rememberProvider(executionSelection(state.run).provider); return renderSetup(); }
       return sendCommand(action.kind).catch(() => {});
     }
@@ -861,7 +856,7 @@ document.addEventListener('submit', async (event) => {
     if (state.pending) return;
     const data = new FormData(form);
     const files = [...$('#create-attachments').files];
-    const provider = selectedProvider({ provider: data.get('provider') });
+    const provider = selectedProvider(readExecutionForm('create-provider'));
     if (!provider?.ready) return handleError(new Error('선택한 AI의 설치와 지원되는 로그인 상태를 먼저 확인해 주세요.'), $('#create-error'));
     if (files.some((file) => file.size > 100 * 1024 * 1024)) return handleError(new Error('파일 한 개는 100MB 이내로 첨부해 주세요.'), $('#create-error'));
     state.pending = true;
@@ -977,7 +972,6 @@ document.addEventListener('submit', async (event) => {
 });
 
 document.addEventListener('change', (event) => {
-  if (event.target.name === 'setup-provider') { state.welcomeAfterDiscovery = false; rememberProvider(event.target.value); renderSetup(); $('input[name="setup-provider"]:checked')?.focus(); }
   if (['create-provider', 'run-provider'].includes(event.target.id)) {
     state.choiceGeneration += 1;
     populateExecutionOptions(event.target.id); updateProviderStatus(event.target.id);
@@ -1033,20 +1027,21 @@ async function boot() {
     await api.connect(token);
     if (generation !== state.bootGeneration) return;
     state.authExpired = false; state.connected = true;
+    announce('');
     const results = await Promise.allSettled([api.request('/api/v2/runs'), api.request('/api/v2/capabilities')]);
     if (generation !== state.bootGeneration) return;
     if (results[0].status === 'rejected') throw results[0].reason;
     state.runs = results[0].value.runs || [];
     if (results[1].status === 'fulfilled') state.capabilities = results[1].value;
     else { state.capabilities = {}; if ([401, 403].includes(results[1].reason?.status)) throw results[1].reason; }
-    if (choice === state.choiceGeneration && !state.explicitProviderChoice) state.preferred.provider = initialProvider(state.capabilities, state.preferred.provider);
+    if (choice === state.choiceGeneration && state.preferred.provider !== 'codex') state.preferred = { provider: 'codex', model: null, effort: null };
     renderRunList();
     setConnection('connected', '로컬 엔진 연결됨');
     $('#last-updated').textContent = '현재 상태 확인됨';
     const requested = new URLSearchParams(location.hash.slice(1)).get('run') || state.run?.id;
     if (requested && state.runs.some((run) => run.id === requested)) await selectRun(requested);
     else if (state.runs.length) await selectRun(state.runs[0].id);
-    else if (!selectedProvider()?.ready) { state.welcomeAfterDiscovery = true; renderSetup(); }
+    else if (!selectedProvider()?.ready) { state.welcomeAfterDiscovery = true; state.discoveryState = state.capabilities.discovery?.status || 'IDLE'; renderSetup(); }
     else renderWelcome();
     if (generation === state.bootGeneration && !state.authExpired) discoverProviders();
   } catch (error) {

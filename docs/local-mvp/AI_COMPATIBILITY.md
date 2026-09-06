@@ -1,5 +1,7 @@
 # 로컬 AI 호환 범위
 
+**2026-09-07 현재 MVP 정책:** 신규 연결·프로젝트 생성·설정은 Codex 전용입니다. HTTP 시작 시 Codex만 자동 확인하며 다른 제공자로 전환하지 않습니다. Claude Code 연동은 MVP 이후로 연기했습니다. 아래 Claude·Gemini·OpenCode 항목과 ACP 검증은 보존된 어댑터의 과거 기술 검증 기록이며 현재 제품의 선택 가능 기능을 뜻하지 않습니다. [Codex 연결 개선](02_CODEX_CONNECTION_WORK_PACKET.md)을 참고하세요.
+
 2026-09-06 · **PARTIAL**. 기본 Codex와 실행 환경은 저장소에 포함합니다. 연결 준비, 실제 모델 실행, G5 이미지 검토를 구분하며 모든 AI·모델·계정의 전체 제작을 검증한 것은 아닙니다. Windows·Mac 클론 검사는 계정을 사용하지 않는 실행 검사이며 실제 제작·이전 v0.1.0 증거는 [검증 기록](VERIFICATION.md)에 구분합니다.
 
 | 실행기 | 연결 방식 | 확인한 범위 | 남은 경계 |
@@ -10,9 +12,9 @@
 | OpenCode | 설치된 `opencode acp` | **PARTIALLY_VERIFIED**: 공식 프로토콜과 독립 JSON-RPC fixture 계약 | 이 환경에 CLI가 없어 실제 연결·모델·G5는 **UNVERIFIED** |
 | OpenAI 호환 API·Ollama | 별도 모델 API | 확장 후보이며 현재 제품 실행기로 미구현 | 모델 URL만으로 파일·도구·승인·세션·G5 계약이 생기지 않음 |
 
-Gemini와 OpenCode는 사용자가 직접 선택합니다. `ready=true`는 무프롬프트 ACP 초기화·세션 생성·모델 목록 확인을 뜻하며 구독 포함 여부의 증명이 아닙니다. 두 실행기의 `auto_connect`는 `false`, 인증 모드는 `native_unverified`입니다. 기존 도구의 로그인·모델·과금 설정을 사용하며, 구독 포함 여부는 해당 제공자에서 확인해야 합니다. 제품이 로그인 정보를 읽거나 다른 API 과금 방식으로 전환하지 않습니다. 공식 실행 방식은 [Gemini ACP](https://geminicli.com/docs/cli/acp-mode/)와 [OpenCode ACP](https://opencode.ai/docs/acp/)를 따릅니다.
+이전 버전에서는 Gemini와 OpenCode를 사용자가 직접 선택했습니다. 현재 MVP에서는 비활성입니다. `ready=true`는 무프롬프트 ACP 초기화·세션 생성·모델 목록 확인을 뜻하며 구독 포함 여부의 증명이 아닙니다. 두 실행기의 `auto_connect`는 `false`, 인증 모드는 `native_unverified`입니다. 기존 도구의 로그인·모델·과금 설정을 사용하며, 구독 포함 여부는 해당 제공자에서 확인해야 합니다. 제품이 로그인 정보를 읽거나 다른 API 과금 방식으로 전환하지 않습니다. 공식 실행 방식은 [Gemini ACP](https://geminicli.com/docs/cli/acp-mode/)와 [OpenCode ACP](https://opencode.ai/docs/acp/)를 따릅니다.
 
-기본 시작에는 Python·Node.js·npm 또는 Codex의 별도 설치가 필요하지 않습니다. 최초 계정 인증은 작업실의 **Codex 계정으로 로그인** 버튼에서 공식 CLI가 진행합니다. Claude Code·Gemini CLI·OpenCode는 이미 사용 중인 도구를 연결하는 선택 항목이며, 이 도구의 실행 파일·계정·유료 이용 권한을 배포본에 포함하지 않습니다. 다른 웹 챗봇의 구독을 공통 로그인으로 전환하는 기능은 없습니다.
+기본 시작에는 Python·Node.js·npm 또는 Codex의 별도 설치가 필요하지 않습니다. 최초 계정 인증은 작업실의 **Codex 계정으로 로그인** 버튼에서 공식 CLI가 진행합니다. Claude Code·Gemini CLI·OpenCode 어댑터는 향후 연동과 기존 기록 호환을 위해 보존하며 현재 선택 항목이 아닙니다. 이 도구의 실행 파일·계정·유료 이용 권한을 배포본에 포함하지 않습니다. 다른 웹 챗봇의 구독을 공통 로그인으로 전환하는 기능은 없습니다.
 
 ## ACP 실행 계약
 
@@ -25,7 +27,7 @@ Gemini와 OpenCode는 사용자가 직접 선택합니다. `ready=true`는 무�
 
 ## 확장 경계와 확인 방법
 
-웹 설정은 `provider`, `model`, `effort`만 받습니다. Gemini/OpenCode 명령은 고정된 등록 항목이며 사용자가 임의 shell 명령이나 argv를 등록하는 기능은 없습니다. 새 ACP 실행기는 고정 프로필·공식 문서·프로토콜/승인/취소/파일·이미지 회귀를 추가하고 실제 실행을 별도로 확인해야 합니다. ACP의 공통 규격은 구현 기반이지 모든 에이전트의 동일한 동작 보증이 아닙니다. [ACP 세션 생성](https://agentclientprotocol.com/protocol/v1/session-setup).
+웹 설정은 `provider`, `model`, `effort`만 받고 현재 `provider`는 `codex`만 허용합니다. Gemini/OpenCode 명령은 고정된 등록 항목이며 사용자가 임의 shell 명령이나 argv를 등록하는 기능은 없습니다. 새 ACP 실행기는 고정 프로필·공식 문서·프로토콜/승인/취소/파일·이미지 회귀를 추가하고 실제 실행을 별도로 확인해야 합니다. ACP의 공통 규격은 구현 기반이지 모든 에이전트의 동일한 동작 보증이 아닙니다. [ACP 세션 생성](https://agentclientprotocol.com/protocol/v1/session-setup).
 
 OpenAI 호환 API 또는 Ollama를 추가하려면 제품이 도구 실행, 일회성 승인, 파일 격리, 세션 저장, 취소, 실제 이미지 입력·검토 증거를 맡는 별도 실행 계층이 필요합니다. Ollama의 도구 호출·이미지 지원도 모델별 능력을 확인해야 하며, 인증된 CLI 구독을 임의 API로 대체하지 않습니다. [Ollama 호환 API](https://docs.ollama.com/api/openai-compatibility), [도구 호출](https://docs.ollama.com/capabilities/tool-calling), [이미지](https://docs.ollama.com/capabilities/vision).
 

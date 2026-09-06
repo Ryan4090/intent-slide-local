@@ -39,9 +39,9 @@ test('provider diagnostics preserve a newer selection made while the request is 
   assert.equal(state.preferred.provider, 'claude'); assert.strictEqual(state.capabilities, actual);
 });
 
-test('first visit selects a confirmed eligible saved preference, recommendation, or first available provider', () => {
+test('first visit always selects ready Codex regardless of saved preference or recommendation', () => {
   const capabilities = { recommended_provider: 'claude', providers: ['codex', 'claude'].map((id) => ({ id, ready: true, auto_connect: true })) };
-  assert.equal(initialProvider(capabilities, null), 'claude');
+  assert.equal(initialProvider(capabilities, null), 'codex');
   assert.equal(initialProvider(capabilities, 'codex'), 'codex');
   assert.equal(initialProvider(null, null), null);
   assert.equal(initialProvider({ default_provider: 'unknown' }, 'invalid'), null);
@@ -59,7 +59,7 @@ test('a diagnostic result from a replaced session cannot overwrite current capab
 
 test('nullable capability metadata cannot fabricate readiness or fail the initial selection', () => {
   assert.deepEqual(providersView(null), []);
-  const [provider] = providersView({ providers: [null, { id: 'claude', ready: null, auth_mode: 'unknown', features: null, models: null }] });
+  const [provider] = providersView({ providers: [null, { id: 'codex', ready: null, auth_mode: 'unknown', features: null, models: null }] });
   assert.equal(provider.ready, false); assert.equal(provider.checked, false);
   assert.deepEqual(executionSelection(null, null), { provider: 'codex', model: null, effort: null });
 });

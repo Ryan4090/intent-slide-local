@@ -40,15 +40,15 @@ class DiscoveryTests(unittest.TestCase):
         self.assertFalse(self.runner._discovery_thread.is_alive())
         return self.runner.capabilities()
 
-    def test_auto_selects_ready_subscription_without_running_a_model(self):
+    def test_auto_never_falls_back_to_other_ready_providers(self):
         self.runner.discover()
         result=self.finish()
         self.assertEqual(result['discovery']['status'],'COMPLETE')
-        self.assertEqual(result['default_provider'],'claude')
-        self.assertEqual(result['recommended_provider'],'claude')
+        self.assertEqual(result['default_provider'],'codex')
+        self.assertIsNone(result['recommended_provider'])
         self.assertEqual(self.engine.list(),[])
         self.runner.discover()
-        self.assertEqual(len(self.calls),4)
+        self.assertEqual(self.calls,['codex'])
 
     def test_discovery_defers_during_active_job(self):
         self.runner._active={'id':'fixture-active'}

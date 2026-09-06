@@ -11,6 +11,7 @@ from flask import Flask, Response, jsonify, request, send_file, send_from_direct
 
 from .contracts import Conflict, ContractError
 from .engine import Engine
+from .provider_registry import mvp_selection
 
 
 def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_token: str | None = None, instance_id: str | None = None) -> Flask:
@@ -89,7 +90,7 @@ def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_toke
     @app.post("/api/v2/runs")
     def create_run():
         data = json_object()
-        selection = data.get("execution", {"provider": runner.default_provider} if runner else None)
+        selection = mvp_selection(data.get("execution"))
         result = engine.create(data.get("title", "새 프레젠테이션"), data.get("request", ""), data.get("source_mode", "hybrid"), data.get("operation_id", ""), execution=selection)
         return jsonify(result), 201
 
@@ -101,6 +102,12 @@ def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_toke
     def command(run_id):
         data = json_object()
         name = data.get("command")
+        if name == "configure_provider":
+            mvp_selection(data.get("payload", {}))
+        elif name in {"run", "resume", "approve", "answer", "message"}:
+            # These commands can queue work, including automatic follow-up jobs.
+            # Preserve legacy records until the user explicitly switches to Codex.
+            mvp_selection(engine.snapshot(run_id).get("execution"))
         if name == "provider_answer":
             if not runner:
                 raise ContractError("실행기가 연결되지 않았습니다")

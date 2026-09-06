@@ -69,17 +69,18 @@ test('a replaced generation or explicit unmount cannot apply a late discovery re
   }
 });
 
-test('native billing modes may be manually selected but never enter automatic selection', () => {
-  const capabilities = { recommended_provider: 'opencode', providers: [provider('gemini', { auto_connect: false, auth_mode: 'native_unverified', billing_notice: '기존 로그인·모델·과금 설정을 확인하세요.' }), provider('opencode', { auto_connect: false }), provider('claude')] };
-  assert.equal(initialProvider(capabilities, 'gemini'), 'claude');
-  const gemini = providersView(capabilities)[0]; assert.equal(gemini.ready, true); assert.equal(gemini.autoConnect, false); assert.match(gemini.billing_notice, /과금/);
-  assert.deepEqual(validateExecutionSelection(gemini, { provider: 'gemini', model: null, effort: null }), { provider: 'gemini', model: null, effort: null });
-  assert.equal(initialProvider({ providers: capabilities.providers.slice(0, 2) }, 'gemini'), null);
+test('MVP never offers another provider or falls back when Codex is unavailable', () => {
+  const capabilities = { recommended_provider: 'claude', providers: [provider('gemini'), provider('opencode'), provider('claude')] };
+  assert.equal(initialProvider(capabilities, 'claude'), null);
+  assert.deepEqual(providersView(capabilities), []);
+  assert.throws(() => validateExecutionSelection(provider('claude'), { provider: 'claude' }), /Codex/);
+  capabilities.providers.push(provider('codex'));
+  assert.equal(initialProvider(capabilities, 'claude'), 'codex');
 });
 
 test('automatic selection skips stale, unknown and ineligible preferences and recommendations', () => {
   const capabilities = { recommended_provider: 'codex', providers: [provider('codex', { ready: false }), provider('claude')] };
-  assert.equal(initialProvider(capabilities, 'codex'), 'claude');
+  assert.equal(initialProvider(capabilities, 'codex'), null);
   assert.equal(initialProvider({ providers: [provider('codex', { ready: 'true' }), provider('claude', { auto_connect: 'true' })] }, null), null);
 });
 
@@ -93,10 +94,10 @@ test('discovery facts cannot overwrite a later explicit choice or mutate a runni
   assert.deepEqual(executionSelection(state.run, state.preferred), { provider: 'gemini', model: 'current', effort: null });
 });
 
-test('a manual native-provider choice made before a fresh scan is not silently replaced', () => {
+test('a stale preference cannot select a disabled provider for a new project', () => {
   const state = { choiceGeneration: 3, explicitProviderChoice: true, preferred: { provider: 'gemini', model: null, effort: null } };
   applyDiscoverySnapshot(state, { providers: [provider('codex'), provider('gemini', { auto_connect: false })] }, 3);
-  assert.equal(state.preferred.provider, 'gemini');
+  assert.equal(state.preferred.provider, 'codex');
 });
 
 test('models use the provider model/id/value catalog and never create an invented choice', () => {
@@ -120,11 +121,11 @@ test('provider-wide effort names do not establish support for an unknown or unre
 });
 
 test('an existing unavailable selection can be preserved exactly, but cannot authorize a new unsupported choice', () => {
-  const available = provider('opencode', { models: null }); const previous = { provider: 'opencode', model: 'old', effort: 'high' };
+  const available = provider('codex', { models: null }); const previous = { provider: 'codex', model: 'old', effort: 'high' };
   assert.deepEqual(validateExecutionSelection(available, previous, previous), previous);
   assert.throws(() => validateExecutionSelection(available, { ...previous, model: 'other' }, previous), /모델/);
   assert.throws(() => validateExecutionSelection(available, { ...previous, effort: 'low' }, previous), /모델/);
-  assert.deepEqual(validateExecutionSelection(available, { provider: 'opencode', model: null, effort: null }, previous), { provider: 'opencode', model: null, effort: null });
+  assert.deepEqual(validateExecutionSelection(available, { provider: 'codex', model: null, effort: null }, previous), { provider: 'codex', model: null, effort: null });
 });
 
 // These tests exercise the explicit login lifecycle, without opening an account.
@@ -159,4 +160,24 @@ test('login timeout cancels transport and ignores a late authenticated result', 
   });
   const pending = login.start(); deadline(); resolve({ status: 'COMPLETE' }); await pending;
   assert.equal(expired, 1); assert.equal(applied, 0);
+});
+
+
+test('discovery and successful login automatically enter the workspace without changing existing jobs', () => {
+  const run = Object.freeze({ execution: Object.freeze({ provider: 'claude', model: 'opus' }) });
+  const state = { run, screen: 'setup', welcomeAfterDiscovery: true, choiceGeneration: 1,
+    preferred: { provider: 'codex', model: 'chosen-model', effort: 'high' } };
+  applyDiscoverySnapshot(state, { providers: [provider('codex', { ready: false })] }, 1);
+  assert.equal(state.screen, 'setup');
+  applyDiscoverySnapshot(state, { providers: [provider('codex')] }, 1);
+  assert.equal(state.screen, 'home');
+  assert.equal(state.welcomeAfterDiscovery, false);
+  assert.deepEqual(state.preferred, { provider: 'codex', model: 'chosen-model', effort: 'high' });
+  assert.strictEqual(state.run, run);
+});
+
+test('late login or discovery cannot navigate after a replaced generation', () => {
+  const state = { screen: 'setup', welcomeAfterDiscovery: true, choiceGeneration: 2, preferred: { provider: 'codex' } };
+  applyDiscoverySnapshot(state, { providers: [provider('codex')] }, 1);
+  assert.equal(state.screen, 'setup');
 });

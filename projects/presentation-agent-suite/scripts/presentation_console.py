@@ -30,10 +30,10 @@ from presentation_agents.v2.contracts import ContractError
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--port", type=int, default=4317)
-    parser.add_argument("--provider", choices=("auto", "codex", "claude", "gemini", "opencode"), default="auto")
+    parser.add_argument("--provider", choices=("auto", "codex"), default="codex")
     parser.add_argument("--data-dir", type=Path, default=SUITE / ".runtime" / "live")
     parser.add_argument("--no-runner", action="store_true", help="read/review local results without starting AI jobs")
-    parser.add_argument("--preflight", action="store_true", help="check the selected AI CLI before serving")
+    parser.add_argument("--preflight", action="store_true", help="compatibility flag; Codex connection is always checked on startup")
     parser.add_argument("--open", action="store_true", help="open the authenticated local page when ready")
     args = parser.parse_args()
     if not 1024 <= args.port <= 65535:
@@ -104,7 +104,7 @@ def serve(args, data_dir):
         raise ContractError('로컬 페이지 기록은 실제 파일이어야 합니다')
     pointer.write_text(json.dumps({'port':server.server_port, 'instance_id':instance}), encoding='utf-8')
     print(json.dumps({"url": url, "data_dir": str(data_dir)}, ensure_ascii=False), flush=True)
-    if runner and args.preflight:
+    if runner:
         runner.discover()
     if args.open:
         # The socket has been bound; the queued navigation is served by the loop below.

@@ -17,7 +17,7 @@ import tempfile
 
 ROOT = Path(__file__).resolve().parents[1]
 SUITE = Path("projects/presentation-agent-suite")
-PROVIDERS = {"auto", "codex", "claude", "gemini", "opencode"}
+PROVIDERS = {"auto", "codex"}
 
 
 class SetupError(RuntimeError):
@@ -219,7 +219,7 @@ def server_command(root: Path, *, provider: str, port: int, no_runner: bool, ope
 def main(argv=None) -> int:
     parser = argparse.ArgumentParser(description="Intent-Slide Windows·Mac 로컬 설치·자동 연결")
     parser.add_argument("command", choices=["setup", "doctor", "start"], nargs="?", default="start")
-    parser.add_argument("--provider", choices=sorted(PROVIDERS), default="auto")
+    parser.add_argument("--provider", choices=sorted(PROVIDERS), default="codex")
     parser.add_argument("--port", type=int, default=4317)
     parser.add_argument("--connect", action="store_true", help="doctor에서 선택한 CLI의 공식 로그인 준비 상태 확인")
     parser.add_argument("--no-runner", action="store_true", help="AI 실행 없이 로컬 화면과 기록만 열기")
