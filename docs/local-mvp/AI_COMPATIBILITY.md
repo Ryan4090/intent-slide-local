@@ -1,16 +1,18 @@
 # 로컬 AI 호환 범위
 
-2026-09-06 · **PARTIAL**. 실행기를 바꿀 수 있는 공통 계약을 제공하지만 모든 AI·모델·운영체제의 전체 제작을 검증한 것은 아닙니다. 연결 준비, 실제 모델 실행, G5 이미지 검토를 구분합니다. 기존 Codex 제작 증거는 [검증 기록](VERIFICATION.md)에 있습니다.
+2026-09-06 · **PARTIAL**. 기본 Codex와 실행 환경은 저장소에 포함합니다. 연결 준비, 실제 모델 실행, G5 이미지 검토를 구분하며 모든 AI·모델·계정의 전체 제작을 검증한 것은 아닙니다. Windows·Mac 클론 검사는 계정을 사용하지 않는 실행 검사이며 실제 제작·이전 v0.1.0 증거는 [검증 기록](VERIFICATION.md)에 구분합니다.
 
 | 실행기 | 연결 방식 | 확인한 범위 | 남은 경계 |
 |---|---|---|---|
-| Codex | 내장 0.153.4 native CLI의 `app-server` | **VERIFIED**: Mac ARM64 내장 런타임·구독 준비 응답. 이전 v0.1.0은 macOS 3장 G1–G5·100%와 공식 npm CLI 파일 생성·읽기를 검증 | 새 번들의 플랫폼별 모델 제작 증거는 VERIFICATION.md에 별도 기록. Windows 전체 제작·모든 모델·요금제는 **UNVERIFIED** |
+| Codex | 내장 0.153.4 native CLI의 `app-server` | **VERIFIED**: Windows x64·Mac ARM64·Intel 내장 CLI 버전 실행과 공통 전송 검사. Mac ARM64의 기존 구독 연결과 실제 2장 프로젝트 G1–G5 VALID·100%, 한글 PPTX·실제 페이지 렌더·다운로드 HTTP 200 확인 | Windows 실제 계정 전체 제작·모든 모델·요금제는 **UNVERIFIED**. v0.1.0의 3장·100%는 별도 역사 기록 |
 | Claude Code | 설치된 CLI의 stream-json | **PARTIALLY_VERIFIED**: 초기화·fixture 계약 | Beta. 검증 환경에 해당 구독이 없어 실제 모델 제작은 **UNVERIFIED** |
 | Gemini CLI | 설치된 `gemini --acp` | **PARTIALLY_VERIFIED**: 0.54.4 옵션·ACP 초기화 확인. 실제 `session/new`는 `AUTH_REQUIRED`로 **BLOCKED**. 로그인 변경·모델 호출 없음 | 실제 제작 **UNVERIFIED**. 이 버전의 도구 결과는 표시용 text/diff여서 현재 G5 이미지 바이트 증거를 충족하지 못함 |
 | OpenCode | 설치된 `opencode acp` | **PARTIALLY_VERIFIED**: 공식 프로토콜과 독립 JSON-RPC fixture 계약 | 이 환경에 CLI가 없어 실제 연결·모델·G5는 **UNVERIFIED** |
 | OpenAI 호환 API·Ollama | 별도 모델 API | 확장 후보이며 현재 제품 실행기로 미구현 | 모델 URL만으로 파일·도구·승인·세션·G5 계약이 생기지 않음 |
 
 Gemini와 OpenCode는 사용자가 직접 선택합니다. `ready=true`는 무프롬프트 ACP 초기화·세션 생성·모델 목록 확인을 뜻하며 구독 포함 여부의 증명이 아닙니다. 두 실행기의 `auto_connect`는 `false`, 인증 모드는 `native_unverified`입니다. 기존 도구의 로그인·모델·과금 설정을 사용하며, 구독 포함 여부는 해당 제공자에서 확인해야 합니다. 제품이 로그인 정보를 읽거나 다른 API 과금 방식으로 전환하지 않습니다. 공식 실행 방식은 [Gemini ACP](https://geminicli.com/docs/cli/acp-mode/)와 [OpenCode ACP](https://opencode.ai/docs/acp/)를 따릅니다.
+
+기본 시작에는 Python·Node.js·npm 또는 Codex의 별도 설치가 필요하지 않습니다. 최초 계정 인증은 작업실의 **Codex 계정으로 로그인** 버튼에서 공식 CLI가 진행합니다. Claude Code·Gemini CLI·OpenCode는 이미 사용 중인 도구를 연결하는 선택 항목이며, 이 도구의 실행 파일·계정·유료 이용 권한을 배포본에 포함하지 않습니다. 다른 웹 챗봇의 구독을 공통 로그인으로 전환하는 기능은 없습니다.
 
 ## ACP 실행 계약
 
@@ -19,7 +21,7 @@ Gemini와 OpenCode는 사용자가 직접 선택합니다. `ready=true`는 무�
 - **VERIFIED — fixture:** 클라이언트 파일 기능은 해당 세션 workspace 안의 제한된 UTF-8 읽기만 허용합니다. 경로 이탈·심볼릭 링크·대용량·바이너리 읽기와 클라이언트 쓰기·터미널 실행은 거부합니다. POSIX의 중간 디렉터리 교체도 열린 디렉터리와 `no-follow`로 차단합니다. 이는 **네이티브 CLI 자체 도구의 OS sandbox를 보장하지 않습니다**. 기존 CLI의 권한 모드·MCP·확장은 그 도구의 설정을 따릅니다. 읽기 전용 세션을 쓰기 가능 모드로 바꾸거나 승인 회피 옵션을 추가하지 않습니다.
 - **VERIFIED — fixture:** 이미지 관측은 같은 턴의 성공한 read 도구, workspace 경로, 읽기 시작과 완료 사이의 SHA, 실제 반환된 PNG/JPEG 바이트가 모두 일치할 때만 발행합니다. 텍스트로 “읽었다”고 한 결과·실패·재생·중복·완료 시 경로 변경·파일 변경/삭제는 관측이 아닙니다. `promptCapabilities.image`는 입력 이미지 능력이고 `image_view_verified`와 별개입니다. Gemini 0.54.4의 `toToolCallContent`는 이미지 `llmContent`를 전송하지 않으므로 이 제한을 추론으로 메우지 않습니다.
 
-**UNVERIFIED:** Gemini/OpenCode 실제 모델 실행, native Windows의 ACP 전체 실행·파일 경계·G5. 공통 전송 계층은 Windows Job Object와 POSIX 프로세스 그룹을 사용하지만 플랫폼별 실제 실행 증거를 fixture로 대신하지 않습니다. 임의 Windows `.cmd`/`.bat` 실행은 허용하지 않으며, 검토되지 않은 launcher는 차단될 수 있습니다. 실행기·모델이 이미지 바이트 증거를 제공하지 않으면 자동 G5 완료를 보장하지 않습니다.
+**UNVERIFIED:** Gemini/OpenCode 실제 모델 실행, native Windows의 ACP 계정별 전체 실행·파일 경계·G5. 공통 전송 계층의 Windows Job Object·POSIX 프로세스 그룹·취소·자식 종료는 [3개 플랫폼 CI](https://github.com/Ryan4090/intent-slide-local/actions/runs/34030351422)에서 검사했습니다. 이 결과를 ACP 제공자의 실제 모델·권한·이미지 실행으로 확대하지 않습니다. 임의 Windows `.cmd`/`.bat` 실행은 허용하지 않으며, 검토되지 않은 launcher는 차단될 수 있습니다. 실행기·모델이 이미지 바이트 증거를 제공하지 않으면 자동 G5 완료를 보장하지 않습니다.
 
 ## 확장 경계와 확인 방법
 

@@ -13,9 +13,11 @@ git clone https://github.com/Ryan4090/intent-slide-local.git
 - **Windows:** 폴더의 `Start Intent-Slide.cmd`를 엽니다.
 - **Mac:** 폴더의 `Start Intent-Slide.command`를 엽니다.
 
-내장 환경을 준비한 뒤 로컬 페이지가 자동으로 열립니다. Python·Node.js·npm·PowerPoint·LibreOffice를 별도로 설치하지 않습니다. 기존 Codex 로그인을 자동으로 찾고, 처음이라면 화면의 **Codex 계정으로 로그인** 버튼으로 공식 인증을 진행합니다. Git clone 자체는 코드를 실행하지 않으므로 실행 파일을 한 번 여는 단계는 필요합니다.
+내장 환경을 준비한 뒤 로컬 페이지가 자동으로 열립니다. Python·Node.js·npm·PowerPoint·LibreOffice·기본 글꼴을 별도로 설치하지 않습니다. 기존 Codex 로그인을 자동으로 찾고, 처음이라면 화면의 **Codex 계정으로 로그인** 버튼으로 공식 인증을 진행합니다. Git clone 자체는 코드를 실행하지 않으므로 실행 파일을 한 번 여는 단계는 필요합니다.
 
 설치 준비는 저장소 안의 파일만 사용합니다. AI 로그인·모델 실행·웹 리서치는 인터넷과 본인 계정이 필요합니다. 계정이나 유료 이용 권한을 배포본에 포함할 수는 없습니다.
+
+내장 실행 환경을 포함한 현재 배포 파일은 약 **1.9GB**입니다. Git 이력과 압축 해제된 실행 환경까지 보관하므로 실제 디스크 사용량은 더 큽니다. 첫 실행에서는 포함된 파일의 무결성을 확인하고 해제합니다.
 
 Codex가 기본이며, 이미 준비된 Claude Code·Gemini CLI·OpenCode 연결도 지원합니다. 도구가 제공한 모델을 화면에서 선택할 수 있습니다. 실제 계정 검증 및 기능 제한은 [AI 호환성](docs/local-mvp/AI_COMPATIBILITY.md)과 [검증 현황](docs/local-mvp/VERIFICATION.md)에 구분합니다. 모든 AI 서비스의 구독을 공통 인증으로 재사용한다는 의미는 아닙니다.
 
@@ -56,9 +58,11 @@ flowchart LR
 
 ## 지원과 개발
 
-현재 제작 엔진은 `projects/presentation-agent-suite/`에 있습니다. 실제 PPTX 미리보기는 내장 LibreOffice로 PDF를 만든 뒤 페이지별 PNG로 검사합니다. PowerPoint 앱에서 직접 확인한 결과와는 구분합니다. Linux와 Windows ARM64용 내장 배포는 제공하지 않습니다.
+현재 제작 엔진은 `projects/presentation-agent-suite/`에 있습니다. 실제 PPTX 미리보기는 내장 LibreOffice로 PDF를 만든 뒤 페이지별 PNG로 검사합니다. 기본 Pretendard 6종 중 사용하는 서체를 최종 PPTX 안에 원본 그대로 포함하므로 별도의 글꼴 설치가 필요하지 않습니다. G4는 그 최종 파일을 검사하고 G5는 같은 파일에서 만든 이미지를 검토합니다. Microsoft PowerPoint 앱에서의 표시·편집 검사는 별도입니다.
 
-이전 v0.1.0에서는 Mac·Codex의 실제 3장 제작을 G1–G5·100%까지 확인했습니다. 현재 내장 런타임 버전의 검사와 이전 버전 증거는 [검증 현황](docs/local-mvp/VERIFICATION.md)에서 따로 기록합니다. Claude·Gemini·OpenCode의 실제 계정별 전체 제작은 확인된 범위만 표시합니다.
+Windows x64·Mac Apple Silicon·Intel의 클론 준비, 내장 Codex 실행, 한글이 포함된 실제 PPTX 렌더, 로컬 세션 검사는 [공개 CI](https://github.com/Ryan4090/intent-slide-local/actions/runs/34030968077)에서 통과했습니다. 플랫폼별 결과와 실제 AI 제작 상태는 [검증 현황](docs/local-mvp/VERIFICATION.md)에 기록합니다. Linux·Windows ARM64·Windows N 등 특수 구성은 현재 지원·검증 대상에서 제외합니다.
+
+이번 버전은 Mac에서 내장 Codex의 실제 한글 2장 제작을 G1–G5·100%까지 확인했습니다. 이전 v0.1.0의 3장 완료는 과거 검증 기록으로 보존합니다. 현재 내장 런타임 버전의 검사와 이전 버전 증거는 [검증 현황](docs/local-mvp/VERIFICATION.md)에서 따로 기록합니다. Claude·Gemini·OpenCode의 실제 계정별 전체 제작은 확인된 범위만 표시합니다.
 
 Intent-Slide 제품 소스는 [MIT](LICENSE)입니다. 포함된 Python·Codex·LibreOffice·PyMuPDF·글꼴은 각각의 조건을 따릅니다. [제3자 고지](THIRD_PARTY_NOTICES.md)와 `vendor/portable/`의 출처·SHA·대응 소스 파일 또는 공식 소스 링크를 함께 제공합니다.
 

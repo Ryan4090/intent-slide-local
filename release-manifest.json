@@ -73820,10 +73820,10 @@
       "sha256": "edb405ed938a9cd9066fbd99e19b22138908ec6c8704c03b56b63e25e086d3da"
     },
     {
-      "bytes": 5320,
+      "bytes": 6375,
       "mode": 420,
       "path": "README.md",
-      "sha256": "245143fe4e8c100298451cad3fac085418d1026f17c086523b05535e44ba4156"
+      "sha256": "53ac73a470c8798a9c647e6b056f7d5d7caef23ea73fbe64536b9a947e9e9d3e"
     },
     {
       "bytes": 168,
@@ -73850,16 +73850,16 @@
       "sha256": "bb3738628d4c0321dd321e56fc7ff589342e43f3f29754b72f00490abae9b92b"
     },
     {
-      "bytes": 4201,
+      "bytes": 6719,
       "mode": 420,
       "path": "docs/local-mvp/01_PORTABLE_CONNECTION_WORK_PACKET.md",
-      "sha256": "3fdfe98d07fde2ae566e6dc8a75ae64a7b5b1bdf4655ba00eb3a1b888c90794b"
+      "sha256": "4e10fe7e28d5359e67ef011899175dbfeca9fc7411f1f60b4c50754bf53beb56"
     },
     {
-      "bytes": 7434,
+      "bytes": 8251,
       "mode": 420,
       "path": "docs/local-mvp/AI_COMPATIBILITY.md",
-      "sha256": "722f274b58351cee80931302f055d961917973583c8a829fbbac9b0c6f8c8cdf"
+      "sha256": "85dadc2e04fac2bcc08ae60d09efab03ec8893a89e4e55ba8164ac89e458e671"
     },
     {
       "bytes": 3137,
@@ -73868,16 +73868,16 @@
       "sha256": "61a96b3d4e4a52ce37e05f8013dd24c3145939e55eaaec08b000e50ce3d845ce"
     },
     {
-      "bytes": 6253,
+      "bytes": 7169,
       "mode": 420,
       "path": "docs/local-mvp/DISTRIBUTION.md",
-      "sha256": "a185700a10653dc1fe028c85e55b72b6176eff4568ee89ca06923218d2be362e"
+      "sha256": "7da6f37e304638bbff1689a7ce8ebfa2a8eec4b0fff1e68080ff684f6130cd57"
     },
     {
-      "bytes": 4193,
+      "bytes": 5205,
       "mode": 420,
       "path": "docs/local-mvp/INSTALLATION.md",
-      "sha256": "5bdb5e06b19c5c45a246e0ab63f95f8d988e5ab92612765de5140322476d4f50"
+      "sha256": "af3deb72aa7fc13a6e6b44aafd51acf442144c29df35f35fbfa2f85fe3910bd2"
     },
     {
       "bytes": 7663,
@@ -73898,10 +73898,10 @@
       "sha256": "a7725d07d40adca2fff549862e931e0f2b8e37b2155b9feec775b622676b19e2"
     },
     {
-      "bytes": 11888,
+      "bytes": 16739,
       "mode": 420,
       "path": "docs/local-mvp/VERIFICATION.md",
-      "sha256": "033f00d9b28b5977645ca86404b48a5840f531bfa5cd5c6474848a1843f277bf"
+      "sha256": "ac61d5019dec62638f7d3b41c9e806618b0a667619fe6d736e32a09958ddbdaf"
     },
     {
       "bytes": 834,
@@ -75460,7 +75460,7 @@
   ],
   "method": "allowlisted committed Git objects; deterministic stored ZIP; no runtime or personal projects",
   "schema_version": "intent-slide-release.v1",
-  "source_commit": "da47ba2c374b7ec5a4f52af09413dc927ca1c5b9",
+  "source_commit": "cb0844a5cda939294e6e4196e1a13df9c22740aa",
   "upstream": {
     "boundary": "Upstream baseline is provenance. Downstream product changes and distribution exclusions are listed.",
     "excluded_files": [
