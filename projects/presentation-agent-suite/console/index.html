@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="theme-color" content="#183a36">
+  <title>Intent-Slide — 의도에서 슬라이드까지</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <a class="skip-link" href="#workspace">작업 내용으로 이동</a>
+  <div class="shell">
+    <aside class="sidebar" aria-label="프로젝트 탐색">
+      <button class="brand" data-action="home" aria-label="Intent-Slide 홈"><span class="brand-symbol" aria-hidden="true"><i></i><i></i><i></i></span><span>Intent-Slide<small>의도에서 슬라이드까지</small></span></button>
+      <button id="new-run" class="button new-project"><span aria-hidden="true">＋</span> 새 프로젝트</button>
+      <div class="sidebar-heading">내 프로젝트 <span id="run-count">—</span></div>
+      <nav id="run-list" class="run-list" aria-label="프로젝트 목록"><p class="muted small">프로젝트를 불러오는 중입니다.</p></nav>
+      <div class="sidebar-foot"><div id="connection" class="connection"><span class="connection-dot"></span><span>작업실 연결 중</span></div><p>내 컴퓨터에서 작업하고,<br>내 AI 구독으로 완성합니다.</p><button class="text-button" id="capabilities-button">AI 연결과 준비 상태 <span aria-hidden="true">↗</span></button></div>
+    </aside>
+    <main id="workspace" tabindex="-1">
+      <header class="topbar"><div><span class="eyebrow">내 작업실</span><span class="topbar-divider" aria-hidden="true">/</span><span id="breadcrumb">프로젝트 시작</span></div><div class="topbar-meta"><button class="text-button" data-action="setup">AI 연결</button><span id="last-updated">연결 확인 중</span><button class="icon-button" id="refresh" aria-label="상태 새로고침" title="상태 새로고침">↻</button></div></header>
+      <div id="notice" class="notice" role="status" aria-live="polite" hidden></div>
+      <div id="main-content"><section class="initial-loading" aria-busy="true"><span class="loader" aria-hidden="true"></span><h1>작업실을 연결하고 있습니다</h1><p>현재 상태와 마지막 작업 기록을 확인합니다.</p></section></div>
+    </main>
+  </div>
+  <dialog id="create-dialog" aria-labelledby="create-title">
+    <form id="create-form" class="dialog-content">
+      <div class="dialog-heading"><div><span class="eyebrow">새 프레젠테이션</span><h2 id="create-title">어떤 이야기를 전하고 싶나요?</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="새 프로젝트 창 닫기">×</button></div>
+      <p class="muted">주제만 정해져 있어도 괜찮습니다. 대화로 목적·청중·구성을 함께 정리합니다.</p>
+      <label for="project-request">처음 이야기</label><textarea id="project-request" name="request" rows="4" maxlength="20000" placeholder="예: 임원진에게 새 사업을 제안하려고 해요. 시장 가능성과 실행 계획을 10장 정도로 설명하고 싶어요." required></textarea>
+      <label for="project-title">프로젝트 이름 <span class="muted">· 선택</span></label><input id="project-title" name="title" maxlength="160" placeholder="비워두면 첫 이야기로 이름을 정합니다" autocomplete="off">
+      <label for="create-provider">함께 작업할 AI</label><select id="create-provider" name="provider" required></select><p id="create-provider-status" class="small muted"></p>
+      <label for="create-attachments">참고 자료 <span class="muted">· 선택</span></label><input id="create-attachments" type="file" multiple><p class="small muted">원본 파일은 한 개에 100MB까지 첨부할 수 있습니다.</p>
+      <fieldset class="source-options"><legend>자료 활용 범위</legend><label><input type="radio" name="source_mode" value="hybrid" checked><span><strong>제공 자료 + 외부 조사</strong><small>자료를 바탕으로 필요한 근거를 보완합니다.</small></span></label><label><input type="radio" name="source_mode" value="provided_only"><span><strong>제공 자료만 사용</strong><small>첨부한 자료의 분석과 검증으로 진행합니다.</small></span></label><label><input type="radio" name="source_mode" value="external"><span><strong>외부 조사 중심</strong><small>의도를 확정한 뒤 관련 근거를 조사합니다.</small></span></label></fieldset>
+      <p class="form-error" id="create-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-dialog>취소</button><button type="submit" class="button primary" id="create-submit">의도 대화 시작하기 <span aria-hidden="true">→</span></button></div>
+    </form>
+  </dialog>
+  <dialog id="detail-dialog" class="detail-dialog" aria-labelledby="detail-title"><div class="dialog-content"><div class="dialog-heading"><h2 id="detail-title">상세 보기</h2><button type="button" class="icon-button" data-close-dialog aria-label="상세 보기 닫기">×</button></div><div id="detail-content"></div></div></dialog>
+  <dialog id="provider-dialog" aria-labelledby="provider-title"><form id="provider-form" class="dialog-content"><div class="dialog-heading"><div><span class="eyebrow">프로젝트 설정</span><h2 id="provider-title">함께 작업할 AI</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="AI 설정 닫기">×</button></div><p class="muted">본인의 Codex 또는 Claude Code 정액제 로그인을 사용합니다. 변경한 설정은 다음 작업부터 적용됩니다.</p><label for="run-provider">AI 선택</label><select id="run-provider" name="provider" required></select><p id="run-provider-status" class="small muted"></p><p id="run-model-note" class="small muted"></p><p class="form-error" id="provider-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-dialog>취소</button><button type="submit" class="button primary">다음 작업에 적용</button></div></form></dialog>
+  <dialog id="changes-dialog" aria-labelledby="changes-title"><form id="changes-form" class="dialog-content"><div class="dialog-heading"><div><span class="eyebrow">REVISION REQUEST</span><h2 id="changes-title">수정이 필요한 부분을 알려주세요</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="수정 요청 창 닫기">×</button></div><p id="changes-context" class="muted small"></p><label for="changes-stage">수정 단계</label><select id="changes-stage" name="stage"><option value="intent">① 의도·구조 확정</option><option value="research">② 리서치·분석</option><option value="design">③ 제작·검증·출고</option></select><fieldset id="changes-scope" class="change-scope" hidden><legend>수정 범위</legend><label><input type="radio" name="scope" value="stage" checked><span><strong>제작 단계 전체</strong><small>디자인 방향을 포함해 다시 확인합니다.</small></span></label><label><input type="radio" name="scope" value="pages"><span><strong>페이지·발표 노트 선택</strong><small>디자인 승인을 유지하고 선택한 결과를 수정합니다.</small></span></label></fieldset><fieldset id="changes-pages" class="change-pages" hidden><legend>수정할 결과 선택</legend><div id="changes-page-options"></div><p id="changes-page-help" class="muted small">현재 페이지에 연결된 유효한 버전만 선택할 수 있습니다. 공통 발표 노트는 연결된 여러 페이지에 영향을 줄 수 있습니다.</p></fieldset><label for="changes-reason">수정 이유와 원하는 결과</label><textarea name="reason" id="changes-reason" rows="5" required maxlength="12000" placeholder="어떤 결과가 현재 의도와 다르고, 어떻게 바뀌어야 하나요?"></textarea><p class="muted small">영향을 받은 출력과 승인만 다시 확인합니다. 진행률이 내려가면 이유를 함께 기록합니다.</p><p class="form-error" id="changes-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-dialog>취소</button><button type="submit" class="button primary">수정 요청 보내기</button></div></form></dialog>
+  <noscript><p class="notice error">작업실에는 JavaScript가 필요합니다. 브라우저 설정에서 활성화해 주세요.</p></noscript>
+</body>
+</html>

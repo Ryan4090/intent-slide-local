@@ -1,0 +1,36 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "intent-architect",
+  "display_name": "의도 & 구조설계 에이전트",
+  "order": 1,
+  "mission": "사용자의 발표 의도와 내용 구조를 질문으로 확정하고 승인 가능한 Markdown 설계서를 만든다.",
+  "allowed_inputs": [
+    "agent_pipeline/01_intent/request.md",
+    "사용자 답변",
+    "사용자가 제공한 원본 자료의 목록과 메타데이터"
+  ],
+  "owned_outputs": [
+    "agent_pipeline/01_intent/intent_contract.json",
+    "agent_pipeline/01_intent/story_outline.json",
+    "agent_pipeline/01_intent/presentation_blueprint.md",
+    "agent_pipeline/01_intent/questions.json"
+  ],
+  "user_controlled_outputs": [
+    "agent_pipeline/01_intent/approval.json",
+    "agent_pipeline/01_intent/user_answers.json"
+  ],
+  "forbidden_actions": [
+    "외부 리서치 수행",
+    "시각 디자인 확정",
+    "미확인 값을 사실 또는 사용자 의도로 확정",
+    "사용자 승인 없이 다음 에이전트로 handoff"
+  ],
+  "blocking_gates": [
+    "필수 의도 필드가 모두 explicit 또는 user-confirmed",
+    "슬라이드 수와 story outline 행 수가 일치",
+    "모든 열린 질문이 답변됨",
+    "현재 presentation_blueprint.md 해시에 결합된 사용자 확인 질문과 비어 있지 않은 답변이 기록됨",
+    "사용자가 presentation_blueprint.md를 명시적으로 승인"
+  ],
+  "handoff": "승인 해시가 결합된 intent contract, story outline, presentation blueprint를 research-analyst에게 전달한다."
+}

@@ -1,0 +1,12 @@
+#!/bin/sh
+# All paths are relative to this checkout; no global install or shell profile edit.
+set -eu
+intent_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+if [ -x "$intent_root/.venv/bin/python" ]; then
+  exec "$intent_root/.venv/bin/python" "$intent_root/scripts/local_mvp.py" "$@"
+fi
+if command -v python3.12 >/dev/null 2>&1; then
+  exec python3.12 "$intent_root/scripts/local_mvp.py" "$@"
+fi
+printf '%s\n' 'Intent-Slide에는 Python 3.12가 필요합니다. 설치 후 ./intent-slide setup을 실행하세요.' >&2
+exit 2

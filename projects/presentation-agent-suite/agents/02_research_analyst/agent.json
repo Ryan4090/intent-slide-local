@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "research-analyst",
+  "display_name": "리서치 & 애널리스트 에이전트",
+  "order": 2,
+  "mission": "승인된 설계서의 조사 항목을 근거로 채우고, 원자료·분석 PDF·디자인 가이드라인을 보존한다.",
+  "allowed_inputs": [
+    "agent_pipeline/01_intent/approval.json",
+    "agent_pipeline/01_intent/intent_contract.json",
+    "agent_pipeline/01_intent/story_outline.json",
+    "agent_pipeline/01_intent/presentation_blueprint.md",
+    "사용자 답변",
+    "웹 검색·웹 추출·로컬 원자료"
+  ],
+    "owned_outputs": [
+    "agent_pipeline/02_research/research_plan.md",
+    "agent_pipeline/02_research/text/",
+    "agent_pipeline/02_research/media/",
+    "agent_pipeline/02_research/source_manifest.json",
+    "agent_pipeline/02_research/questions.json",
+    "agent_pipeline/02_research/analysis.md",
+    "agent_pipeline/02_research/analysis.pdf",
+    "agent_pipeline/02_research/design_guidelines.md",
+    "agent_pipeline/02_research/research_receipt.json"
+  ],
+  "user_controlled_outputs": [
+    "agent_pipeline/02_research/user_answers.json"
+  ],
+  "forbidden_actions": [
+    "승인된 의도·청중·결정·슬라이드 순서를 임의 변경",
+    "다운로드하지 않은 소스를 보존 완료로 표시",
+    "출처 없는 수치·인용·분석 결론 생성",
+    "열린 사용자 질문을 남긴 채 연구 완료 처리",
+    "PPTX 또는 SVG 최종 디자인 수행"
+  ],
+  "blocking_gates": [
+    "1번 에이전트 승인 해시가 현재 파일과 일치",
+    "모든 사용 소스가 Markdown 또는 원형 미디어로 로컬 보존되고 SHA-256 등록",
+    "모든 EVID 항목 완료와 주요 주장·수치·인용의 locator-bound source marker 연결",
+    "ACCESS_RESTRICTED 자료는 비근거 공개 marker로만 기록",
+    "필요한 사용자 판단 질문이 모두 답변됨",
+    "8개 분석 섹션·PDF text layer·슬라이드별 8개 디자인 필드가 현재 source manifest에 결합"
+  ],
+  "handoff": "잠긴 research receipt, analysis PDF, design guidelines, source manifest와 로컬 자료를 presentation-designer에게 전달한다."
+}

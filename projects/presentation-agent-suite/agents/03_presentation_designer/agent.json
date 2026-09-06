@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "agent_id": "presentation-designer",
+  "display_name": "프레젠테이션 디자인 에이전트",
+  "order": 3,
+  "mission": "승인된 설계와 잠긴 분석 자료를 SlideMaster 실행 계약에 따라 편집 가능한 프레젠테이션으로 디자인한다.",
+  "allowed_inputs": [
+    "agent_pipeline/01_intent/approval.json",
+    "agent_pipeline/01_intent/presentation_blueprint.md",
+    "agent_pipeline/02_research/research_receipt.json",
+    "agent_pipeline/02_research/analysis.pdf",
+    "agent_pipeline/02_research/analysis.md",
+    "agent_pipeline/02_research/design_guidelines.md",
+    "agent_pipeline/02_research/source_manifest.json",
+    "agent_pipeline/02_research/media/",
+    "SlideMaster canonical skill, workflow, templates, charts, icons, scripts"
+  ],
+  "owned_outputs": [
+    "agent_pipeline/03_design/SLIDEMASTER_HANDOFF.md",
+    "agent_pipeline/03_design/verification_candidate.json",
+    "design_spec.md",
+    "spec_lock.md",
+    "svg_output/",
+    "svg_final/",
+    "images/",
+    "icons/",
+    "exports/"
+  ],
+  "user_controlled_outputs": [
+    "agent_pipeline/03_design/design_approval.json",
+    "agent_pipeline/03_design/verification.json"
+  ],
+  "forbidden_actions": [
+    "승인된 의도나 연구 결론을 출처 없이 변경",
+    "routing.md를 건너뛰고 실행 owner 추정",
+    "분석 PDF만 읽고 source manifest와 caveat 무시",
+    "SlideMaster gate 우회",
+    "verify_deck.py 실패 상태에서 완료 선언"
+  ],
+  "blocking_gates": [
+    "research receipt와 현재 analysis/source/design guideline 해시 일치",
+    "SlideMaster routing.md를 먼저 읽고 main SVG route 선택",
+    "사용자 확인이 필요한 SlideMaster direction lock과 design handoff/mirror hash 잠금 완료",
+    "validate_spec.py 오류 0",
+    "SVG quality gate 통과",
+    "svg_to_pptx.py export 성공",
+    "verify-design으로 bounded verify_deck.py exit 0과 CRC·pixel payload가 유효한 새 contact sheet 생성",
+    "새 contact sheet sanity scan 후 complete-design으로 PASS 잠금"
+  ],
+  "handoff": "검증된 editable PPTX, design_spec, spec_lock, SVG source, verification receipt를 사용자에게 전달한다."
+}
