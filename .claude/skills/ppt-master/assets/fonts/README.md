@@ -1,11 +1,11 @@
 # Bundled Fonts
 
-## Pretendard (locked deck font on this install)
+## Pretendard (bundled default deck font)
 
 [Pretendard](https://github.com/orioncactus/pretendard) v1.3.9 — SIL Open Font License 1.1
 (`Pretendard/LICENSE.txt`). Korean + Latin coverage in one family; the fixed typography
 choice for every deck generated in this repo (see `references/strategist.md §g`
-install-local font lock).
+bundled font lock).
 
 Bundled static cuts (OTF): Light(300) / Regular(400) / Medium(500) / SemiBold(600) /
 Bold(700) / ExtraBold(800). The full 9-weight set is available from the upstream release.
@@ -24,9 +24,16 @@ Recommended deck stack: `Pretendard, "Malgun Gothic", sans-serif` (tail is brows
 fallback only; the converter exports Pretendard into both the Latin and EA typeface slots —
 registered in `scripts/svg_to_pptx/drawingml/utils.py DUAL_SCRIPT_FONTS`).
 
-### Installing on another machine
+### Portable PPTX export
 
-PPTX files do **not** embed fonts. A deck opened on a machine without Pretendard falls back
-to a system font. To install: select all files in `Pretendard/` → right-click → **Install**
-(Windows), or download from https://github.com/orioncactus/pretendard (macOS/Linux
-supported upstream). SIL OFL permits free redistribution with the license file.
+The native SVG exporter embeds the selected bundled Pretendard faces in the final
+PPTX as uncompressed EOT, retaining the original OTF bytes and SIL OFL notice.
+Regular/Bold and the four named intermediate families above are supported. It does
+not install fonts globally or change the signed renderer. These faces need no
+separate installation for Intent-Slide's bundled LibreOffice rendering.
+
+Keep the exported PPTX unchanged through G4/G5. Inspect its actual rendered pages;
+source SVG text extraction alone cannot prove that Korean glyphs are visible.
+Other fonts or export paths need their own valid font source and verification.
+Microsoft PowerPoint display/editing and recipient settings are a separate check;
+do not claim that every viewer honors embedded fonts.

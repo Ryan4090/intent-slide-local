@@ -1,5 +1,5 @@
 {
-  "file_count": 12574,
+  "file_count": 12576,
   "files": [
     {
       "bytes": 155,
@@ -482,10 +482,10 @@
       "sha256": "c89bc43027dc7cde5726e96223376f8eec09302b2fc1f8147fd5b57cfc376118"
     },
     {
-      "bytes": 1674,
+      "bytes": 2072,
       "mode": 420,
       "path": ".claude/skills/ppt-master/assets/fonts/README.md",
-      "sha256": "fa72112a2e46f52567bc7d54ed55775ba1b51dd7058e4798f5f903fc4f616b6f"
+      "sha256": "c43bf20f82ad5c700a3946fa6dee84678af41189bd6dfe0285904f58302feafa"
     },
     {
       "bytes": 4841,
@@ -1226,10 +1226,10 @@
       "sha256": "bd1aa3308942e4cae8d31765db4ce785febde75e3c67a0554170646de5d32260"
     },
     {
-      "bytes": 53681,
+      "bytes": 53869,
       "mode": 420,
       "path": ".claude/skills/ppt-master/references/shared-standards.md",
-      "sha256": "0d0c6de4bfd9fe44d5664bdc5a58a3720a952127d8c0e1522004c45a131eeec9"
+      "sha256": "28ffd3c451133af87b90f8a60643a3c36fcecac4256b6f61ee9fb5ec47e5dd1e"
     },
     {
       "bytes": 3269,
@@ -1244,10 +1244,10 @@
       "sha256": "264ec6357597e9a8137b120e4fac8a31a4c4c15214c85907b9b16bd9590493a0"
     },
     {
-      "bytes": 75647,
+      "bytes": 75775,
       "mode": 420,
       "path": ".claude/skills/ppt-master/references/strategist.md",
-      "sha256": "34a40e2054c1b4192b1080ed3f3db023c70d0c049fdd33f5f6016d5a6768ce44"
+      "sha256": "1818edad5bef8ba8afd2f95aca891dd083a21790f58bc87f3ad14b9d8218ae3a"
     },
     {
       "bytes": 29611,
@@ -2492,10 +2492,10 @@
       "sha256": "78dce81eda479c89d16308e13a536bcd45de039778d80eb0f5a2184415c42f2d"
     },
     {
-      "bytes": 188060,
+      "bytes": 188312,
       "mode": 420,
       "path": ".claude/skills/ppt-master/scripts/svg_to_pptx/pptx_package/builder.py",
-      "sha256": "e8bb3504dec081e7b925e7d54cb4ca8d69163944c25b2537463b7a053408170d"
+      "sha256": "56c2bc597d07a3135bf0134c3429cb8b306e80d3cd950ab849d6dc8ba458da0b"
     },
     {
       "bytes": 42529,
@@ -2514,6 +2514,12 @@
       "mode": 420,
       "path": ".claude/skills/ppt-master/scripts/svg_to_pptx/pptx_package/discovery.py",
       "sha256": "59133176b309b46d8f6f440b7eb1f1015c2ffc9ebf48fe182af056aa88694683"
+    },
+    {
+      "bytes": 14745,
+      "mode": 420,
+      "path": ".claude/skills/ppt-master/scripts/svg_to_pptx/pptx_package/font_embedding.py",
+      "sha256": "30fe4890d04db32364f581956ae7f0bc1006d7617b93a354eb5941c7297e5d13"
     },
     {
       "bytes": 4534,
@@ -74240,10 +74246,10 @@
       "sha256": "4fec028dc2d7351f99b2e69c1708d756e3120ac2bc3cb993850b22343e85dc8d"
     },
     {
-      "bytes": 92325,
+      "bytes": 92754,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/app.mjs",
-      "sha256": "871543de73ad7ab024b0df9de9ecd6572c10e16c34346f5c00378cd3d3a9cf90"
+      "sha256": "da52d89e8df462121c54152987dc45d32457586e706caac4f5a8d8c592089e38"
     },
     {
       "bytes": 3131,
@@ -74270,10 +74276,10 @@
       "sha256": "ae79315ab36bf81848d7db9af2ecaaa76f1cb58d982fc8101d4283a913243434"
     },
     {
-      "bytes": 17639,
+      "bytes": 17680,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/product.mjs",
-      "sha256": "08146edb8e0b6fc58496bac36f7e736795f0babda73603c18f16a40a40df835c"
+      "sha256": "143518fcf7e6bc4bb35f9e0a7d05d8db1c4b4e03ed15946fe7ec14aebc817ce8"
     },
     {
       "bytes": 48012,
@@ -74396,10 +74402,10 @@
       "sha256": "d29e679909a936f9e59af3b0f0db9b3867f371ae67cb6154bcea219a6f4c7f0a"
     },
     {
-      "bytes": 55309,
+      "bytes": 55930,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/engine.py",
-      "sha256": "57dc296c61c963b6f4e940ae1c859b858e14274bdfb113e93b60e267a1361078"
+      "sha256": "ac649a81762362acb23e16eb055459e529f4f7fa01f9ba8b05b8f85be35c8945"
     },
     {
       "bytes": 15626,
@@ -74414,10 +74420,10 @@
       "sha256": "5a20c422e01484f2c1bc18b5c8e5f9571e3a721e74e10c7205c74cec21d8475e"
     },
     {
-      "bytes": 6727,
+      "bytes": 6906,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/portable_render.py",
-      "sha256": "4f0ea63f4d2625008cfcba38d158b55bd6fe861da5d57f98c3ec21fd7a044b41"
+      "sha256": "137cc0bbc2e420181b89e96840d67c8ce205d47f29dd1c7e2717c54145f1e074"
     },
     {
       "bytes": 17325,
@@ -74528,16 +74534,22 @@
       "sha256": "2fa7f859ba4271136e815ef627074b15b28142d98ef81485f0257d20bf1e7142"
     },
     {
-      "bytes": 7531,
+      "bytes": 8714,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_engine.py",
-      "sha256": "778b227d5db4fb9f45f852c859dcf6dd3d87be9e2fffa86cd2d3fcf3cc32e24b"
+      "sha256": "81658678c447acc9e122295060af4344434a50fbc061f6cac7b78f2dc772591f"
     },
     {
       "bytes": 10208,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_execution_selection.py",
       "sha256": "2daf0fbecfb4a81f7a0a8a01666598650968e18084d7e03aefca4b5f97a874ab"
+    },
+    {
+      "bytes": 11315,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/tests/test_v2_font_embedding.py",
+      "sha256": "59518113785d136db5c69e60698fbc9781a334d4d44512dc95495fa1c647abd3"
     },
     {
       "bytes": 3437,
@@ -74552,10 +74564,10 @@
       "sha256": "6cbbb8c0ae42cf177d66a3f5248833ee6e50050660e92f8f859405f6e7eb0557"
     },
     {
-      "bytes": 4659,
+      "bytes": 8162,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_portable_render.py",
-      "sha256": "96e0a5199f67a88e6ee4586da0238f5a0aab845ac4812cf79d6aec573f987bd9"
+      "sha256": "5c514fbef9bc0a573d850415093052cb61220b217be3e2b60f7468f5435a2c68"
     },
     {
       "bytes": 24816,
@@ -75448,7 +75460,7 @@
   ],
   "method": "allowlisted committed Git objects; deterministic stored ZIP; no runtime or personal projects",
   "schema_version": "intent-slide-release.v1",
-  "source_commit": "bdc7151a248d98aa24e30abbd1cc560a82519b0a",
+  "source_commit": "da47ba2c374b7ec5a4f52af09413dc927ca1c5b9",
   "upstream": {
     "boundary": "Upstream baseline is provenance. Downstream product changes and distribution exclusions are listed.",
     "excluded_files": [
@@ -75549,6 +75561,10 @@
       }
     ],
     "modified_files": [
+      ".claude/skills/ppt-master/assets/fonts/README.md",
+      ".claude/skills/ppt-master/references/shared-standards.md",
+      ".claude/skills/ppt-master/references/strategist.md",
+      ".claude/skills/ppt-master/scripts/svg_to_pptx/pptx_package/builder.py",
       ".claude/skills/ppt-master/templates/brands/brands_index.json",
       ".claude/skills/ppt-master/templates/brands/jangpm/templates/design_spec.md",
       ".claude/skills/ppt-master/templates/decks/decks_index.json",
@@ -75570,6 +75586,7 @@
       "projects/presentation-agent-suite/src/presentation_agents/v2/service.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/store.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/verification.py",
+      "projects/presentation-agent-suite/tests/test_v2_engine.py",
       "projects/presentation-agent-suite/tests/test_v2_provider.py",
       "projects/presentation-agent-suite/tests/test_v2_runner.py",
       "projects/presentation-agent-suite/tests/test_v2_server.py",

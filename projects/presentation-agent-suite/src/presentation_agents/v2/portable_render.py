@@ -61,7 +61,10 @@ def render_pptx(candidate: Path, contact: Path, *, cancelled=None, timeout=180) 
                 '<item oor:path="/org.openoffice.Office.Jobs/Jobs/UpdateCheck/Arguments"><prop oor:name="AutoCheckEnabled" oor:op="fuse"><value>false</value></prop><prop oor:name="AutoDownloadEnabled" oor:op="fuse"><value>false</value></prop></item></oor:items>', encoding='utf-8')
             command = [binary, '-env:UserInstallation='+profile.as_uri(), '--headless', '--nologo', '--nodefault', '--norestore',
                        '--convert-to', 'pdf:impress_pdf_Export', '--outdir', str(scratch), str(deck)]
-            result = legacy._run_bounded_subprocess(command, cwd=scratch, env=os.environ.copy(), timeout=timeout, cancelled=cancelled)
+            environment = os.environ.copy()
+            # LibreOffice's Python must not rewrite bytecode inside its signed app.
+            environment['PYTHONDONTWRITEBYTECODE'] = '1'
+            result = legacy._run_bounded_subprocess(command, cwd=scratch, env=environment, timeout=timeout, cancelled=cancelled)
             if result.returncode:
                 raise RuntimeError('LibreOffice did not render the submitted PPTX')
             pdf = scratch/'candidate.pdf'

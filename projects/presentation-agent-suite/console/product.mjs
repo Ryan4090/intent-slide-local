@@ -10,7 +10,7 @@ export const CHECKPOINTS = [
 ];
 
 export const ARTIFACT_LABELS = {
-  attachment: '제공 자료', source: '조사 원문', intent: '목적과 슬라이드 구성', research: '주장과 근거',
+  attachment: '제공 자료', user_request: '사용자 대화 원문', source: '조사 원문', intent: '목적과 슬라이드 구성', research: '주장과 근거',
   analysis_report: '분석 보고서', analysis_pdf: '분석 보고서 PDF', direction: '디자인 방향',
   page: '슬라이드 원본', notes: '발표 노트', pptx: 'PowerPoint', contact_sheet: '전체 미리보기',
   render_page: '페이지 미리보기', preview: '디자인 미리보기', review: '검토 기록',

@@ -190,18 +190,18 @@ See [`../templates/icons/README.md`](../templates/icons/README.md) for the curre
 
 🚧 **GATE — read the locked style's type character first**: `read_file` the visual-style file locked at §d Layer 2 (`visual-styles/<visual_style>.md`) and pull its **§2 Typography character** (you only read the catalog index there; the per-style character lives in the file). Both combinations below MUST realize it, and the **title carries the personality** — the CJK body may stay a neutral pre-installed sans, but the title leads with the character the style asks for (e.g. `ink-wash` → calligraphic `KaiTi` / `FangSong`; `brutalist` / `memphis` / `vintage-poster` / `zine` → display `SimHei` / `Impact`; `editorial` / `data-journalism` / `photo-editorial` → serif `Georgia` / `Cambria` / `SimSun`; `dark-tech` / `blueprint` → clean sans + `Consolas` mono; `swiss-minimal` / `soft-rounded` → grotesque / friendly sans). For `visual_style: custom`, realize its `visual_style_behavior` character instead. Letting the title default to a neutral sans when the style asks for character is the failure mode to avoid.
 
-> **🔒 Install-local font lock — Pretendard (standing user preference on this machine).** Typography is **fixed to the Pretendard family** for every deck. This supersedes the two-combination mandate below: do NOT propose alternative families — present one Pretendard plan (weight roles + size ramp) at the confirmation stage. Deviate only when the user explicitly names another font in the current conversation, or a Step 3 template declares its own stacks (template precedence). Everything below in this section then serves only as background/fallback guidance.
+> **🔒 Bundled font lock — Pretendard (Intent-Slide default).** Typography is **fixed to the Pretendard family** for every deck. This supersedes the two-combination mandate below: do NOT propose alternative families — present one Pretendard plan (weight roles + size ramp) at the confirmation stage. Deviate only when the user explicitly names another font in the current conversation, or a Step 3 template declares its own stacks (template precedence). Everything below in this section then serves only as background/fallback guidance.
 > - **Stack**: `Pretendard, "Malgun Gothic", sans-serif` (tail is preview/fallback only; converter exports Pretendard for both Latin and EA slots — it is registered in `DUAL_SCRIPT_FONTS`).
 > - **Weights**: `Pretendard` + `font-weight` covers Regular(400)/Bold(700). Intermediate cuts are separate installed family names — `"Pretendard Light"`, `"Pretendard Medium"`, `"Pretendard SemiBold"`, `"Pretendard ExtraBold"` (author them as the font-family with normal weight).
 > - **Style character (§2 GATE)** is realized through weight span (e.g. ExtraBold title / Light body), size ramp, letter-spacing, casing, and color — never by switching families.
-> - PPT-safe: installed user-level on this machine (all 9 weights); font files bundled at [`../assets/fonts/Pretendard/`](../assets/fonts/Pretendard/) (SIL OFL — free to copy to other machines). PPTX does not embed fonts: recipients without Pretendard fall back, so note "requires Pretendard install" in the Design Spec when the deck will be shared.
+> - Portable export: six original OTF cuts are bundled at [`../assets/fonts/Pretendard/`](../assets/fonts/Pretendard/) with SIL OFL. The native SVG exporter embeds the selected faces in the final PPTX; no separate font installation is needed by the bundled renderer. Do not add a blanket "requires Pretendard install" prerequisite. G4/G5 must inspect the actual PPTX render; support in other viewers and Microsoft PowerPoint editing is verified separately.
 
 #### Font Combinations
 
 > Same-deck fonts must form **contrast** (different family, weight, or proportion) or **concord** (one family throughout). "Similar but not identical" pairings *across roles* are forbidden — see blacklist below. *Within one stack*, pairing a Windows font with a macOS counterpart (e.g. `Microsoft YaHei` + `PingFang SC`) is a browser-preview nicety; converter writes resolved Latin / EA typefaces into PPTX, not the CSS fallback tail.
 
-> **⚠️ PPT-safe font discipline (HARD rule).** PPTX has no runtime fallback — missing fonts substitute to Calibri. Each stack's exported Latin / EA typefaces MUST resolve to pre-installed fonts:
-> - Korean + Latin (this machine) → `Pretendard` and its weight cuts (installed locally; see install-local lock above)
+> **⚠️ PPT-safe font discipline (HARD rule).** PPTX has no runtime fallback — missing fonts substitute to Calibri. Each stack's exported Latin / EA typefaces MUST resolve to verified embedded fonts or fonts actually available to the target renderer:
+> - Korean + Latin → `Pretendard` and its six bundled weight cuts (embedded by native SVG export; see the bundled lock above)
 > - CJK → `"Microsoft YaHei"` / `SimHei` / `SimSun` / `FangSong` / `KaiTi`
 > - Latin sans → `Arial` / `Calibri` / `Segoe UI` / `Verdana` / `Trebuchet MS`
 > - Latin serif → `"Times New Roman"` / `Georgia` / `Cambria` / `Palatino` / `Garamond`
@@ -226,7 +226,7 @@ See [`../templates/icons/README.md`](../templates/icons/README.md) for the curre
 
 | Category | Safe families |
 |----------|--------------|
-| Korean (this install, locked default) | Pretendard (+ Light / Medium / SemiBold / ExtraBold cuts), Malgun Gothic |
+| Korean (bundled default) | Pretendard (+ Light / Medium / SemiBold / ExtraBold cuts), Malgun Gothic |
 | CJK sans | Microsoft YaHei, SimHei, PingFang SC, Heiti SC |
 | CJK serif | SimSun, FangSong, KaiTi, Songti SC |
 | Latin sans | Arial, Calibri, Segoe UI, Verdana, Trebuchet MS, Helvetica Neue |

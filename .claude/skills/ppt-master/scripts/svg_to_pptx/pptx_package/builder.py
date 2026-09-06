@@ -108,6 +108,7 @@ from .template_structure import (
     template_placeholder_bindings,
 )
 from .template_validation import validate_pptx_template_package
+from .font_embedding import embed_bundled_fonts
 
 SLIDE_LAYOUT_REL_TYPE = (
     "http://schemas.openxmlformats.org/officeDocument/2006/relationships/slideLayout"
@@ -4769,6 +4770,10 @@ def create_pptx_with_native_svg(
 
         if package_uses_timings:
             set_directory_use_timings(extract_dir)
+
+        # Font transport belongs to final export, before hashes/G4 validation.
+        # The renderer receives these exact bytes and never patches a shadow deck.
+        embed_bundled_fonts(extract_dir)
 
         rels_problems = _verify_internal_rels_targets(extract_dir)
         if rels_problems:

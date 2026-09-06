@@ -86,6 +86,16 @@ class Engine:
             return self._legacy_view(body)
         result = copy.deepcopy(body)
         result.setdefault("execution", normalize_selection())
+        latest_jobs = {job['phase']: job for job in result['jobs']}
+        jobs = {job['id']: job for job in result['jobs']}
+        result['historical_findings'] = []
+        current_findings = []
+        for finding in result['findings']:
+            job = jobs.get(finding.get('job_id'))
+            superseded = job and (job['status'] == 'COMPLETED' or latest_jobs[job['phase']]['id'] != job['id'])
+            target = result['historical_findings'] if finding.get('code') == 'CHECKPOINT_REJECTED' and superseded else current_findings
+            target.append(finding)
+        result['findings'] = current_findings
         invalid = self._integrity(result)
         known = {a["id"] for a in result["artifacts"]}
         for artifact in result["artifacts"]:

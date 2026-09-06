@@ -48,9 +48,10 @@ class PortableRenderTests(unittest.TestCase):
         self.assertEqual(before,self.pptx.read_bytes())
 
     def test_success_exit_without_pdf_is_not_a_render_and_leaves_no_pages(self):
-        with patch.object(portable_render,'find_soffice',return_value='/fixture/soffice'), patch.object(legacy,'_run_bounded_subprocess',return_value=subprocess.CompletedProcess([],0)):
+        with patch.dict(portable_render.os.environ, {'PYTHONDONTWRITEBYTECODE': '0'}), patch.object(portable_render,'find_soffice',return_value='/fixture/soffice'), patch.object(legacy,'_run_bounded_subprocess',return_value=subprocess.CompletedProcess([],0)) as render:
             with self.assertRaisesRegex(RuntimeError,'bounded PDF'):
                 portable_render.render_pptx(self.pptx,self.contact)
+            self.assertEqual(render.call_args.kwargs['env']['PYTHONDONTWRITEBYTECODE'], '1')
         self.assertFalse(self.contact.exists())
         self.assertFalse((self.contact.parent/'grid-pages').exists())
 
@@ -81,6 +82,55 @@ class PortableRenderTests(unittest.TestCase):
                 portable_render.render_pptx(self.pptx,self.contact,cancelled=lambda:True)
         self.assertFalse(self.contact.exists())
         self.assertFalse((self.contact.parent/'grid-pages').exists())
+
+
+class KoreanFontRenderTests(unittest.TestCase):
+    @unittest.skipUnless(portable_render.find_soffice(), 'Actual bundled LibreOffice required')
+    def test_actual_final_svg_candidate_renders_korean_glyphs_without_font_install(self):
+        import sys
+        from PIL import Image
+        repo = Path(__file__).resolve().parents[3]
+        scripts = repo / '.claude/skills/ppt-master/scripts'
+        if str(scripts) not in sys.path: sys.path.insert(0, str(scripts))
+        from svg_to_pptx.pptx_package.builder import create_pptx_with_native_svg
+        runtime = repo / '.runtime'; runtime.mkdir(exist_ok=True)
+        with tempfile.TemporaryDirectory(prefix='korean-native-render-', dir=runtime) as temporary:
+            root = Path(temporary)
+            svg = root / 'P01.svg'
+            # Korean only: an empty/tofu-free text extraction cannot pass by
+            # drawing the Latin label while silently omitting the Hangul.
+            svg.write_text('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1280 720"><rect width="1280" height="720" fill="#FFFFFF"/><text x="80" y="180" font-family="Pretendard" font-size="48" fill="#111111">한글은퇴생계설계가나다힣</text></svg>', encoding='utf-8')
+            candidate = root / 'candidate.pptx'
+            self.assertTrue(create_pptx_with_native_svg([svg], candidate, pptx_structure='flat', verbose=False, transition=None, enable_notes=False))
+            original = candidate.read_bytes()
+            contact = root / 'render/grid.png'
+            actual_run = legacy._run_bounded_subprocess
+            used_fonts = set()
+            def observe_pdf(command, **kwargs):
+                import pymupdf
+                result = actual_run(command, **kwargs)
+                pdf = Path(kwargs['cwd']) / 'candidate.pdf'
+                if pdf.is_file():
+                    with pymupdf.open(pdf) as document:
+                        used_fonts.update(font[3].split('+')[-1] for font in document[0].get_fonts())
+                return result
+            with patch.object(legacy, '_run_bounded_subprocess', side_effect=observe_pdf):
+                proof = portable_render.render_pptx(candidate, contact)
+            self.assertIn('Pretendard-Regular', used_fonts)
+            self.assertEqual(proof['source_sha256'], hashlib.sha256(original).hexdigest())
+            self.assertEqual(candidate.read_bytes(), original)
+            self.assertEqual(proof['slide_count'], 1)
+            with Image.open(contact.parent / proof['pages'][0]['image_path']) as page:
+                # Every syllable must occupy visible ink in the actual PNG.
+                # Measured independently from the pinned original OTF at 48px:
+                # Pretendard Hangul advances are 41.484375 SVG pixels.
+                scale = page.width / 1280
+                advance = 41.484375
+                for index in range(len('한글은퇴생계설계가나다힣')):
+                    left = int((80 + index * advance) * scale)
+                    box = (left, int(128 * scale), int((80 + (index + 1) * advance) * scale), int(184 * scale))
+                    dark = sum(count for value, count in enumerate(page.crop(box).convert('L').histogram()) if value < 100)
+                    self.assertGreater(dark, 60, f'Hangul glyph {index + 1} is absent in the native PNG')
 
 
 if __name__=='__main__': unittest.main()

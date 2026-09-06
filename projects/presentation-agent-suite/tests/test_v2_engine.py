@@ -32,6 +32,25 @@ class EngineTests(unittest.TestCase):
         review = next(r for r in s["reviews"] if r["gate"] == gate and r["status"] == "PENDING")
         return self.command("approve", {"review_id": review["id"], "bundle_sha256": review["bundle_sha256"]})
 
+    def test_superseded_checkpoint_errors_remain_in_history_not_current_warnings(self):
+        body = self.engine.store.read(self.run['id'])
+        failed = {'id': 'failed', 'phase': 'research', 'status': 'FAILED'}
+        warning = {'code': 'CHECKPOINT_REJECTED', 'job_id': 'failed', 'message': 'Original source missing'}
+        body['jobs'] = [failed]
+        body['findings'] = [warning]
+        self.assertEqual(self.engine._view(body)['findings'], [warning])
+        body['jobs'].append({'id': 'retry', 'phase': 'research', 'status': 'RUNNING'})
+        view = self.engine._view(body)
+        self.assertEqual(view['findings'], [])
+        self.assertEqual(view['historical_findings'], [warning])
+        current = {**warning, 'job_id': 'retry'}
+        integrity = {'code': 'ARTIFACT_INTEGRITY', 'message': 'Unresolved integrity issue'}
+        body['findings'].extend([current, integrity])
+        self.assertEqual(self.engine._view(body)['findings'], [current, integrity])
+        body['jobs'][-1]['status'] = 'COMPLETED'
+        self.assertEqual(self.engine._view(body)['findings'], [integrity])
+        self.assertEqual(body['findings'], [warning, current, integrity])
+
     def test_replay_conflict_and_cross_run_approval(self):
         s = self.engine.publish(self.run["id"], "intent", intent())
         review = s["reviews"][-1]

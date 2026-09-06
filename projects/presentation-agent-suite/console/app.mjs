@@ -348,6 +348,7 @@ function renderEvidence() {
 function renderTimeline() {
   const events = [...(state.run.events || [])].sort((a, b) => b.seq - a.seq);
   return `<div class="section-heading"><div><h2>작업 기록</h2><p>단계 전환, 승인, 수정, 실행 결과를 시간순으로 기록합니다.</p></div><span class="muted small">${events.length}개 기록</span></div>
+    ${state.run.historical_findings?.length ? `<details class="stage-panel"><summary>이전 시도의 검사 기록 ${state.run.historical_findings.length}개</summary><p>완료되거나 새 시도로 대체된 중간 검사 기록입니다. 현재 결과의 검토 상태는 위 체크포인트를 따릅니다.</p>${state.run.historical_findings.map((finding) => `<p>${e(findingText(finding))}</p>`).join('')}</details>` : ''}
     ${events.length ? `<ol class="activity-list">${events.map((event) => `<li class="activity-item"><time class="activity-time" datetime="${e(event.created_at)}">${e(formatTime(event.created_at, true))}</time><div class="activity-content"><small>#${e(event.seq)} · ${e(event.kind)}</small><p>${e(event.message || event.kind)}</p></div></li>`).join('')}</ol>` : '<div class="empty-panel"><h3>아직 실행 기록이 없습니다.</h3><p>첫 대화와 실행부터 변경 이력을 남깁니다.</p></div>'}`;
 }
 

@@ -291,11 +291,13 @@ Semantic markers are minimal compiler hints orthogonal to native SVG semantics. 
 - **Canvas authority**: `viewBox` MUST match the selected canvas dimensions.
   Root `width` and `height` are optional and do not override it. Root `<svg>`
   `transform` is forbidden; apply transforms to child elements or groups.
-- **Font portability**: font families used by the deck must resolve to installed
-  export faces. `@font-face` remains forbidden; the typography contract lives in
-  [`strategist.md §g`](strategist.md). On this install typography is locked to
-  **Pretendard** (installed user-level; bundled at `assets/fonts/Pretendard/`);
-  the converter registers it as a dual-script (Latin + EA) family.
+- **Font portability**: font families used by the deck must resolve to verified
+  embedded faces or fonts available to the target renderer. `@font-face` remains
+  forbidden; the typography contract lives in [`strategist.md §g`](strategist.md).
+  Intent-Slide defaults to **Pretendard**, with six original OTF cuts bundled at
+  `assets/fonts/Pretendard/`. Native SVG export writes Latin + EA typeface slots
+  and embeds the selected faces in the final PPTX, without OS font installation.
+  Verify actual PPTX page images at G4/G5; other fonts and viewers need separate checks.
 - **Icon placeholders**: `<use data-icon="library/name">` is a pipeline-specific
   form, distinct from local SVG reuse. Follow the contract in
   [`../templates/icons/README.md`](../templates/icons/README.md).
