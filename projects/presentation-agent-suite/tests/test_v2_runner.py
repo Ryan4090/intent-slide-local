@@ -85,7 +85,8 @@ class ProviderFactory:
 
 class RunnerTests(unittest.TestCase):
     def setUp(self):
-        self.temp = tempfile.TemporaryDirectory()
+        (REPO/'.runtime').mkdir(exist_ok=True)
+        self.temp = tempfile.TemporaryDirectory(dir=REPO/'.runtime', prefix='runner-test-')
         self.engine = Engine(Path(self.temp.name) / "control")
         self.run_id = self.engine.create("[TEST] 운영 개선", "제공 자료만으로 검토", "provided_only", "create")["id"]
         self.factory = ProviderFactory()
@@ -168,6 +169,44 @@ class RunnerTests(unittest.TestCase):
         artifact_id = state["direction"]["preview_artifact_ids"][0]
         self.assertEqual(self.engine.artifact_path(self.run_id, artifact_id).read_text(), "canonical preview from private attempt")
         self.assertTrue(all((p.workspace / "stage_result.json").is_file() for p in self.factory.instances))
+
+    def test_existing_worker_does_not_claim_jobs_after_close_or_during_login(self):
+        self.command('run')
+        for state in ('closed','login'):
+            with self.subTest(state=state):
+                self.runner._closed=state=='closed'
+                self.runner._login.state['status']='RUNNING' if state=='login' else 'IDLE'
+                with patch.object(self.runner,'_execute') as execute:
+                    self.runner._loop()
+                self.assertEqual(self.engine.snapshot(self.run_id)['jobs'][-1]['status'],'QUEUED')
+                execute.assert_not_called()
+        self.runner._closed=False;self.runner._login.state['status']='IDLE'
+        self.factory.plans.append(lambda provider:provider.finish({'kind':'result','data':intent(1)}))
+        self.runner.kick();state=self.join()
+        self.assertEqual(state['status'],'INTENT_REVIEW')
+
+    def test_claim_reserves_active_job_before_workspace_preparation(self):
+        prepare=self.runner._prepare;blocked=[]
+        def preparation(*args):
+            try:self.runner.login('codex')
+            except Conflict:blocked.append(True)
+            else:blocked.append(False)
+            return prepare(*args)
+        with patch.object(self.runner,'_prepare',side_effect=preparation),patch.object(self.runner._login,'start',return_value={'status':'STARTING'}) as login:
+            self.launch(lambda p:p.finish({'kind':'result','data':intent(1)}));state=self.join()
+        self.assertEqual(blocked,[True]);login.assert_not_called()
+        self.assertEqual(state['status'],'INTENT_REVIEW')
+
+    def test_close_during_preparation_does_not_start_a_provider(self):
+        prepare=self.runner._prepare
+        def preparation(*args):
+            result=prepare(*args);self.runner.close();return result
+        self.factory.plans.append(lambda p:p.finish({'kind':'result','data':intent(1)}))
+        self.command('run')
+        with patch.object(self.runner,'_prepare',side_effect=preparation):
+            self.runner.kick();state=self.join()
+        self.assertEqual(self.factory.instances,[])
+        self.assertIsNone(state['intent'])
 
     def test_changed_input_rejects_worker_result_and_retains_attempt(self):
         def produce(provider):

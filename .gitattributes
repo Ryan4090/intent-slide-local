@@ -1,0 +1,3 @@
+# Preserve reviewed source and portable component bytes on every host, including
+# Windows clones with core.autocrlf=true. Launchers already carry usable endings.
+* -text

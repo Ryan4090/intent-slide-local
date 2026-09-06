@@ -1,0 +1,1449 @@
+{
+  "component_review": "docs/local-mvp/PORTABLE_RENDERER_REVIEW.md",
+  "platforms": {
+    "darwin-arm64": {
+      "bytes": 292802328,
+      "entry": "LibreOffice.app/Contents/MacOS/soffice",
+      "format": "tar.gz",
+      "license": "MPL-2.0 and bundled component licenses; original notices retained inside the archive",
+      "license_url": "https://www.libreoffice.org/licenses/",
+      "parts": [
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part001",
+          "sha256": "20d3325da4c116828e6ad0d1f8f2431eb9edafa16032482e773352898154014d"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part002",
+          "sha256": "a195469b8d05b1a59ed69a9e243f9d01fac3ffa2f99eff0f00d463ddbf390dfc"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part003",
+          "sha256": "3c1dc2e5593708d1335cf57fc5e253e6455791c73eff4570c2cf13c0d55a0f35"
+        },
+        {
+          "bytes": 9686808,
+          "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part004",
+          "sha256": "335ff97dc61a9800ff10b1efcebdf7e4166e6f61ac6881ff6f2569ce00d41f52"
+        }
+      ],
+      "path": "libreoffice-26.8.0-darwin-arm64.tar.gz",
+      "sha256": "16a836aa85e2c88fcae99021673e5b0fbc93e8da256f7540f4a4833dfccf3cf6",
+      "signature_review": {
+        "display": {
+          "output": "Executable=<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/soffice\nIdentifier=org.libreoffice.script\nFormat=app bundle with Mach-O thin (arm64)\nCodeDirectory v=20500 size=450 flags=0x10000(runtime) hashes=3+7 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1705216\nHash type=sha256 size=32\nCandidateCDHash sha256=5db61e07d0ed6bb1e13e515b7326050e256ad1c9\nCandidateCDHashFull sha256=5db61e07d0ed6bb1e13e515b7326050e256ad1c9b0f4bb800ec8f454b5ddb95c\nHash choices=sha256\nCMSDigest=5db61e07d0ed6bb1e13e515b7326050e256ad1c9b0f4bb800ec8f454b5ddb95c\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=16384\nExecutable Segment flags=0x1\nPage size=16384\nCDHash=5db61e07d0ed6bb1e13e515b7326050e256ad1c9\nSignature size=8996\nAuthority=Developer ID Application: The Document Foundation (7P5S3ZLCN7)\nAuthority=Developer ID Certification Authority\nAuthority=Apple Root CA\nTimestamp=Aug 22, 2026 at 12:25:13 AM\nInfo.plist entries=24\nTeamIdentifier=7P5S3ZLCN7\nRuntime Version=26.5.0\nSealed Resources version=2 rules=13 files=14004\nInternal requirements count=1 size=184\n",
+          "returncode": 0
+        },
+        "verify": {
+          "output": "--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/regview\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/regview\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/uri-encode\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/uri-encode\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/uno\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/uno\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/PlugIns/QuickLookPreview.appex\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/unopkg\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/unopkg\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/PlugIns/QuickLookPreview.appex\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/PlugIns/QuickLookThumbnail.appex\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/PlugIns/QuickLookThumbnail.appex\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/opencltest\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/opencltest\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/gengal\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/gengal\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/xpdfimport\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/MacOS/xpdfimport\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Library/Spotlight/OOoSpotlightImporter.mdimporter\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Library/Spotlight/OOoSpotlightImporter.mdimporter\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libOsi.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libOsi.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwpg-0.3.3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwpg-0.3.3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libiolo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libiolo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libdbplo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libdbplo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjuh.jnilib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjuh.jnilib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblog_uno_uno.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblog_uno_uno.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libinvocadaptlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libinvocadaptlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcairo-lo.2.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcairo-lo.2.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libswuilo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libswuilo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libetonyek-0.1.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libetonyek-0.1.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscfiltlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscfiltlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libskialo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libskialo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnamingservicelo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnamingservicelo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libdeploymentgui.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libdeploymentgui.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/librdf-lo.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/librdf-lo.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libproxyfaclo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libproxyfaclo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_cppuhelpergcc3.dylib.3\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_cppuhelpergcc3.dylib.3\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libhsqldb.jnilib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libhsqldb.jnilib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libfreebl3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libfreebl3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsal_textenclo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsal_textenclo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpcrlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpcrlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwps-0.4.4.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwps-0.4.4.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsduilo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libicui18n.dylib.78\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsduilo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libicui18n.dylib.78\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsclo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsclo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libswlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libswlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmacbe1lo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmacbe1lo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpdfimportlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpdfimportlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libunopkgapp.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libunopkgapp.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/intl/libfbintl.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/intl/libfbintl.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcalclo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcalclo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/librasqal-lo.3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/librasqal-lo.3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liborcus-0.21.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liborcus-0.21.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libicuuc.dylib.78\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libicuuc.dylib.78\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libplds4.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libplds4.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpythonloaderlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpythonloaderlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libunsafe_uno_uno.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libunsafe_uno_uno.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmigrationoo2lo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmigrationoo2lo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgcc3_uno.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgcc3_uno.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsoftokn3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsoftokn3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libreflectionlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libreflectionlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_es.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_es.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libOsiClp.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libOsiClp.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsingleprovlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsingleprovlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libunoidllo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libunoidllo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmwaw-0.3.3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmwaw-0.3.3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libEngine12.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libEngine12.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libupdatecheckuilo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libupdatecheckuilo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libAppleRemotelo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libAppleRemotelo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCoinMP.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCoinMP.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libi18nlangtag.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libi18nlangtag.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblcms2.2.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblcms2.2.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_en.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_en.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscuilo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscuilo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCoinUtils.3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCoinUtils.3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_sal.dylib.3\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_sal.dylib.3\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpyuno.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpyuno.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmacabdrv1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmacabdrv1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libvbaswobjlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libvbaswobjlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_cppu.dylib.3\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_cppu.dylib.3\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsmdlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsmdlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libldapbe2lo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libldapbe2lo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libPresentationMinimizerlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libPresentationMinimizerlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libassuan.9.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libassuan.9.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libxmlreaderlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libxmlreaderlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmigrationoo3lo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmigrationoo3lo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libstocserviceslo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libstocserviceslo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnssdbm3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnssdbm3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgpgme.11.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgpgme.11.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsmime3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsmime3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libClpSolver.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libClpSolver.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCgl.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCgl.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libodfgen-0.1.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libodfgen-0.1.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libstaroffice-0.0.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libstaroffice-0.0.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_salhelpergcc3.dylib.3\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_salhelpergcc3.dylib.3\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjavaloaderlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjavaloaderlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libbinaryurplo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libbinaryurplo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblangtag.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblangtag.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCbcSolver.3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCbcSolver.3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwriterlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwriterlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjuhx.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjuhx.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libswdlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libswdlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libClp.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libClp.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libinvocationlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libinvocationlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgpgmepp.6.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgpgmepp.6.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsmlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsmlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgpg-error.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libgpg-error.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/LibreOfficePython.framework/Versions/Current/.\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libplc4.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libplc4.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblpsolve55.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblpsolve55.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjdbclo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjdbclo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libbootstraplo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libbootstraplo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libfontconfig.1.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libfontconfig.1.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpostgresql-sdbc-impllo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpostgresql-sdbc-impllo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libvbaobjlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libvbaobjlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libclucene.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libclucene.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcmdmaillo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcmdmaillo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libstorelo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libstorelo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libraptor2-lo.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libraptor2-lo.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpdfiumlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpdfiumlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libssl3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libssl3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libclewlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libclewlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libintrospectionlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libintrospectionlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libupdchklo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libupdchklo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscdlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscdlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjvmfwklo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjvmfwklo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libreglo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libreglo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsdlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsdlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcurl.4.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libcurl.4.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_euro.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_euro.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_others.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liblocaledata_others.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuuresolverlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuuresolverlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libaffine_uno_uno.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libaffine_uno_uno.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/librevenge-0.0.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/librevenge-0.0.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnssckbi.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnssckbi.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwpd-0.10.10.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libwpd-0.10.10.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libfbclient.dylib.3.0.13\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libfbclient.dylib.3.0.13\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsddlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsddlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libLanguageToollo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libLanguageToollo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpixman-1.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libpixman-1.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjava_uno.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjava_uno.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libabplo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libabplo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjavavmlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjavavmlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libicudata.dylib.78\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libicudata.dylib.78\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjvmaccesslo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjvmaccesslo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmswordlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmswordlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libvclplug_osxlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libvclplug_osxlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/pyuno.so\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/pyuno.so\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjpipe.jnilib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libjpipe.jnilib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnspr4.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnspr4.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnssutil3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnssutil3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liborcus-parser-0.21.0.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/liborcus-parser-0.21.0.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libepoxy.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libepoxy.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsw_writerfilterlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libsw_writerfilterlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_purpenvhelpergcc3.dylib.3\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libuno_purpenvhelpergcc3.dylib.3\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscnlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libscnlo.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCbc.3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libCbc.3.dylib\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnss3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libnss3.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/LibreOfficePython.framework/Versions/Current/.\n--prepared:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmergedlo.dylib\n--validated:<renderer-build-cache>/darwin-arm64/LibreOffice.app/Contents/Frameworks/libmergedlo.dylib\n<renderer-build-cache>/darwin-arm64/LibreOffice.app: valid on disk\n<renderer-build-cache>/darwin-arm64/LibreOffice.app: satisfies its Designated Requirement\n",
+          "returncode": 0
+        }
+      },
+      "source_bytes": 298773447,
+      "source_sha256": "8858d8058da4f862f47559486814e65efc27294da67c5e4bb56b006b1ee59f89",
+      "source_sha256_url": "https://download.documentfoundation.org/libreoffice/stable/26.8.0/mac/aarch64/LibreOffice_26.8.0_MacOS_aarch64.dmg.sha256",
+      "source_url": "https://download.documentfoundation.org/libreoffice/stable/26.8.0/mac/aarch64/LibreOffice_26.8.0_MacOS_aarch64.dmg",
+      "tree_review": {
+        "entry": "LibreOffice.app/Contents/MacOS/soffice",
+        "file_count": 17449,
+        "license_files": [
+          {
+            "bytes": 13809,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/LICENSE.txt",
+            "sha256": "78b12c3a81360b357002334f0e70ea0e92eebf7a9b358805c03c48484945f3bb"
+          },
+          {
+            "bytes": 558,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/cachecontrol/LICENSE.txt",
+            "sha256": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b"
+          },
+          {
+            "bytes": 989,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/certifi/LICENSE",
+            "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+          },
+          {
+            "bytes": 14531,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/distlib/LICENSE.txt",
+            "sha256": "808e10c8a6ab8deb149ff9b3fb19f447a808094606d712a9ca57fead3552599d"
+          },
+          {
+            "bytes": 11325,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/distro/LICENSE",
+            "sha256": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14"
+          },
+          {
+            "bytes": 1541,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/idna/LICENSE.md",
+            "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+          },
+          {
+            "bytes": 614,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/msgpack/COPYING",
+            "sha256": "492dedba85da5872f78e6091bcd1fea474d660d35acb4dee964b8aab3f007427"
+          },
+          {
+            "bytes": 197,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/packaging/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "bytes": 10174,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/packaging/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "bytes": 1344,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/packaging/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/pkg_resources/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1089,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/platformdirs/LICENSE",
+            "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+          },
+          {
+            "bytes": 1331,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/pygments/LICENSE",
+            "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+          },
+          {
+            "bytes": 1081,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/pyproject_hooks/LICENSE",
+            "sha256": "1b22b049b5267d6dfc23a67bf4a84d8ec04b9fdfb1a51d360e42b4342c8b4154"
+          },
+          {
+            "bytes": 10142,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/requests/LICENSE",
+            "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+          },
+          {
+            "bytes": 751,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/resolvelib/LICENSE",
+            "sha256": "f388fd38cad13112c1dc0f669bbe80e7f84541edbafb72f3030d2ca7642c3c9d"
+          },
+          {
+            "bytes": 1056,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/rich/LICENSE",
+            "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+          },
+          {
+            "bytes": 1072,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/tomli/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "bytes": 1072,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/tomli_w/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "bytes": 1086,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/truststore/LICENSE",
+            "sha256": "33be7b7e8fa4fd19b1760e1a8ed8a668bdab852c91b692dd41424bcb725a9fca"
+          },
+          {
+            "bytes": 1093,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/urllib3/LICENSE.txt",
+            "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+          },
+          {
+            "bytes": 7634,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+            "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 11358,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/importlib_metadata-8.0.0.dist-info/LICENSE",
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/inflect-7.3.1.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.collections-5.1.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.context-5.3.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.functools-4.0.1.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.text-3.12.1.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1053,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/more_itertools-10.3.0.dist-info/LICENSE",
+            "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+          },
+          {
+            "bytes": 197,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "bytes": 10174,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "bytes": 1344,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "bytes": 1089,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/platformdirs-4.2.2.dist-info/licenses/LICENSE",
+            "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+          },
+          {
+            "bytes": 1072,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/tomli-2.0.1.dist-info/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "bytes": 1130,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/typeguard-4.3.0.dist-info/LICENSE",
+            "sha256": "6163f7987dfb38d6bc320ce2b70b2f02b862bc41126516d552ef1cd43247e758"
+          },
+          {
+            "bytes": 13936,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/typing_extensions-4.12.2.dist-info/LICENSE",
+            "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+          },
+          {
+            "bytes": 197,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "bytes": 10174,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "bytes": 1344,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "bytes": 1107,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel-0.45.1.dist-info/LICENSE.txt",
+            "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/zipp-3.19.2.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 493,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/config/NOTICE",
+            "sha256": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8"
+          },
+          {
+            "bytes": 18737,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/config/_validate_pyproject/NOTICE",
+            "sha256": "5d300dbfa643138b013b75ac9caeee591f951b8b0ee24288c34ccd926c4780c8"
+          },
+          {
+            "bytes": 489966,
+            "path": "Contents/Resources/LICENSE",
+            "sha256": "4b720686b5c8f88af5eb67e36c12ff3295e9f9b25d335d1ceda08156e4ac484a"
+          },
+          {
+            "bytes": 562856,
+            "path": "Contents/Resources/LICENSE.html",
+            "sha256": "d12febd2a8879512229c7fffb3fd8bbf36e937b304853675b73132459003c296"
+          },
+          {
+            "bytes": 1859,
+            "path": "Contents/Resources/NOTICE",
+            "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+          },
+          {
+            "bytes": 1526,
+            "path": "Contents/Resources/basic/Access2Base/_License.xba",
+            "sha256": "3b0a3add5ea862537c26f7bf4cc9a2bb875b6dd1749edb3ac2e352d8b936dea0"
+          },
+          {
+            "bytes": 1814,
+            "path": "Contents/Resources/basic/SFDatabases/__License.xba",
+            "sha256": "002fe0a3b6cce5b871582bed08fc63a322b083731109ab0710b555e420441fae"
+          },
+          {
+            "bytes": 1812,
+            "path": "Contents/Resources/basic/SFDialogs/__License.xba",
+            "sha256": "617cd15eb9293a771f0cc767f9adf383db61c8bb023d96eb51b5bef2acaa83c0"
+          },
+          {
+            "bytes": 1814,
+            "path": "Contents/Resources/basic/SFDocuments/__License.xba",
+            "sha256": "18b7db722c6d0ddb0ba8a5cca07e07010e91eba185979483608428fd49ded1db"
+          },
+          {
+            "bytes": 1814,
+            "path": "Contents/Resources/basic/SFUnitTests/__License.xba",
+            "sha256": "9b319b86f3f0ac90f497aade4e10c622624d7f229ba3e96c44056d8095d2b465"
+          },
+          {
+            "bytes": 1812,
+            "path": "Contents/Resources/basic/SFWidgets/__License.xba",
+            "sha256": "09f6e33fe740cd9eabbdc174737a09f5b59e61d627b872806c3dfab423b8dc44"
+          },
+          {
+            "bytes": 1729,
+            "path": "Contents/Resources/basic/ScriptForge/__License.xba",
+            "sha256": "80f60a85850f12200d7f7ae5bb68ab1423e7d52d21f4c11b8e2f104a49999c80"
+          },
+          {
+            "bytes": 11248,
+            "path": "Contents/Resources/config/soffice.cfg/desktop/ui/licensedialog.ui",
+            "sha256": "ef4016e1441cf461dc6c1af86f97e29302b362c7d27e7cda19f89d5c81c83c22"
+          },
+          {
+            "bytes": 3722,
+            "path": "Contents/Resources/config/soffice.cfg/desktop/ui/showlicensedialog.ui",
+            "sha256": "e1797a82b24c59b1bb753c490122e2eed236ec6bd31fa76ee17d2aff58336a01"
+          },
+          {
+            "bytes": 4726,
+            "path": "Contents/Resources/config/soffice.cfg/sfx/ui/licensedialog.ui",
+            "sha256": "dc5d228f0aeb29930c39a9bd034d25ad99284aab61ce13812cd96416aa1c4769"
+          },
+          {
+            "bytes": 1625,
+            "path": "Contents/Resources/extensions/dict-en/WordNet_license.txt",
+            "sha256": "23dbc4f3ea771304e5ab3e5709843813d2619f3c0cfc81229b53fcdb9985f29a"
+          },
+          {
+            "bytes": 15122,
+            "path": "Contents/Resources/extensions/dict-en/license.txt",
+            "sha256": "df84246204e3c54cd24aebbc23714235f5fc41d754d53b65444a2afbf070130f"
+          },
+          {
+            "bytes": 991,
+            "path": "Contents/Resources/extensions/dict-es/LICENSE.md",
+            "sha256": "2b70fd5cb8d3b34cc6ae322c969557a2270b99017594addb2531ef5ffd9e1b17"
+          },
+          {
+            "bytes": 489966,
+            "path": "Contents/Resources/extensions/nlpsolver/registration/LICENSE",
+            "sha256": "4b720686b5c8f88af5eb67e36c12ff3295e9f9b25d335d1ceda08156e4ac484a"
+          },
+          {
+            "bytes": 524,
+            "path": "Contents/Resources/help/media/icon-themes/COPYING-ICONS",
+            "sha256": "ccf0394ceab00fe2967c914ecde84192b6dd364d70b97c528093833c8d9a3baf"
+          },
+          {
+            "bytes": 1560,
+            "path": "Contents/Resources/xpdfimport/poppler_data/COPYING",
+            "sha256": "36f27791549113cecd00013233101026452c872f79215a93d33a4a9bd0678672"
+          },
+          {
+            "bytes": 1565,
+            "path": "Contents/Resources/xpdfimport/poppler_data/COPYING.adobe",
+            "sha256": "4d367131f33e9f0daa6acf84ccc20e6468aa379bc053f5fa72dab201ec017b39"
+          },
+          {
+            "bytes": 17987,
+            "path": "Contents/Resources/xpdfimport/poppler_data/COPYING.gpl2",
+            "sha256": "ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6"
+          }
+        ],
+        "links": [
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Headers",
+            "target": "Versions/Current/Headers"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/LibreOfficePython",
+            "target": "Versions/Current/LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Resources",
+            "target": "Versions/Current/Resources"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/Headers",
+            "target": "include/python3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/idle3",
+            "target": "idle3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/idle3.13",
+            "target": "../Resources/idle3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/pydoc3",
+            "target": "pydoc3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/pydoc3.13",
+            "target": "../Resources/pydoc3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/python3",
+            "target": "python3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/python3-config",
+            "target": "python3.13-config"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/python3.13-config",
+            "target": "../Resources/python3.13-config"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/libpython3.13.dylib",
+            "target": "../LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/pkgconfig/python3-embed.pc",
+            "target": "python-3.13-embed.pc"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/pkgconfig/python3.pc",
+            "target": "python-3.13.pc"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/config-3.13-darwin/libpython3.13.a",
+            "target": "../../../LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/config-3.13-darwin/libpython3.13.dylib",
+            "target": "../../../LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/share/man/man1/python3.1",
+            "target": "python3.13.1"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/Current",
+            "target": "3.13"
+          },
+          {
+            "path": "Contents/Frameworks/intl/fbintl.conf",
+            "target": "../../Resources/firebird/fbintl.conf"
+          },
+          {
+            "path": "Contents/Frameworks/libjava_uno.jnilib",
+            "target": "libjava_uno.dylib"
+          },
+          {
+            "path": "Contents/MacOS/senddoc",
+            "target": "../Resources/senddoc"
+          },
+          {
+            "path": "Contents/MacOS/unoinfo",
+            "target": "../Resources/unoinfo"
+          },
+          {
+            "path": "Contents/MacOS/urelibs",
+            "target": "../Frameworks"
+          }
+        ]
+      },
+      "version": "26.8.0"
+    },
+    "darwin-x64": {
+      "bytes": 303105785,
+      "entry": "LibreOffice.app/Contents/MacOS/soffice",
+      "format": "tar.gz",
+      "license": "MPL-2.0 and bundled component licenses; original notices retained inside the archive",
+      "license_url": "https://www.libreoffice.org/licenses/",
+      "parts": [
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part001",
+          "sha256": "2293578b85f36eb60aa615aed8b3ab09caff9f640fb77ced0b43f32e02f460cd"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part002",
+          "sha256": "df2a90cfe0cdd87dd115d7a52c947646b0f9511a2143a9a8f298bc91b3e0fea7"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part003",
+          "sha256": "df5d1f0c1accaaf79e0ed0e79709f684dc9d2532677a829d0c0c26e9af0db071"
+        },
+        {
+          "bytes": 19990265,
+          "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part004",
+          "sha256": "31db08ed7e7c4ac515f01fc3464102ab837a31d2981de025c9c174abd0cdbdff"
+        }
+      ],
+      "path": "libreoffice-26.8.0-darwin-x64.tar.gz",
+      "sha256": "4f8fc25c25396ff624f4de2ab2c9fb2ed6587c4f81ae9301d75c06a0da147a65",
+      "signature_review": {
+        "display": {
+          "output": "Executable=<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/soffice\nIdentifier=org.libreoffice.script\nFormat=app bundle with Mach-O thin (x86_64)\nCodeDirectory v=20500 size=450 flags=0x10000(runtime) hashes=3+7 location=embedded\nVersionPlatform=1\nVersionMin=720896\nVersionSDK=1705216\nHash type=sha256 size=32\nCandidateCDHash sha256=835d34414265919886e6555e4dae09a74ddc0389\nCandidateCDHashFull sha256=835d34414265919886e6555e4dae09a74ddc0389913f50f3387e7f96d2c9f30b\nHash choices=sha256\nCMSDigest=835d34414265919886e6555e4dae09a74ddc0389913f50f3387e7f96d2c9f30b\nCMSDigestType=2\nExecutable Segment base=0\nExecutable Segment limit=4096\nExecutable Segment flags=0x1\nPage size=4096\nCDHash=835d34414265919886e6555e4dae09a74ddc0389\nSignature size=8995\nAuthority=Developer ID Application: The Document Foundation (7P5S3ZLCN7)\nAuthority=Developer ID Certification Authority\nAuthority=Apple Root CA\nTimestamp=Aug 22, 2026 at 6:24:30 AM\nInfo.plist entries=24\nTeamIdentifier=7P5S3ZLCN7\nRuntime Version=26.5.0\nSealed Resources version=2 rules=13 files=14004\nInternal requirements count=1 size=184\n",
+          "returncode": 0
+        },
+        "verify": {
+          "output": "--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/unopkg\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/unopkg\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/PlugIns/QuickLookPreview.appex\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/regview\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/regview\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/PlugIns/QuickLookPreview.appex\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/uri-encode\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/uri-encode\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/uno\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/uno\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/gengal\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/gengal\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/opencltest\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/opencltest\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/PlugIns/QuickLookThumbnail.appex\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/PlugIns/QuickLookThumbnail.appex\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/xpdfimport\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/MacOS/xpdfimport\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Library/Spotlight/OOoSpotlightImporter.mdimporter\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Library/Spotlight/OOoSpotlightImporter.mdimporter\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwpg-0.3.3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwpg-0.3.3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libiolo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libiolo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libOsi.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libOsi.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblog_uno_uno.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblog_uno_uno.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libdbplo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libdbplo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjuh.jnilib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjuh.jnilib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libinvocadaptlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libinvocadaptlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcairo-lo.2.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcairo-lo.2.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/librdf-lo.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/librdf-lo.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_cppuhelpergcc3.dylib.3\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_cppuhelpergcc3.dylib.3\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnamingservicelo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnamingservicelo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libfreebl3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libfreebl3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libswuilo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libswuilo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsal_textenclo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsal_textenclo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libproxyfaclo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libproxyfaclo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libetonyek-0.1.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libetonyek-0.1.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpcrlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpcrlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libicui18n.dylib.78\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libicui18n.dylib.78\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libhsqldb.jnilib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libhsqldb.jnilib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libdeploymentgui.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libdeploymentgui.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscfiltlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscfiltlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsduilo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsduilo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwps-0.4.4.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwps-0.4.4.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libskialo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libskialo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcalclo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcalclo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpdfimportlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpdfimportlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/intl/libfbintl.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/intl/libfbintl.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libicuuc.dylib.78\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libicuuc.dylib.78\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpythonloaderlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpythonloaderlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmacbe1lo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmacbe1lo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libunopkgapp.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libunopkgapp.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/librasqal-lo.3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/librasqal-lo.3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_es.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_es.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsoftokn3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsoftokn3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libunsafe_uno_uno.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libunsafe_uno_uno.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libplds4.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libplds4.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmigrationoo2lo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmigrationoo2lo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgcc3_uno.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgcc3_uno.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsingleprovlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsingleprovlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liborcus-0.21.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liborcus-0.21.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libupdatecheckuilo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libupdatecheckuilo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libreflectionlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libreflectionlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libOsiClp.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libOsiClp.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libi18nlangtag.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libi18nlangtag.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libAppleRemotelo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libAppleRemotelo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libunoidllo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libunoidllo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblcms2.2.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblcms2.2.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_en.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_en.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCoinMP.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCoinMP.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_sal.dylib.3\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_sal.dylib.3\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscuilo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscuilo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmacabdrv1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmacabdrv1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsmdlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsmdlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCoinUtils.3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCoinUtils.3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpyuno.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpyuno.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libldapbe2lo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libldapbe2lo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libPresentationMinimizerlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libPresentationMinimizerlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmwaw-0.3.3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmwaw-0.3.3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libassuan.9.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libassuan.9.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libstocserviceslo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libstocserviceslo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_cppu.dylib.3\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_cppu.dylib.3\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libxmlreaderlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libxmlreaderlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnssdbm3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmigrationoo3lo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnssdbm3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmigrationoo3lo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgpgme.11.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgpgme.11.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsmime3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsmime3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libvbaswobjlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libvbaswobjlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libClpSolver.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libClpSolver.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCgl.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCgl.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libodfgen-0.1.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libodfgen-0.1.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libEngine12.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libEngine12.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libClp.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libClp.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsmlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsmlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libstaroffice-0.0.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libstaroffice-0.0.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/LibreOfficePython.framework/Versions/Current/.\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsclo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsclo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libswlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libswlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libicudata.dylib.78\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libicudata.dylib.78\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/LibreOfficePython.framework/Versions/Current/.\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmergedlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmergedlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_salhelpergcc3.dylib.3\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_salhelpergcc3.dylib.3\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjavaloaderlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjavaloaderlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblangtag.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblangtag.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libinvocationlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwriterlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwriterlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libinvocationlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjuhx.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjuhx.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libswdlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libswdlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libbinaryurplo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libbinaryurplo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libplc4.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libplc4.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgpg-error.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgpg-error.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCbcSolver.3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCbcSolver.3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgpgmepp.6.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libgpgmepp.6.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjdbclo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjdbclo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libstorelo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libstorelo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libbootstraplo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libbootstraplo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblpsolve55.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblpsolve55.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libraptor2-lo.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libraptor2-lo.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscdlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscdlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcmdmaillo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcmdmaillo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libfontconfig.1.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libfontconfig.1.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpostgresql-sdbc-impllo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpostgresql-sdbc-impllo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libssl3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libssl3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libclucene.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libclucene.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libvbaobjlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libvbaobjlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpdfiumlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpdfiumlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_others.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_others.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcurl.4.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libcurl.4.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libaffine_uno_uno.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libaffine_uno_uno.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libreglo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libreglo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsdlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsdlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libintrospectionlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libintrospectionlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libclewlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libclewlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/librevenge-0.0.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/librevenge-0.0.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjvmfwklo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjvmfwklo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libupdchklo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libupdchklo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnssckbi.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnssckbi.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsddlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsddlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuuresolverlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuuresolverlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libLanguageToollo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libLanguageToollo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpixman-1.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libpixman-1.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwpd-0.10.10.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libwpd-0.10.10.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libfbclient.dylib.3.0.13\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libfbclient.dylib.3.0.13\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_euro.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liblocaledata_euro.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libvclplug_osxlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libvclplug_osxlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmswordlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libmswordlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsw_writerfilterlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libsw_writerfilterlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjpipe.jnilib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjpipe.jnilib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libabplo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libabplo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/pyuno.so\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/pyuno.so\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjava_uno.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjava_uno.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjvmaccesslo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjvmaccesslo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjavavmlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libjavavmlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnspr4.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnspr4.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liborcus-parser-0.21.0.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/liborcus-parser-0.21.0.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnssutil3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnssutil3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libepoxy.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libepoxy.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_purpenvhelpergcc3.dylib.3\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libuno_purpenvhelpergcc3.dylib.3\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscnlo.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libscnlo.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCbc.3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libCbc.3.dylib\n--prepared:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnss3.dylib\n--validated:<renderer-build-cache>/darwin-x64/LibreOffice.app/Contents/Frameworks/libnss3.dylib\n<renderer-build-cache>/darwin-x64/LibreOffice.app: valid on disk\n<renderer-build-cache>/darwin-x64/LibreOffice.app: satisfies its Designated Requirement\n",
+          "returncode": 0
+        }
+      },
+      "source_bytes": 309257813,
+      "source_sha256": "2dcbce4894e01bc1ecd594658e2cbda70ff7bfcd0b310f35d38887797172d09e",
+      "source_sha256_url": "https://download.documentfoundation.org/libreoffice/stable/26.8.0/mac/x86_64/LibreOffice_26.8.0_MacOS_x86-64.dmg.sha256",
+      "source_url": "https://download.documentfoundation.org/libreoffice/stable/26.8.0/mac/x86_64/LibreOffice_26.8.0_MacOS_x86-64.dmg",
+      "tree_review": {
+        "entry": "LibreOffice.app/Contents/MacOS/soffice",
+        "file_count": 17449,
+        "license_files": [
+          {
+            "bytes": 13809,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/LICENSE.txt",
+            "sha256": "78b12c3a81360b357002334f0e70ea0e92eebf7a9b358805c03c48484945f3bb"
+          },
+          {
+            "bytes": 558,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/cachecontrol/LICENSE.txt",
+            "sha256": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b"
+          },
+          {
+            "bytes": 989,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/certifi/LICENSE",
+            "sha256": "e93716da6b9c0d5a4a1df60fe695b370f0695603d21f6f83f053e42cfc10caf7"
+          },
+          {
+            "bytes": 14531,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/distlib/LICENSE.txt",
+            "sha256": "808e10c8a6ab8deb149ff9b3fb19f447a808094606d712a9ca57fead3552599d"
+          },
+          {
+            "bytes": 11325,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/distro/LICENSE",
+            "sha256": "cb5e8e7e5f4a3988e1063c142c60dc2df75605f4c46515e776e3aca6df976e14"
+          },
+          {
+            "bytes": 1541,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/idna/LICENSE.md",
+            "sha256": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04"
+          },
+          {
+            "bytes": 614,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/msgpack/COPYING",
+            "sha256": "492dedba85da5872f78e6091bcd1fea474d660d35acb4dee964b8aab3f007427"
+          },
+          {
+            "bytes": 197,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/packaging/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "bytes": 10174,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/packaging/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "bytes": 1344,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/packaging/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/pkg_resources/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1089,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/platformdirs/LICENSE",
+            "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+          },
+          {
+            "bytes": 1331,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/pygments/LICENSE",
+            "sha256": "a9d66f1d526df02e29dce73436d34e56e8632f46c275bbdffc70569e882f9f17"
+          },
+          {
+            "bytes": 1081,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/pyproject_hooks/LICENSE",
+            "sha256": "1b22b049b5267d6dfc23a67bf4a84d8ec04b9fdfb1a51d360e42b4342c8b4154"
+          },
+          {
+            "bytes": 10142,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/requests/LICENSE",
+            "sha256": "09e8a9bcec8067104652c168685ab0931e7868f9c8284b66f5ae6edae5f1130b"
+          },
+          {
+            "bytes": 751,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/resolvelib/LICENSE",
+            "sha256": "f388fd38cad13112c1dc0f669bbe80e7f84541edbafb72f3030d2ca7642c3c9d"
+          },
+          {
+            "bytes": 1056,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/rich/LICENSE",
+            "sha256": "deed7c17a4318158190a3ea239cc879a5a50271cebb98ae7025f48fbe58dca15"
+          },
+          {
+            "bytes": 1072,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/tomli/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "bytes": 1072,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/tomli_w/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "bytes": 1086,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/truststore/LICENSE",
+            "sha256": "33be7b7e8fa4fd19b1760e1a8ed8a668bdab852c91b692dd41424bcb725a9fca"
+          },
+          {
+            "bytes": 1093,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/pip/_vendor/urllib3/LICENSE.txt",
+            "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+          },
+          {
+            "bytes": 7634,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/autocommand-2.2.2.dist-info/LICENSE",
+            "sha256": "ade78d04982d69972d444a8e14a94f87a2334dd3855cc80348ea8e240aa0df2d"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/backports.tarfile-1.2.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 11358,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/importlib_metadata-8.0.0.dist-info/LICENSE",
+            "sha256": "cfc7749b96f63bd31c3c42b5c471bf756814053e847c10f3eb003417bc523d30"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/inflect-7.3.1.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.collections-5.1.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.context-5.3.0.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.functools-4.0.1.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/jaraco.text-3.12.1.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 1053,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/more_itertools-10.3.0.dist-info/LICENSE",
+            "sha256": "09f1c8c9e941af3e584d59641ea9b87d83c0cb0fd007eb5ef391a7e2643c1a46"
+          },
+          {
+            "bytes": 197,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "bytes": 10174,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "bytes": 1344,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/packaging-24.2.dist-info/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "bytes": 1089,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/platformdirs-4.2.2.dist-info/licenses/LICENSE",
+            "sha256": "29e0fd62e929850e86eb28c3fdccf0cefdf4fa94879011cffb3d0d4bed6d4db6"
+          },
+          {
+            "bytes": 1072,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/tomli-2.0.1.dist-info/LICENSE",
+            "sha256": "b80816b0d530b8accb4c2211783790984a6e3b61922c2b5ee92f3372ab2742fe"
+          },
+          {
+            "bytes": 1130,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/typeguard-4.3.0.dist-info/LICENSE",
+            "sha256": "6163f7987dfb38d6bc320ce2b70b2f02b862bc41126516d552ef1cd43247e758"
+          },
+          {
+            "bytes": 13936,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/typing_extensions-4.12.2.dist-info/LICENSE",
+            "sha256": "3b2f81fe21d181c499c59a256c8e1968455d6689d269aa85373bfb6af41da3bf"
+          },
+          {
+            "bytes": 197,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE",
+            "sha256": "cad1ef5bd340d73e074ba614d26f7deaca5c7940c3d8c34852e65c4909686c48"
+          },
+          {
+            "bytes": 10174,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE.APACHE",
+            "sha256": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+          },
+          {
+            "bytes": 1344,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel/vendored/packaging/LICENSE.BSD",
+            "sha256": "b70e7e9b742f1cc6f948b34c16aa39ffece94196364bc88ff0d2180f0028fac5"
+          },
+          {
+            "bytes": 1107,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/wheel-0.45.1.dist-info/LICENSE.txt",
+            "sha256": "30c23618679108f3e8ea1d2a658c7ca417bdfc891c98ef1a89fa4ff0c9828654"
+          },
+          {
+            "bytes": 1023,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/_vendor/zipp-3.19.2.dist-info/LICENSE",
+            "sha256": "86da0f01aeae46348a3c3d465195dc1ceccde79f79e87769a64b8da04b2a4741"
+          },
+          {
+            "bytes": 493,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/config/NOTICE",
+            "sha256": "2dddf08818297a3b89d43d95ff659d8da85741108c9136dfa3a4d856c0623bd8"
+          },
+          {
+            "bytes": 18737,
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/site-packages/setuptools/config/_validate_pyproject/NOTICE",
+            "sha256": "5d300dbfa643138b013b75ac9caeee591f951b8b0ee24288c34ccd926c4780c8"
+          },
+          {
+            "bytes": 487506,
+            "path": "Contents/Resources/LICENSE",
+            "sha256": "6f2742791724d351f1bd1d765bec935f765a2663a45aff5442eaf0b1db860574"
+          },
+          {
+            "bytes": 560108,
+            "path": "Contents/Resources/LICENSE.html",
+            "sha256": "fe460d2486608f432a44cfdd65f97907a7bcf6f6c216e8f0bc882ab75a514e2e"
+          },
+          {
+            "bytes": 1859,
+            "path": "Contents/Resources/NOTICE",
+            "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+          },
+          {
+            "bytes": 1526,
+            "path": "Contents/Resources/basic/Access2Base/_License.xba",
+            "sha256": "3b0a3add5ea862537c26f7bf4cc9a2bb875b6dd1749edb3ac2e352d8b936dea0"
+          },
+          {
+            "bytes": 1814,
+            "path": "Contents/Resources/basic/SFDatabases/__License.xba",
+            "sha256": "002fe0a3b6cce5b871582bed08fc63a322b083731109ab0710b555e420441fae"
+          },
+          {
+            "bytes": 1812,
+            "path": "Contents/Resources/basic/SFDialogs/__License.xba",
+            "sha256": "617cd15eb9293a771f0cc767f9adf383db61c8bb023d96eb51b5bef2acaa83c0"
+          },
+          {
+            "bytes": 1814,
+            "path": "Contents/Resources/basic/SFDocuments/__License.xba",
+            "sha256": "18b7db722c6d0ddb0ba8a5cca07e07010e91eba185979483608428fd49ded1db"
+          },
+          {
+            "bytes": 1814,
+            "path": "Contents/Resources/basic/SFUnitTests/__License.xba",
+            "sha256": "9b319b86f3f0ac90f497aade4e10c622624d7f229ba3e96c44056d8095d2b465"
+          },
+          {
+            "bytes": 1812,
+            "path": "Contents/Resources/basic/SFWidgets/__License.xba",
+            "sha256": "09f6e33fe740cd9eabbdc174737a09f5b59e61d627b872806c3dfab423b8dc44"
+          },
+          {
+            "bytes": 1729,
+            "path": "Contents/Resources/basic/ScriptForge/__License.xba",
+            "sha256": "80f60a85850f12200d7f7ae5bb68ab1423e7d52d21f4c11b8e2f104a49999c80"
+          },
+          {
+            "bytes": 11248,
+            "path": "Contents/Resources/config/soffice.cfg/desktop/ui/licensedialog.ui",
+            "sha256": "ef4016e1441cf461dc6c1af86f97e29302b362c7d27e7cda19f89d5c81c83c22"
+          },
+          {
+            "bytes": 3722,
+            "path": "Contents/Resources/config/soffice.cfg/desktop/ui/showlicensedialog.ui",
+            "sha256": "e1797a82b24c59b1bb753c490122e2eed236ec6bd31fa76ee17d2aff58336a01"
+          },
+          {
+            "bytes": 4726,
+            "path": "Contents/Resources/config/soffice.cfg/sfx/ui/licensedialog.ui",
+            "sha256": "dc5d228f0aeb29930c39a9bd034d25ad99284aab61ce13812cd96416aa1c4769"
+          },
+          {
+            "bytes": 1625,
+            "path": "Contents/Resources/extensions/dict-en/WordNet_license.txt",
+            "sha256": "23dbc4f3ea771304e5ab3e5709843813d2619f3c0cfc81229b53fcdb9985f29a"
+          },
+          {
+            "bytes": 15122,
+            "path": "Contents/Resources/extensions/dict-en/license.txt",
+            "sha256": "df84246204e3c54cd24aebbc23714235f5fc41d754d53b65444a2afbf070130f"
+          },
+          {
+            "bytes": 991,
+            "path": "Contents/Resources/extensions/dict-es/LICENSE.md",
+            "sha256": "2b70fd5cb8d3b34cc6ae322c969557a2270b99017594addb2531ef5ffd9e1b17"
+          },
+          {
+            "bytes": 487506,
+            "path": "Contents/Resources/extensions/nlpsolver/registration/LICENSE",
+            "sha256": "6f2742791724d351f1bd1d765bec935f765a2663a45aff5442eaf0b1db860574"
+          },
+          {
+            "bytes": 524,
+            "path": "Contents/Resources/help/media/icon-themes/COPYING-ICONS",
+            "sha256": "ccf0394ceab00fe2967c914ecde84192b6dd364d70b97c528093833c8d9a3baf"
+          },
+          {
+            "bytes": 1560,
+            "path": "Contents/Resources/xpdfimport/poppler_data/COPYING",
+            "sha256": "36f27791549113cecd00013233101026452c872f79215a93d33a4a9bd0678672"
+          },
+          {
+            "bytes": 1565,
+            "path": "Contents/Resources/xpdfimport/poppler_data/COPYING.adobe",
+            "sha256": "4d367131f33e9f0daa6acf84ccc20e6468aa379bc053f5fa72dab201ec017b39"
+          },
+          {
+            "bytes": 17987,
+            "path": "Contents/Resources/xpdfimport/poppler_data/COPYING.gpl2",
+            "sha256": "ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6"
+          }
+        ],
+        "links": [
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Headers",
+            "target": "Versions/Current/Headers"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/LibreOfficePython",
+            "target": "Versions/Current/LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Resources",
+            "target": "Versions/Current/Resources"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/Headers",
+            "target": "include/python3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/idle3",
+            "target": "idle3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/idle3.13",
+            "target": "../Resources/idle3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/pydoc3",
+            "target": "pydoc3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/pydoc3.13",
+            "target": "../Resources/pydoc3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/python3",
+            "target": "python3.13"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/python3-config",
+            "target": "python3.13-config"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/bin/python3.13-config",
+            "target": "../Resources/python3.13-config"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/libpython3.13.dylib",
+            "target": "../LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/pkgconfig/python3-embed.pc",
+            "target": "python-3.13-embed.pc"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/pkgconfig/python3.pc",
+            "target": "python-3.13.pc"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/config-3.13-darwin/libpython3.13.a",
+            "target": "../../../LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/lib/python3.13/config-3.13-darwin/libpython3.13.dylib",
+            "target": "../../../LibreOfficePython"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/3.13/share/man/man1/python3.1",
+            "target": "python3.13.1"
+          },
+          {
+            "path": "Contents/Frameworks/LibreOfficePython.framework/Versions/Current",
+            "target": "3.13"
+          },
+          {
+            "path": "Contents/Frameworks/intl/fbintl.conf",
+            "target": "../../Resources/firebird/fbintl.conf"
+          },
+          {
+            "path": "Contents/Frameworks/libjava_uno.jnilib",
+            "target": "libjava_uno.dylib"
+          },
+          {
+            "path": "Contents/MacOS/senddoc",
+            "target": "../Resources/senddoc"
+          },
+          {
+            "path": "Contents/MacOS/unoinfo",
+            "target": "../Resources/unoinfo"
+          },
+          {
+            "path": "Contents/MacOS/urelibs",
+            "target": "../Frameworks"
+          }
+        ]
+      },
+      "version": "26.8.0"
+    },
+    "win32-x64": {
+      "bytes": 506763047,
+      "entry": "LibreOffice/program/soffice.exe",
+      "format": "tar.gz",
+      "license": "MPL-2.0 and bundled component licenses; original notices retained inside the archive",
+      "license_url": "https://www.libreoffice.org/licenses/",
+      "packaging_provenance": {
+        "app_local_runtime_copies": [
+          {
+            "bytes": 324208,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/concrt140.dll",
+            "source_sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376",
+            "target": "LibreOffice/program/concrt140.dll",
+            "target_sha256": "2405355f0a58067b258f8df33c327e3a3d716eaac5a3a5aebb757842d85bd376"
+          },
+          {
+            "bytes": 557728,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/msvcp140.dll",
+            "source_sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9",
+            "target": "LibreOffice/program/msvcp140.dll",
+            "target_sha256": "0f885b509a685d2bbfa652fed26b5fb31d88fbdab0a978c641d1c7b8aa460aa9"
+          },
+          {
+            "bytes": 35952,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/msvcp140_1.dll",
+            "source_sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d",
+            "target": "LibreOffice/program/msvcp140_1.dll",
+            "target_sha256": "bfad5aef4c63a669e3c140655cdfdf395b6c979b400a447bd5dcb65ed8826c3d"
+          },
+          {
+            "bytes": 280200,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/msvcp140_2.dll",
+            "source_sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9",
+            "target": "LibreOffice/program/msvcp140_2.dll",
+            "target_sha256": "3ea06f0ee098b4823cb79599df3780e7f23cce52c19aac31d2a0d47efe33a5e9"
+          },
+          {
+            "bytes": 50304,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/msvcp140_atomic_wait.dll",
+            "source_sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479",
+            "target": "LibreOffice/program/msvcp140_atomic_wait.dll",
+            "target_sha256": "640b2aefced484d0368eea5bdd06addd0658a3a70a49256e560d6923b404a479"
+          },
+          {
+            "bytes": 31872,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/msvcp140_codecvt_ids.dll",
+            "source_sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18",
+            "target": "LibreOffice/program/msvcp140_codecvt_ids.dll",
+            "target_sha256": "f2069a52880ec885ee7f0511186100eb7fada0411a2b4948fafea7735b878a18"
+          },
+          {
+            "bytes": 352384,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/vccorlib140.dll",
+            "source_sha256": "19839407c3fdbc824e5bce189bf68ddf8097f12ec28b757797ffa0415c144ddd",
+            "target": "LibreOffice/program/vccorlib140.dll",
+            "target_sha256": "19839407c3fdbc824e5bce189bf68ddf8097f12ec28b757797ffa0415c144ddd"
+          },
+          {
+            "bytes": 124544,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/vcruntime140.dll",
+            "source_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+            "target": "LibreOffice/program/vcruntime140.dll",
+            "target_sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066"
+          },
+          {
+            "bytes": 49792,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/vcruntime140_1.dll",
+            "source_sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f",
+            "target": "LibreOffice/program/vcruntime140_1.dll",
+            "target_sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f"
+          },
+          {
+            "bytes": 38528,
+            "pe_machine": "0x8664",
+            "source": "LibreOffice/System64/vcruntime140_threads.dll",
+            "source_sha256": "219915cf20822f34d5e7c1fdd4e21ae7f3396881096c51036225fb8f84b47afa",
+            "target": "LibreOffice/program/vcruntime140_threads.dll",
+            "target_sha256": "219915cf20822f34d5e7c1fdd4e21ae7f3396881096c51036225fb8f84b47afa"
+          }
+        ],
+        "independent_redistribution_rights": "UNVERIFIED",
+        "microsoft_notice": "LibreOffice/license.txt, Microsoft Visual C++ Runtime Libraries section",
+        "original_executable_bytes_modified": false,
+        "revision": "app-local-v1",
+        "runtime_source": "Same pinned official LibreOffice MSI; System64 payload retained"
+      },
+      "parts": [
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part001",
+          "sha256": "073b2e81e4f14d6be585d66ede28d606f5c3df61b67b8649cc8b4bce21fb45ff"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part002",
+          "sha256": "57c1a461fb6bfab5b6a11125250343be358de65d49f9fa72c0d7a14cf8a81888"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part003",
+          "sha256": "fbdd957c0ff6f50d190422a30965ae36aa795f247ed3f798f24910766754646c"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part004",
+          "sha256": "5401662c880e0f426d82c506b558486968f5971f6e4197b5f7a082b0546b300b"
+        },
+        {
+          "bytes": 94371840,
+          "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part005",
+          "sha256": "161014aaa03992bd58b0d655a53571844ca79cb354ea18ce7fd863440df86ca6"
+        },
+        {
+          "bytes": 34903847,
+          "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part006",
+          "sha256": "bb94b0cd3fcb60ce307c7fbce7f128c580ab541134484a8c651b751b42346444"
+        }
+      ],
+      "path": "libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz",
+      "sha256": "f04e94e9e4227dd8ae593224af6ab403f774dedb82cbb67adb51a8f92b1bed14",
+      "signature_review": {
+        "note": "This Mac packager does not perform Windows Authenticode validation; see separate Windows CI evidence",
+        "status": "UNVERIFIED"
+      },
+      "source_bytes": 374906880,
+      "source_sha256": "4aa6c6e1895f4055104effcb556bd3362d20c6ad707c149543304f395ef9db95",
+      "source_sha256_url": "https://download.documentfoundation.org/libreoffice/stable/26.8.0/win/x86_64/LibreOffice_26.8.0_Win_x86-64.msi.sha256",
+      "source_url": "https://download.documentfoundation.org/libreoffice/stable/26.8.0/win/x86_64/LibreOffice_26.8.0_Win_x86-64.msi",
+      "tree_review": {
+        "entry": "LibreOffice/program/soffice.exe",
+        "file_count": 19428,
+        "license_files": [
+          {
+            "bytes": 583943,
+            "path": "LICENSE.html",
+            "sha256": "b6bab46903cb571ed658514c28eb420aa4b398443d8f64a65a229157f51a0e6b"
+          },
+          {
+            "bytes": 1859,
+            "path": "NOTICE",
+            "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+          },
+          {
+            "bytes": 524,
+            "path": "help/media/icon-themes/COPYING-ICONS",
+            "sha256": "ccf0394ceab00fe2967c914ecde84192b6dd364d70b97c528093833c8d9a3baf"
+          },
+          {
+            "bytes": 512187,
+            "path": "license.txt",
+            "sha256": "e3752e56328b579e0e3be3039cf1106a4af31ee58db863ffd7624fa9421f6d7f"
+          },
+          {
+            "bytes": 558,
+            "path": "program/python-core-3.13.15/lib/pip/_vendor/cachecontrol/LICENSE.txt",
+            "sha256": "86eeee87be2a43f3ff1f56496f451f69243926f025fedbb033666c304c4c161b"
+          },
+          {
+            "bytes": 14531,
+            "path": "program/python-core-3.13.15/lib/pip/_vendor/distlib/LICENSE.txt",
+            "sha256": "808e10c8a6ab8deb149ff9b3fb19f447a808094606d712a9ca57fead3552599d"
+          },
+          {
+            "bytes": 1093,
+            "path": "program/python-core-3.13.15/lib/pip/_vendor/urllib3/LICENSE.txt",
+            "sha256": "130e3a64d5fdd5d096a752694634a7d9df284469de86e5732100268041e3d686"
+          },
+          {
+            "bytes": 1526,
+            "path": "share/basic/Access2Base/_License.xba",
+            "sha256": "3b0a3add5ea862537c26f7bf4cc9a2bb875b6dd1749edb3ac2e352d8b936dea0"
+          },
+          {
+            "bytes": 1814,
+            "path": "share/basic/SFDatabases/__License.xba",
+            "sha256": "002fe0a3b6cce5b871582bed08fc63a322b083731109ab0710b555e420441fae"
+          },
+          {
+            "bytes": 1812,
+            "path": "share/basic/SFDialogs/__License.xba",
+            "sha256": "617cd15eb9293a771f0cc767f9adf383db61c8bb023d96eb51b5bef2acaa83c0"
+          },
+          {
+            "bytes": 1814,
+            "path": "share/basic/SFDocuments/__License.xba",
+            "sha256": "18b7db722c6d0ddb0ba8a5cca07e07010e91eba185979483608428fd49ded1db"
+          },
+          {
+            "bytes": 1814,
+            "path": "share/basic/SFUnitTests/__License.xba",
+            "sha256": "9b319b86f3f0ac90f497aade4e10c622624d7f229ba3e96c44056d8095d2b465"
+          },
+          {
+            "bytes": 1812,
+            "path": "share/basic/SFWidgets/__License.xba",
+            "sha256": "09f6e33fe740cd9eabbdc174737a09f5b59e61d627b872806c3dfab423b8dc44"
+          },
+          {
+            "bytes": 1729,
+            "path": "share/basic/ScriptForge/__License.xba",
+            "sha256": "80f60a85850f12200d7f7ae5bb68ab1423e7d52d21f4c11b8e2f104a49999c80"
+          },
+          {
+            "bytes": 11248,
+            "path": "share/config/soffice.cfg/desktop/ui/licensedialog.ui",
+            "sha256": "ef4016e1441cf461dc6c1af86f97e29302b362c7d27e7cda19f89d5c81c83c22"
+          },
+          {
+            "bytes": 3722,
+            "path": "share/config/soffice.cfg/desktop/ui/showlicensedialog.ui",
+            "sha256": "e1797a82b24c59b1bb753c490122e2eed236ec6bd31fa76ee17d2aff58336a01"
+          },
+          {
+            "bytes": 4726,
+            "path": "share/config/soffice.cfg/sfx/ui/licensedialog.ui",
+            "sha256": "dc5d228f0aeb29930c39a9bd034d25ad99284aab61ce13812cd96416aa1c4769"
+          },
+          {
+            "bytes": 1320,
+            "path": "share/extensions/dict-an/LICENSES-en.txt",
+            "sha256": "f378d9ef938ec0aa3b2926705f3b9fd34489fe70031b352d423b68f96e638a45"
+          },
+          {
+            "bytes": 532,
+            "path": "share/extensions/dict-ar/COPYING.txt",
+            "sha256": "73480d918cd78d655508e80aa88c022cbd53634524a0f714b5f2519f2cf19124"
+          },
+          {
+            "bytes": 17979,
+            "path": "share/extensions/dict-bg/COPYING",
+            "sha256": "100035c1d3964e5528165e539619e2c5c01a421771daa43329809e06d779d692"
+          },
+          {
+            "bytes": 18009,
+            "path": "share/extensions/dict-bn/COPYING",
+            "sha256": "204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994"
+          },
+          {
+            "bytes": 250,
+            "path": "share/extensions/dict-br/LICENSES-en.txt",
+            "sha256": "c18caeafd08d41f44ded3c79e911c77d0940a97cebd7594486fee3e5d0c07744"
+          },
+          {
+            "bytes": 85,
+            "path": "share/extensions/dict-ca/LICENSES-en.txt",
+            "sha256": "e1931218994ce97e1d92fe57173838cd8a2c4de78fc4687f7e58bd2b3218272d"
+          },
+          {
+            "bytes": 14678,
+            "path": "share/extensions/dict-ckb/LICENSES-en.txt",
+            "sha256": "f9f1687c5b84c636e3a9e55edee5131a772ef0de4f1ed6d7826f5a6e6adc6793"
+          },
+          {
+            "bytes": 17992,
+            "path": "share/extensions/dict-de/COPYING_GPLv2",
+            "sha256": "e7431ac20e815b6797369e802f9e4bb1b0082485060d8b096235f035d741bd89"
+          },
+          {
+            "bytes": 35147,
+            "path": "share/extensions/dict-de/COPYING_GPLv3",
+            "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+          },
+          {
+            "bytes": 675,
+            "path": "share/extensions/dict-de/COPYING_OASIS.txt",
+            "sha256": "2d9d81e88ecd0e837122f4688ca7a6a5bd7bb41bff6e21ff5d4663eb43372db3"
+          },
+          {
+            "bytes": 1625,
+            "path": "share/extensions/dict-en/WordNet_license.txt",
+            "sha256": "23dbc4f3ea771304e5ab3e5709843813d2619f3c0cfc81229b53fcdb9985f29a"
+          },
+          {
+            "bytes": 15122,
+            "path": "share/extensions/dict-en/license.txt",
+            "sha256": "df84246204e3c54cd24aebbc23714235f5fc41d754d53b65444a2afbf070130f"
+          },
+          {
+            "bytes": 35147,
+            "path": "share/extensions/dict-eo/license-en.txt",
+            "sha256": "8ceb4b9ee5adedde47b31e975c1d90c73ad27b6b165a1dcd80c7c545eb65b903"
+          },
+          {
+            "bytes": 991,
+            "path": "share/extensions/dict-es/LICENSE.md",
+            "sha256": "2b70fd5cb8d3b34cc6ae322c969557a2270b99017594addb2531ef5ffd9e1b17"
+          },
+          {
+            "bytes": 582,
+            "path": "share/extensions/dict-fa/LICENSE",
+            "sha256": "7429736f069a84049bcfbee436e5cea3a3fd9b98348d880d9e43ebcf39721989"
+          },
+          {
+            "bytes": 138,
+            "path": "share/extensions/dict-gd/LICENSES-en.txt",
+            "sha256": "b47e7e4580183ccfa2b0f527c89594439b289b7a08037ae0a431db515c4e7c7c"
+          },
+          {
+            "bytes": 26430,
+            "path": "share/extensions/dict-gl/COPYING_th_gl",
+            "sha256": "fd057bc15a43403783c33af50c5ef0dfa51687d024b1d98a4f084af524459249"
+          },
+          {
+            "bytes": 18009,
+            "path": "share/extensions/dict-hi/COPYING",
+            "sha256": "204d8eff92f95aac4df6c8122bc1505f468f3a901e5a4cc08940e0ede1938994"
+          },
+          {
+            "bytes": 834,
+            "path": "share/extensions/dict-hi/Copyright",
+            "sha256": "67e86e61e452247c2c491b63629799dec1d6dd4cf4aae47548f5141cf3707098"
+          },
+          {
+            "bytes": 7652,
+            "path": "share/extensions/dict-id/LICENSE-dict",
+            "sha256": "97628afebc60f026f5c2b25d7491c46a5c4ee61f693e7cfa07fbd2c03605979b"
+          },
+          {
+            "bytes": 26432,
+            "path": "share/extensions/dict-id/LICENSE-thes",
+            "sha256": "1f3360c2c2fbe9918f3658a20fcd2f64113a11726b7327ca1df7220c433689e1"
+          },
+          {
+            "bytes": 34802,
+            "path": "share/extensions/dict-is/license.txt",
+            "sha256": "a852be66ff244eb15563a39631e7d4663811ee8e5d66682e653a989e57cd13fe"
+          },
+          {
+            "bytes": 1520,
+            "path": "share/extensions/dict-lt/COPYING",
+            "sha256": "c5c73b4e3743ed2b959c70e886c4acee20d8654002ccdabac0a51af977ee2a17"
+          },
+          {
+            "bytes": 24390,
+            "path": "share/extensions/dict-lv/license.txt",
+            "sha256": "bb117c0fbd7f57f64170b690285d7df07c2371b578e3b3cd3aa2e1155ef461a0"
+          },
+          {
+            "bytes": 25820,
+            "path": "share/extensions/dict-nl/LICENSE.txt",
+            "sha256": "2189c248cbc054445aeac6cd65b87eebd0a115efeb55ed498b0f2a73441805dd"
+          },
+          {
+            "bytes": 17992,
+            "path": "share/extensions/dict-no/COPYING",
+            "sha256": "e7431ac20e815b6797369e802f9e4bb1b0082485060d8b096235f035d741bd89"
+          },
+          {
+            "bytes": 980,
+            "path": "share/extensions/dict-oc/LICENSES-en.txt",
+            "sha256": "3d2815ba38e153311beadeb0954da46de8dbf3abfc9752f302491e72ecd6e9a4"
+          },
+          {
+            "bytes": 1830,
+            "path": "share/extensions/dict-pt-PT/LICENSES.txt",
+            "sha256": "d2c1cfe2e2dd81c651aec3fda5d1b4b4e7679b9e04f8cdc37586e521837384d1"
+          },
+          {
+            "bytes": 18325,
+            "path": "share/extensions/dict-ro/COPYING.GPL",
+            "sha256": "2233a3eecf299bc271f1a9f57f0b3198343ad4ab16571d70320133002c51496b"
+          },
+          {
+            "bytes": 26532,
+            "path": "share/extensions/dict-ro/COPYING.LGPL",
+            "sha256": "5bbcbb737e60fe9deba08ecbd00920cfcc3403ba2e534c64fdeea49d6bb87509"
+          },
+          {
+            "bytes": 25755,
+            "path": "share/extensions/dict-ro/COPYING.MPL",
+            "sha256": "53692a2ed6c6a2c6ec9b32dd0b820dfae91e0a1fcdf625ca9ed0bdf8705fcc4f"
+          },
+          {
+            "bytes": 759,
+            "path": "share/extensions/dict-si/LICENSES-en.txt",
+            "sha256": "d02c1a39754df712b0cc07a34bf83a035951519d3ca262d20cc64032f5d5084a"
+          },
+          {
+            "bytes": 67574,
+            "path": "share/extensions/dict-sk/LICENSE.txt",
+            "sha256": "dc06f891b13dcb6fe1ede36c0c9020f0e57e6777aca951ecaceefa95a19d7cfc"
+          },
+          {
+            "bytes": 378,
+            "path": "share/extensions/dict-sv/LICENSE_en_US.txt",
+            "sha256": "1314b6004bff32053ca25aca5fc419e905d75a6d49f9f9825baf4f02298af6d9"
+          },
+          {
+            "bytes": 353,
+            "path": "share/extensions/dict-sv/LICENSE_sv_SE.txt",
+            "sha256": "841736f210169ce2c9c6907c0d88495e6d41ff7d067a3033c56ae1179ce62127"
+          },
+          {
+            "bytes": 474,
+            "path": "share/extensions/dict-vi/LICENSES-en.txt",
+            "sha256": "d32e4c8faf974bdeb87da10a5951556b33744cf9b50a7f06125074e11f30d7f6"
+          },
+          {
+            "bytes": 653,
+            "path": "share/extensions/dict-vi/LICENSES-vi.txt",
+            "sha256": "e300eee4d3fd59e2886e785b63f6ded6badc7b9c6883cf73e365b59635d6128d"
+          },
+          {
+            "bytes": 512187,
+            "path": "share/extensions/nlpsolver/registration/license.txt",
+            "sha256": "e3752e56328b579e0e3be3039cf1106a4af31ee58db863ffd7624fa9421f6d7f"
+          },
+          {
+            "bytes": 512187,
+            "path": "share/extensions/wiki-publisher/registration/license.txt",
+            "sha256": "e3752e56328b579e0e3be3039cf1106a4af31ee58db863ffd7624fa9421f6d7f"
+          },
+          {
+            "bytes": 1560,
+            "path": "share/xpdfimport/poppler_data/COPYING",
+            "sha256": "36f27791549113cecd00013233101026452c872f79215a93d33a4a9bd0678672"
+          },
+          {
+            "bytes": 1565,
+            "path": "share/xpdfimport/poppler_data/COPYING.adobe",
+            "sha256": "4d367131f33e9f0daa6acf84ccc20e6468aa379bc053f5fa72dab201ec017b39"
+          },
+          {
+            "bytes": 17987,
+            "path": "share/xpdfimport/poppler_data/COPYING.gpl2",
+            "sha256": "ab15fd526bd8dd18a9e77ebc139656bf4d33e97fc7238cd11bf60e2b9b8666c6"
+          }
+        ],
+        "links": []
+      },
+      "version": "26.8.0"
+    }
+  },
+  "schema_version": 1,
+  "source_code_url": "https://download.documentfoundation.org/libreoffice/src/26.8.0/libreoffice-26.8.0.3.tar.xz",
+  "source_version": "26.8.0.3",
+  "supplemental_files": [
+    {
+      "bytes": 489966,
+      "path": "vendor/portable/renderer/darwin-arm64/LICENSE",
+      "sha256": "4b720686b5c8f88af5eb67e36c12ff3295e9f9b25d335d1ceda08156e4ac484a"
+    },
+    {
+      "bytes": 1859,
+      "path": "vendor/portable/renderer/darwin-arm64/NOTICE",
+      "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+    },
+    {
+      "bytes": 487506,
+      "path": "vendor/portable/renderer/darwin-x64/LICENSE",
+      "sha256": "6f2742791724d351f1bd1d765bec935f765a2663a45aff5442eaf0b1db860574"
+    },
+    {
+      "bytes": 1859,
+      "path": "vendor/portable/renderer/darwin-x64/NOTICE",
+      "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+    },
+    {
+      "bytes": 1941,
+      "path": "vendor/portable/renderer/packaging-tests.log",
+      "sha256": "0dee02cf8eddb7ebdf89918c64a092a5712ce3d4d2a773635d1a8c34528d11fa"
+    },
+    {
+      "bytes": 1861,
+      "path": "vendor/portable/renderer/packaging-verification.json",
+      "sha256": "f5c47ae867058c19f214c74467d14433917e4b432b876e151a14f2a6765c4bd7"
+    },
+    {
+      "bytes": 1452,
+      "path": "vendor/portable/renderer/source-access.json",
+      "sha256": "59b84aa668dff752905167457a23dc1530ac5971d993e8ce559a982c6aba7cdd"
+    },
+    {
+      "bytes": 1859,
+      "path": "vendor/portable/renderer/win32-x64/NOTICE",
+      "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+    },
+    {
+      "bytes": 4622,
+      "path": "vendor/portable/renderer/win32-x64/ci-provenance.json",
+      "sha256": "20826b8bde3550fd85bdc06289eaaaca54a1f21ed53bfad61b99ef96c6946f12"
+    },
+    {
+      "bytes": 2617,
+      "path": "vendor/portable/renderer/win32-x64/dependency-review.json",
+      "sha256": "e6fddef6842c355745d07dd5f30c1864a7331192ed7b4b3897497a7d77a4887b"
+    },
+    {
+      "bytes": 512187,
+      "path": "vendor/portable/renderer/win32-x64/license.txt",
+      "sha256": "e3752e56328b579e0e3be3039cf1106a4af31ee58db863ffd7624fa9421f6d7f"
+    }
+  ],
+  "version": "26.8.0"
+}

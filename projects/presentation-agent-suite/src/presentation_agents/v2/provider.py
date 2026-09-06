@@ -18,15 +18,15 @@ import os
 import platform
 import re
 import queue
-import select
 import shutil
-import signal
 import subprocess
 import threading
 import time
 from collections.abc import Callable
 from pathlib import Path
 from typing import Any
+
+from .stdio_transport import StdioTransport, TransportError, resolve_command
 
 EventCallback = Callable[[dict[str, Any]], None]
 _EFFORTS = ("none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra")
@@ -83,6 +83,7 @@ class CodexProvider:
         self._termination_lock = threading.Lock()
         self._stop = threading.Event()
         self._process: subprocess.Popen[bytes] | None = None
+        self._transport: StdioTransport | None = None
         self._threads: list[threading.Thread] = []
         self._pending: dict[int, dict[str, Any]] = {}
         self._requests: dict[int | str, dict[str, Any]] = {}
@@ -118,22 +119,13 @@ class CodexProvider:
                 raise self._failure
             if self._initialized:
                 return
-            if os.name != "posix":
-                raise ProviderError("PLATFORM_UNSUPPORTED", "The bounded stdio transport currently requires a POSIX host")
             launch_environment = self._runtime_environment()
             launch_command = self.command[:]
             if self._resolved_launcher:
                 # PATH now includes the native payload. Keep the original npm
                 # JS launcher so its package-manager metadata still applies.
                 launch_command[0] = self._resolved_launcher
-            try:
-                self._process = subprocess.Popen(
-                    launch_command, stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-                    stderr=subprocess.PIPE, bufsize=0, start_new_session=os.name == "posix",
-                    env=launch_environment,
-                )
-            except OSError as exc:
-                raise ProviderError("UNAVAILABLE", "Codex CLI could not start; check the installed executable") from exc
+            self._launch_process(launch_command, env=launch_environment)
             for target in (self._read_stdout, self._read_stderr, self._dispatch, self._watchdog):
                 worker = threading.Thread(target=target, daemon=True, name=f"codex-{target.__name__}")
                 self._threads.append(worker)
@@ -146,6 +138,17 @@ class CodexProvider:
             self._send({"method": "initialized", "params": {}})
             self._initialized = True
 
+    def _launch_process(self, command: list[str], *, cwd=None, env=None) -> None:
+        """Shared bounded stdio lifecycle; provider subclasses retain their wire."""
+        try:
+            self._transport = StdioTransport.launch(command, cwd=cwd, env=env,
+                max_frame_bytes=self.max_frame_bytes, startup_timeout=self.request_timeout)
+            self._process = self._transport.process
+        except TransportError as exc:
+            raise ProviderError(exc.code, str(exc)) from exc
+        except OSError as exc:
+            raise ProviderError("UNAVAILABLE", "Local CLI could not start; check the installed executable") from exc
+
     def _runtime_environment(self) -> dict[str, str] | None:
         """Resolve bundled helpers without global installs or PATH mutation.
 
@@ -155,7 +158,7 @@ class CodexProvider:
         PATH. Resolving the actual executable also keeps helper and CLI versions
         paired. Custom protocol peers do not require Codex's helper binaries.
         """
-        if not self.command or Path(self.command[0]).name != "codex":
+        if not self.command or Path(self.command[0]).name.lower() not in {"codex", "codex.exe", "codex.cmd", "codex.bat"}:
             self._runtime = {"status": "UNVERIFIED", "reason": "Custom transport command; file capability must be checked by its owner"}
             return None
         executable = shutil.which(self.command[0])
@@ -163,14 +166,21 @@ class CodexProvider:
             self._runtime = {"status": "BLOCKED", "reason": "Codex executable is not available on PATH"}
             return None
         binary = Path(executable).resolve()
-        bundled_host = binary.parent / "codex-code-mode-host"
+        if binary.suffix.lower() in {'.cmd', '.bat'}:
+            try:
+                resolved = resolve_command([executable])
+            except TransportError as exc:
+                raise ProviderError(exc.code, str(exc)) from exc
+            binary = Path(resolved[1])  # Official JS, never execute the batch shim.
+        suffix = '.exe' if platform.system() == 'Windows' else ''
+        bundled_host = binary.parent / ("codex-code-mode-host" + suffix)
         host_discovery = "bundled_sibling"
         npm_bundle = self._npm_bundle(binary)
         if npm_bundle:
             bundle_directory, host_discovery = npm_bundle
             self._resolved_launcher = str(Path(executable).absolute())
-            bundled_host = bundle_directory / "codex-code-mode-host"
-        host_on_path = shutil.which("codex-code-mode-host")
+            bundled_host = bundle_directory / ("codex-code-mode-host" + suffix)
+        host_on_path = shutil.which("codex-code-mode-host" + suffix)
         if bundled_host.is_file() and os.access(bundled_host, os.X_OK):
             # The child already inherits this environment by default. Only PATH
             # is changed; credentials and unrelated values are never inspected
@@ -209,6 +219,10 @@ class CodexProvider:
             ("Linux", "aarch64"): ("linux", "arm64", "aarch64-unknown-linux-musl"),
             ("Linux", "arm64"): ("linux", "arm64", "aarch64-unknown-linux-musl"),
             ("Linux", "x86_64"): ("linux", "x64", "x86_64-unknown-linux-musl"),
+            ("Windows", "amd64"): ("win32", "x64", "x86_64-pc-windows-msvc"),
+            ("Windows", "x86_64"): ("win32", "x64", "x86_64-pc-windows-msvc"),
+            ("Windows", "arm64"): ("win32", "arm64", "aarch64-pc-windows-msvc"),
+            ("Windows", "aarch64"): ("win32", "arm64", "aarch64-pc-windows-msvc"),
         }
         target = targets.get((platform.system(), platform.machine().lower()))
         if not target:
@@ -258,7 +272,9 @@ class CodexProvider:
             break
         discovery = "npm_platform_package" if bundle_root else "npm_embedded_vendor"
         binary_directory = (bundle_root or package_root) / "vendor" / triple / "bin"
-        if not all((binary_directory / name).is_file() and os.access(binary_directory / name, os.X_OK)
+        executable_suffix = '.exe' if target_os == 'win32' else ''
+        if not all((binary_directory / (name + executable_suffix)).is_file()
+                   and os.access(binary_directory / (name + executable_suffix), os.X_OK)
                    for name in ("codex", "codex-code-mode-host")):
             return None
         return binary_directory.resolve(), discovery
@@ -547,31 +563,14 @@ class CodexProvider:
         with self._write_lock:
             if self._failure:
                 raise self._failure
-            if self._closed or not self._process or self._process.stdin is None:
+            if self._closed or not self._transport:
                 raise ProviderError("CLOSED", "Codex connection is not available")
             try:
-                if os.name == "posix":
-                    # An unresponsive peer must not make a pipe write bypass the
-                    # RPC timeout. Handle partial writes explicitly as well.
-                    descriptor = self._process.stdin.fileno()
-                    os.set_blocking(descriptor, False)
-                    deadline = time.monotonic() + self.request_timeout
-                    remaining = memoryview(encoded)
-                    while remaining:
-                        timeout = deadline - time.monotonic()
-                        if timeout <= 0 or not select.select([], [descriptor], [], max(0, timeout))[1]:
-                            error = ProviderError("REQUEST_TIMEOUT", "Codex stopped reading requests; reconnect before retrying")
-                            self._fail(error)
-                            raise error
-                        try:
-                            written = os.write(descriptor, remaining)
-                        except BlockingIOError:
-                            continue
-                        remaining = remaining[written:]
-                else:
-                    # Windows anonymous pipes cannot use select. This transport
-                    # is shipped for the local macOS console; fail explicitly.
-                    raise ProviderError("PLATFORM_UNSUPPORTED", "The bounded stdio transport currently requires a POSIX host")
+                self._transport.write_frame(encoded, timeout=self.request_timeout)
+            except TransportError as exc:
+                error = ProviderError(exc.code, str(exc))
+                self._fail(error)
+                raise error from exc
             except (BrokenPipeError, OSError, ValueError) as exc:
                 error = ProviderError("PROCESS_EXIT", "Codex input stream closed; reconnect and inspect the interrupted run")
                 self._fail(error)
@@ -732,34 +731,10 @@ class CodexProvider:
 
     def _terminate(self) -> None:
         with self._termination_lock:
-            process = self._process
-            if process is None or self._terminated:
+            if self._transport is None or self._terminated:
                 return
             self._terminated = True
-            try:
-                if os.name == "posix":
-                    os.killpg(process.pid, signal.SIGTERM)
-                else:
-                    process.terminate()
-            except (ProcessLookupError, OSError):
-                pass
-            try:
-                process.wait(timeout=1)
-            except subprocess.TimeoutExpired:
-                pass
-            # The parent can exit while a grandchild holds stdout/stderr open.
-            # Reap the entire owned session even after parent.poll() is non-null.
-            try:
-                if os.name == "posix":
-                    os.killpg(process.pid, signal.SIGKILL)
-                elif process.poll() is None:
-                    process.kill()
-            except (ProcessLookupError, OSError):
-                pass
-            try:
-                process.wait(timeout=1)
-            except subprocess.TimeoutExpired:
-                pass
+            self._transport.terminate()
 
     def close(self) -> None:
         """Stop the owned process group and release pipes within a bounded wait."""
@@ -775,10 +750,8 @@ class CodexProvider:
         for worker in self._threads:
             if worker is not threading.current_thread():
                 worker.join(timeout=1)
-        if self._process:
-            for stream in (self._process.stdin, self._process.stdout, self._process.stderr):
-                if stream:
-                    stream.close()
+        if self._transport:
+            self._transport.close()
         with self._lock:
             self._requests.clear()
             self._active.clear()

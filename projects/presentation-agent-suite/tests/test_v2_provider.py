@@ -326,6 +326,7 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual(provider._failure.code, "CONSUMER_BACKPRESSURE")
         self.assertEqual(provider._events.qsize(), 1)
 
+    @unittest.skipUnless(os.name == "posix", "POSIX desktop symlink fixture; Windows has an executable-layout fixture")
     def test_bundled_code_host_is_added_only_to_child_path(self) -> None:
         bundle = self.cwd / "Bundle Resources"
         bundle.mkdir()
@@ -346,6 +347,8 @@ class ProviderTests(unittest.TestCase):
         self.assertEqual(provider._runtime["status"], "PARTIALLY_VERIFIED")
 
     def npm_fixture(self, arch="arm64", *, nested=False, embedded=False, version="0.153.4"):
+        if os.name != "posix":
+            self.skipTest("POSIX npm symlink fixture; test_v2_stdio_transport covers Windows npm layout")
         root = self.cwd / ("npm-" + arch + ("-nested" if nested else "") + ("-embedded" if embedded else ""))
         main = root / "lib/node_modules/@openai/codex"
         (main / "bin").mkdir(parents=True)

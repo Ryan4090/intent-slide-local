@@ -121,7 +121,7 @@ class Engine:
         for stage, label in STAGES.items():
             units = [u for u in result["units"] if u["stage"] == stage]
             earned = sum(u["weight"] for u in units if u["status"] == "VALID")
-            outputs = [a for a in result["artifacts"] if a["stage"] == stage and a["kind"] != "attachment"]
+            outputs = [a for a in result["artifacts"] if a["stage"] == stage and a["kind"] not in {"attachment", "user_request"}]
             input_ids = {i for a in outputs if a["valid"] for i in a.get("depends_on", [])}
             if not input_ids:
                 input_ids = set(self._input_ids(result, stage))
@@ -212,7 +212,29 @@ class Engine:
 
     def _input_ids(self, body: dict, stage: str) -> list[str]:
         previous = {"intent": set(), "research": {"intent"}, "design": {"intent", "research"}}[stage]
-        return [a["id"] for a in body["artifacts"] if a["valid"] and (a["stage"] in previous or a["kind"] == "attachment")]
+        return [a["id"] for a in body["artifacts"] if a["valid"] and (a["stage"] in previous or a["kind"] in {"attachment", "user_request"})]
+
+    def _ensure_user_sources(self, body: dict) -> None:
+        """Snapshot service-recorded user statements, never worker-authored text.
+
+        Deferred until research queueing so existing text-only runs can retry
+        without migrating records or changing an already-approved G1 bundle.
+        """
+        for message in body["messages"]:
+            if message.get("role") != "user":
+                continue
+            content = message["content"].encode("utf-8")
+            expected = hashlib.sha256(content).hexdigest()
+            prior = next((a for a in body["artifacts"] if a["kind"] == "user_request"
+                          and a.get("provenance", {}).get("message_id") == message["id"]), None)
+            if prior:
+                if (not prior["valid"] or prior["sha256"] != expected
+                        or file_hash(safe_path(self.root, prior["path"])) != expected):
+                    raise ContractError("service user statement snapshot changed or is stale")
+                continue
+            artifact = self._artifact(body, f"user_request_{message['id']}.txt", content, "intent", "user_request")
+            artifact["provenance"] = {"origin": "user-message", "message_id": message["id"],
+                                      "recorded_at": now(), "fact_verification": "UNVERIFIED"}
 
     def _artifact(self, body: dict, name: str, content: bytes, stage: str, kind: str, depends_on=None) -> dict:
         artifact_id = uid("artifact")
@@ -296,7 +318,7 @@ class Engine:
                     break
                 selected = expanded
         else:
-            selected = {a["id"] for a in body["artifacts"] if a["stage"] in affected and a["kind"] != "attachment"}
+            selected = {a["id"] for a in body["artifacts"] if a["stage"] in affected and a["kind"] not in {"attachment", "user_request"}}
         for artifact in body["artifacts"]:
             if artifact["id"] in selected:
                 artifact["valid"] = False
@@ -387,6 +409,8 @@ class Engine:
                     self._approved(body, gate)
                 if body["active_phase"] in {"design_build", "design_review"}:
                     self._approved(body, "G3")
+                if body["active_phase"] == "research":
+                    self._ensure_user_sources(body)
                 body["jobs"].append({"id": uid("job"), "run_id": run_id, "phase": body["active_phase"], "stage": body["active_stage"], "attempt": len(body["jobs"]) + 1,
                                      "status": "QUEUED", "created_at": now(), "input_hash": self.input_hash(body),
                                      "provider_selection": normalize_selection(body.get("execution"))})
@@ -481,7 +505,8 @@ class Engine:
                 self._approved(body, "G1")
                 if body["active_stage"] != "research":
                     raise ContractError("research is not the active stage")
-                normalized = validate_research(data, body["intent"], body["artifacts"], partial=phase.endswith("checkpoint"), artifact_root=self.root)
+                normalized = validate_research(data, body["intent"], body["artifacts"], partial=phase.endswith("checkpoint"), artifact_root=self.root,
+                                               user_messages=body["messages"])
                 for a in body["artifacts"]:
                     if a["kind"] in {"research", "analysis_report", "analysis_pdf"} and a["valid"]:
                         a["valid"] = False

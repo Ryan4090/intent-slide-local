@@ -29,6 +29,17 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(self.client.get('/api/v2/runs', headers={"Host": "evil.test"}).status_code, 403)
         self.assertEqual(self.client.post('/api/v2/runs', json={}).status_code, 403)
 
+    def test_another_loopback_port_cannot_overwrite_this_instance_session(self):
+        other = create_app(self.engine, Path(self.tmp.name), bootstrap_token='second-instance')
+        browser = other.test_client()
+        self.assertEqual(browser.post('/api/v2/session', json={'bootstrap_token':'second-instance'}).status_code, 200)
+        name = other.config['SESSION_COOKIE_NAME']
+        cookie = browser.get_cookie(name)
+        # Browsers share a cookie jar across ports on the same localhost domain.
+        self.client.set_cookie(name, cookie.value)
+        self.assertEqual(self.client.get('/api/v2/runs').status_code, 200)
+        self.assertNotEqual(name, self.app.config['SESSION_COOKIE_NAME'])
+
     def test_upload_actual_bytes_and_reject_other_run_artifact(self):
         run = self.engine.create('운영 검토', '내부 검토', 'provided_only', 'c1')
         uploaded = self.client.post(f"/api/v2/runs/{run['id']}/attachments", headers=self.headers,

@@ -39,11 +39,12 @@ test('provider diagnostics preserve a newer selection made while the request is 
   assert.equal(state.preferred.provider, 'claude'); assert.strictEqual(state.capabilities, actual);
 });
 
-test('first visit adopts the server provider default and preserves an explicit saved preference', () => {
-  assert.equal(initialProvider({ default_provider: 'claude' }, null), 'claude');
-  assert.equal(initialProvider({ default_provider: 'claude' }, 'codex'), 'codex');
-  assert.equal(initialProvider(null, null), 'codex');
-  assert.equal(initialProvider({ default_provider: 'unknown' }, 'invalid'), 'codex');
+test('first visit selects a confirmed eligible saved preference, recommendation, or first available provider', () => {
+  const capabilities = { recommended_provider: 'claude', providers: ['codex', 'claude'].map((id) => ({ id, ready: true, auto_connect: true })) };
+  assert.equal(initialProvider(capabilities, null), 'claude');
+  assert.equal(initialProvider(capabilities, 'codex'), 'codex');
+  assert.equal(initialProvider(null, null), null);
+  assert.equal(initialProvider({ default_provider: 'unknown' }, 'invalid'), null);
 });
 
 

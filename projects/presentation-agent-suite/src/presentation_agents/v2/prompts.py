@@ -55,8 +55,15 @@ style/layout/text-fit changes preserving meaning target design. When uncertain u
 """,
     "research": """Research/analysis only, within approved source_mode. provided_only forbids external retrieval.
 Read the approved intent and every research requirement. Preserve requirement UIDs. Do not force the evidence to
-support the initial hypothesis. In provided_only, cite only original attachments or existing trusted derivatives;
-your own origin='provided' assertion does not grant provenance. A new external document needs a real preserved file.
+support the initial hypothesis. In provided_only, cite original attachments, service-owned user_request artifacts
+(provenance.origin='user-message'), or existing trusted derivatives. Use their existing artifact_id and SHA from
+input.json; do not redeclare or copy a conversation into a new source to claim provided provenance. The service
+binds user_request bytes to the original role=user message. Assistant text and the approved intent are not original
+user sources: intent is an approved structure/proposal, not proof of facts. Your own origin='provided' assertion
+does not grant provenance. User-statement claims must stay PROVIDED, ASSUMPTION or PROPOSAL, never SUPPORTED/PARTIAL;
+retain explicit synthetic/example/target qualifiers and limitations. PROVIDED verifies what the user stated, not
+whether it is measured or true. Keep calculations and targets based on synthetic inputs explicitly conditional.
+A new external document needs a real preserved file.
 data={sources:[{id,title,origin:'provided'|'external',status:'SNAPSHOT'|'UNAVAILABLE',artifact_id,sha256,accessed_at,url?}],
 claims:[{id,text,kind:'fact'|'numeric'|'derived'|'proposal',evidence_status:'SUPPORTED'|'PARTIAL'|'UNAVAILABLE'|'ASSUMPTION'|'PROVIDED'|'PROPOSAL',
 critical:true,supports:[{source_id,locator,excerpt}],limitations:[],unit?,population?,as_of?,formula?,input_claim_ids?}],
@@ -160,7 +167,8 @@ contact sheet and every supplied page render before PASS; a written assertion of
 def prompt_for(phase: str, repo_root: Path, *, reference_root: Path | None = None, provider="codex") -> str:
     if phase not in PHASES:
         raise ValueError(f"Unknown phase: {phase}")
-    context = f"\nRepository read-only reference root: {reference_root or repo_root}\nPython: {repo_root / '.venv/bin/python'}\n"
+    import sys
+    context = f"\nRepository read-only reference root: {reference_root or repo_root}\nPython: {sys.executable}\n"
     if reference_root:
         context += (f"Read owner documents and inspect shared code from the supplied reference snapshot at {reference_root}.\n"
                     f"Execute the installed shared scripts from {repo_root}, using their absolute paths and the Python above.\n"

@@ -19,6 +19,7 @@ from .contracts import Conflict, ContractError, digest, file_hash, now, safe_pat
 from .engine import Engine
 from .prompts import prompt_for
 from .provider import ProviderError
+from .login import BrowserLogin
 from .provider_registry import normalize_selection, provider_factory as make_provider, provider_metadata
 
 _LIVE_JOB_STATUSES = {"RUNNING", "WAITING_USER"}
@@ -191,14 +192,20 @@ class Runner:
         self.engine = engine
         self.repo_root = repo_root.resolve()
         self.provider_factory = provider_factory
-        self.default_provider = normalize_selection({"provider": default_provider})["provider"]
+        self._automatic_provider = default_provider == "auto"
+        self.default_provider = normalize_selection({"provider": "codex" if self._automatic_provider else default_provider})["provider"]
         self._lock = threading.RLock()
         self._worker = None
         self._provider = None
         self._active = None
+        self._discovery = {"status": "IDLE"}
+        self._discovery_thread = None
+        self._probes = set()
+        self._closed = False
+        self._login = BrowserLogin(finished=lambda: self.discover(refresh=True))
         self._capabilities = {"ready": None, "reason": "실행 전 연결 확인", "routes": {"main-svg-generation": "AVAILABLE", "beautify": "AVAILABLE", "template-fill": "BLOCKED_OWNER_ADAPTER", "native-enhance": "BLOCKED_OWNER_ADAPTER"}}
         self._provider_capabilities = {
-            item["id"]: {**item, "ready": None, "reason": "연결 확인을 눌러 설치와 로그인을 확인해 주세요",
+            item["id"]: {**item, "ready": None, "reason": "설치와 로그인을 자동으로 확인합니다",
                          "auth_mode": "unknown", "models": [], "features": {}}
             for item in provider_metadata()
         }
@@ -218,7 +225,75 @@ class Runner:
         with self._lock:
             return {**copy.deepcopy(self._capabilities), "default_provider": self.default_provider,
                     "providers": copy.deepcopy(list(self._provider_capabilities.values())),
+                    "discovery": copy.deepcopy(self._discovery),
+                    "login": self._login.snapshot(),
+                    "recommended_provider": next((p['id'] for p in self._provider_capabilities.values() if p.get('ready') is True and p.get('auto_connect') is True), None),
+                    "platform": {"name": sys.platform, "label": {"darwin":"Mac", "win32":"Windows", "linux":"Linux"}.get(sys.platform, sys.platform)},
                     "rendering": renderer_contract(self.repo_root)}
+
+    def discover(self, *, refresh=False):
+        """Probe native metadata in the background, never submit a model job."""
+        with self._lock:
+            if self._closed:
+                return self.capabilities()
+            if self._active:
+                result = self.capabilities()
+                result['discovery'] = {'status':'DEFERRED', 'reason':'현재 AI 작업을 유지합니다. 작업 완료 후 다시 탐색할 수 있습니다.'}
+                return result
+            if self._discovery['status'] == 'RUNNING' or (not refresh and self._discovery['status'] == 'COMPLETE'):
+                return self.capabilities()
+            self._discovery = {'status':'RUNNING'}
+            self._discovery_thread = threading.Thread(target=self._discover, name='intent-slide-discovery', daemon=True)
+            self._discovery_thread.start()
+        return self.capabilities()
+
+    def _discover(self):
+        # Independent native probes do not hold the engine lock while awaiting I/O.
+        from concurrent.futures import ThreadPoolExecutor, as_completed
+        def probe(provider_id):
+            try:
+                with self._make_provider(provider_id) as provider:
+                    with self._lock:
+                        if self._closed:
+                            return {'ready': False, 'reason': '작업실이 종료되었습니다'}
+                        self._probes.add(provider)
+                    deadline = threading.Timer(30, provider.close)
+                    deadline.daemon = True
+                    deadline.start()
+                    try:
+                        return provider.preflight()
+                    finally:
+                        deadline.cancel()
+                        with self._lock:
+                            self._probes.discard(provider)
+            except (ProviderError, OSError, RuntimeError, ValueError, ImportError) as exc:
+                return {'ready':False, 'auth_mode':'unknown', 'reason': '설치 또는 공식 로그인을 확인해 주세요', 'code':getattr(exc, 'code', type(exc).__name__)}
+        try:
+            with ThreadPoolExecutor(max_workers=4, thread_name_prefix='intent-ai-probe') as pool:
+                pending = {pool.submit(probe, provider_id):provider_id for provider_id in self._provider_capabilities}
+                for future in as_completed(pending):
+                    with self._lock:
+                        self._remember_capabilities(pending[future], future.result())
+            with self._lock:
+                if self._automatic_provider and not self._active:
+                    ready = [p for p in self._provider_capabilities.values() if p.get('ready') is True and p.get('auto_connect') is True]
+                    if ready:
+                        self.default_provider = ready[0]['id']
+                        self._capabilities.update(copy.deepcopy(ready[0]))
+                self._discovery = {'status':'COMPLETE'}
+        except Exception:
+            with self._lock:
+                self._discovery = {'status':'COMPLETE', 'reason':'일부 연결을 확인하지 못했습니다. 다시 탐색할 수 있습니다.'}
+
+    def login(self, provider_id):
+        if provider_id != 'codex':
+            raise ContractError('화면에서 로그인은 내장 Codex를 지원합니다')
+        with self._lock:
+            if self._active or any(job['status'] == 'QUEUED' for run in self.engine.store.list() for job in run['jobs']):
+                raise Conflict('현재 AI 작업을 마친 뒤 로그인해 주세요')
+            if self._provider_capabilities['codex'].get('ready') is True:
+                return {'status': 'ALREADY_CONNECTED', 'provider': 'codex'}
+            return self._login.start()
 
     def preflight(self, provider_id=None):
         provider_id = normalize_selection({"provider": provider_id or self.default_provider})["provider"]
@@ -235,6 +310,8 @@ class Runner:
 
     def kick(self):
         with self._lock:
+            if self._closed or self._login.snapshot()['status'] in {'STARTING', 'RUNNING'}:
+                return
             if self._worker and self._worker.is_alive():
                 return
             self._worker = threading.Thread(target=self._loop, name="slidemaster-worker", daemon=True)
@@ -242,14 +319,21 @@ class Runner:
 
     def _loop(self):
         while True:
-            with self._lock:
-                run = next((r for r in reversed(self.engine.store.list()) if any(j["status"] == "QUEUED" for j in r["jobs"])), None)
-                if not run:
-                    self._worker = None
-                    return
+            job = None
             try:
-                job = None
-                job = self.engine.claim_job(run["id"])
+                with self._lock:
+                    if self._closed or self._login.snapshot()['status'] in {'STARTING', 'RUNNING'}:
+                        self._worker = None
+                        return
+                    run = next((r for r in reversed(self.engine.store.list()) if any(j["status"] == "QUEUED" for j in r["jobs"])), None)
+                    if not run:
+                        self._worker = None
+                        return
+                    job = self.engine.claim_job(run["id"])
+                    # Reserve the claimed attempt before preparation so login
+                    # cannot start in the gap before a provider is registered.
+                    self._active = {"run_id": run["id"], "job_id": job["id"],
+                                    "provider_id": normalize_selection(job.get("provider_selection"))["provider"]}
                 self._execute(run["id"], job)
             except Exception as exc:
                 # Preserve this attempt and expose the failure; never generate a PASS fallback.
@@ -261,8 +345,9 @@ class Runner:
                     pass
             finally:
                 with self._lock:
-                    self._active = None
-                    self._provider = None
+                    if job is not None and self._active and self._active["job_id"] == job["id"]:
+                        self._active = None
+                        self._provider = None
 
     def _mutate_live_job(self, run_id, job_id, event, apply):
         """Check the terminal-state boundary inside the same SQLite transaction."""
@@ -759,9 +844,12 @@ class Runner:
                     self._mutate_live_job(run_id, job["id"], "provider.resolved", resolved)
                 except Conflict:
                     return
-        with self._make_provider(selection["provider"]) as provider:
+        with self._lock:
+            if self._closed:
+                raise ProviderError("CLOSED", "Runner closed before provider startup")
+            provider = self._make_provider(selection["provider"])
             self._provider = provider
-            self._active = {"run_id": run_id, "job_id": job["id"], "provider_id": selection["provider"]}
+        with provider:
             readiness = provider.preflight()
             self._remember_capabilities(selection["provider"], readiness)
             if not readiness.get("ready"):
@@ -910,5 +998,8 @@ class Runner:
 
     def close(self):
         with self._lock:
-            if self._provider:
-                self._provider.close()
+            self._closed = True
+            providers = list(self._probes) + ([self._provider] if self._provider else [])
+        self._login.close()
+        for provider in providers:
+            provider.close()

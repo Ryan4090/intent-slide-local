@@ -537,6 +537,17 @@ iframe.artifact-preview { height: 60vh; }
 .setup-bottom p { font-size: 12px; color: var(--muted); margin-top: 4px; }
 #provider-form select, #create-form select { min-height: 44px; }
 #run-provider-status, #create-provider-status { margin: 8px 0 12px; }
+.discovery-status { display: flex; align-items: flex-start; gap: 18px; max-width: 760px; border-left: 3px solid var(--accent); padding: 15px 18px; margin: 22px 0; background: var(--accent-soft); text-align: left; }
+.discovery-status>div { flex: 1; min-width: 0; }
+.discovery-status strong { font-size: 14px; }
+.discovery-status p, .discovery-status details { margin-top: 5px; font-size: 12px; line-height: 1.7; overflow-wrap: anywhere; }
+.discovery-status .ready-providers { color: var(--ink); font-weight: 600; }
+.discovery-status .text-button { flex-shrink: 0; min-height: 36px; }
+.execution-options { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 14px; margin: 14px 0 20px; }
+.execution-options label { display: block; margin-bottom: 7px; }
+.execution-options select { width: 100%; min-width: 0; }
+.billing-notice { padding: 12px 14px; margin: 10px 0; border: 1px solid #d7cfae; background: #f7f2e5; color: #6a5622; font-size: 12px; line-height: 1.8; overflow-wrap: anywhere; }
+@media (max-width: 520px) { .execution-options { grid-template-columns: minmax(0, 1fr); } .discovery-status { flex-wrap: wrap; } }
 @media (min-width: 1600px) { .workspace-grid { grid-template-columns: 390px minmax(0, 1fr); } }
 @media (max-width: 1200px) {
   .workspace-grid { grid-template-columns: 300px minmax(0, 1fr); gap: 20px; }
@@ -607,3 +618,7 @@ iframe.artifact-preview { height: 60vh; }
 .claim-conditions { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 5px 12px; margin: 11px 0; padding: 10px 12px; background: #f2f5ee; border-radius: 5px; font-size: 12px; }
 .claim-conditions dt { color: var(--muted); }
 .claim-conditions dd { margin: 0; overflow-wrap: anywhere; }
+
+.browser-login { display: grid; gap: 10px; align-content: start; }
+.browser-login p { margin: 0; max-width: 34ch; font-size: 13px; line-height: 1.5; }
+.browser-login .button { white-space: normal; }

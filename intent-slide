@@ -1,12 +1,36 @@
 #!/bin/sh
-# All paths are relative to this checkout; no global install or shell profile edit.
+# Bootstrap from freshly extracted, pinned bytes. No cached interpreter or download.
 set -eu
-intent_root=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-if [ -x "$intent_root/.venv/bin/python" ]; then
-  exec "$intent_root/.venv/bin/python" "$intent_root/scripts/local_mvp.py" "$@"
+for intent_arg in "$@"; do
+  case "$intent_arg" in -h|--help) printf '%s\n' 'Intent-Slide: ./intent-slide [start|setup|doctor] [--open] [--provider auto|codex|claude|gemini|opencode]'; exit 0;; esac
+done
+if [ -L "$0" ]; then printf '%s\n' 'Open the launcher in the real clone directory.' >&2; exit 2; fi
+intent_root=$(CDPATH= cd -- "$(/usr/bin/dirname -- "$0")" && pwd -P)
+case "$(/usr/bin/uname -s)-$(/usr/bin/uname -m)" in
+  Darwin-arm64) intent_platform=darwin-arm64; intent_sha=81a359f1cfadd4da11766534c5913791cea55f26e1bb902cacd2a531bb1e4b2b;;
+  Darwin-x86_64) intent_platform=darwin-x64; intent_sha=65b195c9cedc1fef6767f044f9822069adbd1bd9204d424ece4628776fdc04bb;;
+  *) printf '%s\n' 'Supported: Windows x64 and Mac Intel/Apple Silicon. Linux is not supported.' >&2; exit 2;;
+esac
+for intent_relative in vendor vendor/portable vendor/portable/python .runtime scripts scripts/portable_bootstrap.py; do
+  if [ -L "$intent_root/$intent_relative" ]; then printf '%s\n' 'Symlink runtime paths are not supported.' >&2; exit 2; fi
+done
+intent_archive="$intent_root/vendor/portable/python/$intent_platform.tar.gz"
+if [ ! -f "$intent_archive" ] || [ -L "$intent_archive" ]; then
+  printf '%s\n' 'Bundled runtime is missing. Use a complete clone of Intent-Slide.' >&2; exit 2
 fi
-if command -v python3.12 >/dev/null 2>&1; then
-  exec python3.12 "$intent_root/scripts/local_mvp.py" "$@"
+/bin/mkdir -p "$intent_root/.runtime"
+intent_stage=$(/usr/bin/mktemp -d "$intent_root/.runtime/bootstrap.XXXXXX")
+# This trap removes only the temporary directory created by this invocation.
+trap '/bin/rm -rf -- "$intent_stage"' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM HUP
+/bin/cp "$intent_archive" "$intent_stage/python.tar.gz"
+intent_actual=$(/usr/bin/env -i PATH=/usr/bin:/bin /usr/bin/shasum -a 256 "$intent_stage/python.tar.gz")
+intent_actual=${intent_actual%% *}
+if [ "$intent_actual" != "$intent_sha" ]; then
+  printf '%s\n' 'Bundled runtime changed. Use a complete clone of Intent-Slide.' >&2; exit 2
 fi
-printf '%s\n' 'Intent-Slide에는 Python 3.12가 필요합니다. 설치 후 ./intent-slide setup을 실행하세요.' >&2
-exit 2
+/usr/bin/env -i PATH=/usr/bin:/bin /usr/bin/tar -xzf "$intent_stage/python.tar.gz" -C "$intent_stage"
+# -I ignores Python startup variables; strip dynamic-loader injection as well.
+unset PYTHONHOME PYTHONPATH __PYVENV_LAUNCHER__ DYLD_INSERT_LIBRARIES DYLD_LIBRARY_PATH DYLD_FRAMEWORK_PATH DYLD_FALLBACK_LIBRARY_PATH DYLD_FALLBACK_FRAMEWORK_PATH LD_PRELOAD LD_LIBRARY_PATH
+PYTHONUTF8=1 PYTHONDONTWRITEBYTECODE=1 "$intent_stage/python/bin/python3.12" -I -B "$intent_root/scripts/portable_bootstrap.py" "$@"

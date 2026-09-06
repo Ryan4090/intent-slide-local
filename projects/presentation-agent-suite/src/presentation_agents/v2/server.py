@@ -13,15 +13,19 @@ from .contracts import Conflict, ContractError
 from .engine import Engine
 
 
-def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_token: str | None = None) -> Flask:
+def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_token: str | None = None, instance_id: str | None = None) -> Flask:
     app = Flask(__name__, static_folder=None)
     app.secret_key = secrets.token_hex(32)
     app.config.update(MAX_CONTENT_LENGTH=101 * 1024 * 1024, SESSION_COOKIE_HTTPONLY=True,
-                      SESSION_COOKIE_SAMESITE="Strict", SESSION_COOKIE_NAME="slidemaster_session")
+                      SESSION_COOKIE_SAMESITE="Strict", SESSION_COOKIE_NAME="intent_slide_" + secrets.token_hex(12))
     bootstrap = bootstrap_token or secrets.token_urlsafe(32)
     app.extensions["bootstrap_token"] = bootstrap
     app.extensions["bootstrap_used"] = False
     bootstrap_lock = threading.Lock()
+
+    @app.get('/healthz')
+    def health():
+        return jsonify(service='intent-slide', instance_id=instance_id)
 
     def json_object():
         data = request.get_json(silent=True)
@@ -165,6 +169,24 @@ def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_toke
             raise ContractError("읽기 전용 작업실에서는 AI 연결을 확인할 수 없습니다")
         data = json_object()
         return jsonify(runner.preflight(data.get("provider")))
+
+    @app.post('/api/v2/providers/login')
+    def provider_login():
+        if not runner:
+            raise ContractError('읽기 전용 작업실입니다')
+        data = json_object()
+        if set(data) != {'provider'}:
+            raise ContractError('provider만 지정하세요')
+        return jsonify(runner.login(data['provider']))
+
+    @app.post('/api/v2/capabilities/discover')
+    def discover():
+        if not runner:
+            return jsonify(ready=False, providers=[], discovery={'status':'DEFERRED', 'reason':'읽기 전용 작업실입니다'})
+        data = json_object()
+        if set(data) - {'refresh'} or ('refresh' in data and type(data['refresh']) is not bool):
+            raise ContractError('refresh must be a boolean')
+        return jsonify(runner.discover(refresh=data.get('refresh', False)))
 
     @app.get("/")
     def index():

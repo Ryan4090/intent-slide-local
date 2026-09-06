@@ -1,0 +1,19 @@
+test_app_local_runtime_keeps_original_and_is_idempotent (__main__.self_test.<locals>.PackagingTests.test_app_local_runtime_keeps_original_and_is_idempotent) ... ok
+test_app_local_runtime_rejects_existing_other_bytes (__main__.self_test.<locals>.PackagingTests.test_app_local_runtime_rejects_existing_other_bytes) ... ok
+test_app_local_runtime_rejects_hash_mismatch (__main__.self_test.<locals>.PackagingTests.test_app_local_runtime_rejects_hash_mismatch) ... ok
+test_app_local_runtime_rejects_other_architecture (__main__.self_test.<locals>.PackagingTests.test_app_local_runtime_rejects_other_architecture) ... ok
+test_app_local_runtime_rejects_symlink (__main__.self_test.<locals>.PackagingTests.test_app_local_runtime_rejects_symlink) ... ok
+test_changed_archive_is_not_overwritten (__main__.self_test.<locals>.PackagingTests.test_changed_archive_is_not_overwritten) ... ok
+test_deterministic_archive_preserves_bytes (__main__.self_test.<locals>.PackagingTests.test_deterministic_archive_preserves_bytes) ... ok
+test_external_link_rejected (__main__.self_test.<locals>.PackagingTests.test_external_link_rejected) ... ok
+test_internal_link_and_original_notice (__main__.self_test.<locals>.PackagingTests.test_internal_link_and_original_notice) ... ok
+test_missing_entry_rejected (__main__.self_test.<locals>.PackagingTests.test_missing_entry_rejected) ... ok
+test_missing_notices_rejected (__main__.self_test.<locals>.PackagingTests.test_missing_notices_rejected) ... ok
+test_multiple_parts_preserve_order (__main__.self_test.<locals>.PackagingTests.test_multiple_parts_preserve_order) ... ok
+test_parts_reassemble_and_tampering_fails (__main__.self_test.<locals>.PackagingTests.test_parts_reassemble_and_tampering_fails) ... ok
+test_privileged_mode_rejected (__main__.self_test.<locals>.PackagingTests.test_privileged_mode_rejected) ... ok
+
+----------------------------------------------------------------------
+Ran 14 tests in 0.031s
+
+OK

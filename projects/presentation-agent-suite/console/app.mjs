@@ -6,8 +6,10 @@ import {
 } from './core.mjs';
 import {
   ARTIFACT_LABELS, CHECKPOINTS, checkpointView, currentArtifacts, displayValue, executionSelection,
-  nextAction, providerAnswerPayload, providersView, releaseView, researchSummary, reviewView, stageFiles, startCreatedProject, initialProvider, recoverEventStream, refreshProviderState, claimCategory, claimConditions,
+  nextAction, providerAnswerPayload, providersView, releaseView, researchSummary, reviewView, stageFiles, startCreatedProject, initialProvider, recoverEventStream, claimCategory, claimConditions,
+  modelOptions, effortOptions, validateExecutionSelection, applyDiscoverySnapshot,
 } from './product.mjs';
+import { createDiscovery, createLogin } from './connection.mjs';
 
 const api = new ConsoleApi();
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -26,11 +28,14 @@ const state = {
   screen: 'work', providerBusy: false, preferred: { provider: null, model: null, effort: null },
   authExpired: false, streamGeneration: 0,
   evidenceFilter: 'all', reviewContext: null, providerContext: null,
+  discovery: null, discoveryGeneration: 0, discoveryState: 'IDLE', discoveryError: '',
+  choiceGeneration: 0, explicitProviderChoice: false, welcomeAfterDiscovery: false,
+  login: null, loginBusy: false,
 };
 
 try {
   const provider = localStorage.getItem('intent-slide.provider');
-  if (['codex', 'claude'].includes(provider)) state.preferred.provider = provider;
+  if (provider && /^[a-z][a-z0-9_-]{0,63}$/.test(provider)) state.preferred.provider = provider;
 } catch { /* Preferences are optional; no secrets or conversation are stored here. */ }
 
 function selectedProvider(selection = state.preferred) {
@@ -38,8 +43,105 @@ function selectedProvider(selection = state.preferred) {
 }
 
 function rememberProvider(id) {
+  state.choiceGeneration += 1;
+  state.explicitProviderChoice = true;
   state.preferred = { provider: id, model: null, effort: null };
   try { localStorage.setItem('intent-slide.provider', id); } catch { /* Optional preference. */ }
+}
+
+function discoveryMarkup() {
+  const ready = providersView(state.capabilities).filter((provider) => provider.ready);
+  const selected = selectedProvider();
+  const status = state.discoveryState;
+  const message = status === 'RUNNING' ? '설치된 AI와 로그인 상태를 자동으로 확인하고 있습니다.'
+    : status === 'DEFERRED' ? '현재 AI 작업이 끝난 뒤 연결 상태를 다시 확인할 수 있습니다.'
+      : status === 'TIMEOUT' ? '연결 확인이 오래 걸려 자동 탐색을 멈췄습니다. 확인된 도구는 사용할 수 있습니다.'
+        : status === 'ERROR' ? 'AI 연결을 확인하지 못했습니다. 다시 탐색하거나 진단을 확인해 주세요.'
+          : ready.length ? `${ready.length}개 AI를 사용할 수 있습니다. ${selected?.ready ? `${selected.label}를 선택했습니다.` : '함께 작업할 AI를 선택해 주세요.'}`
+            : '내장 Codex로 시작할 수 있습니다. 처음 한 번 본인 계정으로 로그인해 주세요.';
+  return `<div class="discovery-status" role="status" aria-live="polite" ${status === 'RUNNING' ? 'aria-busy="true"' : ''}><div><strong>${status === 'RUNNING' ? 'AI 자동 탐색 중' : ready.length ? '내 AI 연결' : 'AI 연결 확인'}</strong><p>${e(message)}</p>${ready.length ? `<p class="ready-providers">${ready.map((provider) => e(provider.label)).join(' · ')}</p>` : ''}${state.discoveryError ? `<details><summary>연결 진단 상세</summary><p>${e(state.discoveryError)}</p></details>` : ''}</div>${loginMarkup()}<button class="text-button" data-action="discover-providers" ${state.providerBusy ? 'disabled' : ''}>다시 탐색</button></div>`;
+}
+
+function loginMarkup() {
+  const codex = providersView(state.capabilities).find((p) => p.id === 'codex');
+  if (!codex || codex.ready) return '';
+  const status = state.capabilities.login?.status;
+  const busy = state.loginBusy || ['STARTING', 'RUNNING'].includes(status);
+  const message = busy ? '열린 공식 로그인 창에서 본인 계정으로 로그인해 주세요.'
+    : status === 'TIMEOUT' ? '로그인 시간이 지났습니다. 다시 시작할 수 있습니다.'
+      : status === 'FAILED' ? '로그인을 완료하지 못했습니다. 다시 시도해 주세요.' : 'Codex가 포함되어 있어 별도 설치가 필요 없습니다.';
+  return `<div class="browser-login"><p role="status">${e(message)}</p><button class="button primary" data-action="login-codex" ${busy || activeJobs(state.run || {}).length ? 'disabled' : ''}>${busy ? '공식 로그인 대기 중…' : 'Codex 계정으로 로그인 ↗'}</button></div>`;
+}
+
+async function loginCodex() {
+  if (state.loginBusy || !state.connected || state.authExpired) return;
+  stopDiscovery(); state.login?.stop();
+  const boot = state.bootGeneration, choice = state.choiceGeneration;
+  state.loginBusy = true;
+  const isCurrent = () => boot === state.bootGeneration && !state.authExpired;
+  state.login = createLogin({ api, isCurrent,
+    onSnapshot(capabilities) {
+      applyDiscoverySnapshot(state, capabilities, choice);
+      state.loginBusy = ['STARTING', 'RUNNING'].includes(capabilities.login?.status);
+      state.discoveryState = capabilities.discovery?.status || 'IDLE';
+      if (!state.loginBusy && selectedProvider()?.ready) announce('AI 계정을 연결했습니다. 바로 프로젝트를 시작할 수 있습니다.');
+      refreshConnectionSurfaces();
+    },
+    onError(error) { state.loginBusy = false; handleError(error); refreshConnectionSurfaces(); },
+    onTimeout() { state.loginBusy = false; announce('로그인 결과를 다시 탐색해 주세요.', 'warning'); refreshConnectionSurfaces(); },
+  });
+  refreshConnectionSurfaces();
+  return state.login.start();
+}
+
+function stopDiscovery() {
+  state.discoveryGeneration += 1;
+  state.discovery?.stop(); state.discovery = null; state.providerBusy = false;
+  if (state.discoveryState === 'RUNNING') state.discoveryState = 'IDLE';
+}
+
+function refreshConnectionSurfaces() {
+  if (state.authExpired) return;
+  const focusedId = document.activeElement?.id;
+  const focusedProvider = document.activeElement?.name === 'setup-provider' ? document.activeElement.value : null;
+  if (state.screen === 'setup') renderSetup();
+  else if (!state.run || state.screen === 'home') renderWelcome();
+  if ($('#create-dialog').open) {
+    const selection = readExecutionForm('create-provider');
+    populateProviderSelect('create-provider', selection.provider ? selection : state.preferred);
+  }
+  if ($('#provider-dialog').open) populateProviderSelect('run-provider', readExecutionForm('run-provider'));
+  if (focusedId) document.getElementById(focusedId)?.focus({ preventScroll: true });
+  else if (focusedProvider) [...document.querySelectorAll('input[name="setup-provider"]')].find((input) => input.value === focusedProvider)?.focus({ preventScroll: true });
+}
+
+function discoverProviders(refresh = false) {
+  if (!state.connected || state.authExpired) return;
+  stopDiscovery();
+  const generation = state.discoveryGeneration, boot = state.bootGeneration, choice = state.choiceGeneration;
+  state.providerBusy = true; state.discoveryState = 'RUNNING'; state.discoveryError = '';
+  const isCurrent = () => generation === state.discoveryGeneration && boot === state.bootGeneration && !state.authExpired;
+  state.discovery = createDiscovery({ api, isCurrent,
+    onSnapshot(capabilities) {
+      applyDiscoverySnapshot(state, capabilities, choice);
+      state.discoveryState = capabilities?.discovery?.status || 'IDLE';
+      state.discoveryError = typeof capabilities?.discovery?.reason === 'string' ? capabilities.discovery.reason : '';
+      state.providerBusy = state.discoveryState === 'RUNNING';
+      if (state.welcomeAfterDiscovery && selectedProvider()?.ready && state.screen === 'setup') {
+        state.welcomeAfterDiscovery = false; state.screen = 'home';
+      }
+      refreshConnectionSurfaces();
+    },
+    onError(error) {
+      state.providerBusy = false; state.discoveryState = 'ERROR'; state.discoveryError = error.message || '';
+      if ([401, 403].includes(error.status)) handleError(error); else refreshConnectionSurfaces();
+    },
+    onTimeout() {
+      state.providerBusy = false; state.discoveryState = 'TIMEOUT'; refreshConnectionSurfaces();
+    },
+  });
+  refreshConnectionSurfaces();
+  return state.discovery.start(refresh);
 }
 
 function badge(status) {
@@ -75,6 +177,7 @@ function renderWelcome() {
       <span class="eyebrow">FROM INTENT TO IMPACT</span>
       <h1>전하고 싶은 생각을,<br>근거 있는 슬라이드로.</h1>
       <p class="welcome-intro">대화로 의도를 정하고, 조사로 내용을 채우고,<br>검토를 거쳐 슬라이드를 완성합니다.<br>세 단계의 입력과 결과를 내 작업실에서 확인하세요.</p>
+      ${discoveryMarkup()}
       <button class="button primary" data-action="new-project">첫 프로젝트 시작하기 <span aria-hidden="true">→</span></button>
       <div class="welcome-track">
         <article class="welcome-stage"><span class="number">01</span><h2>의도·구조 확정</h2><p>청중, 목적, 메시지와 구성을 정리합니다.<br>확정한 내용은 승인본으로 남깁니다.</p></article>
@@ -92,7 +195,7 @@ function renderSetup() {
   const providers = providersView(state.capabilities);
   const selected = selectedProvider();
   $('#breadcrumb').textContent = 'AI 연결과 준비';
-  $('#main-content').innerHTML = `<section class="setup-page"><span class="eyebrow">시작 준비</span><h1>내 AI 구독으로<br>작업실을 연결하세요.</h1><p class="setup-intro">Intent-Slide는 이 Mac에서 실행됩니다. 본인의 Codex 또는 Claude Code 정액제 로그인을 사용하며, 비밀번호나 API 키를 이 화면에 입력하지 않습니다. 작업에 필요한 요청과 자료는 선택한 AI 제공자에게 전달됩니다.</p><div class="setup-steps"><span>1. AI 선택</span><span>2. 설치·로그인 확인</span><span>3. 첫 대화 시작</span></div><div class="provider-grid">${providers.map((provider) => `<article class="provider-card ${state.preferred.provider === provider.id ? 'selected' : ''}"><label><input type="radio" name="setup-provider" value="${e(provider.id)}" ${state.preferred.provider === provider.id ? 'checked' : ''}><strong>${e(provider.label)}</strong>${provider.id === 'claude' ? '<span class="badge warning">Beta</span>' : ''}</label><p class="provider-status ${provider.ready ? 'ready' : ''}">${e(provider.statusText)}</p>${provider.id === 'claude' ? '<p class="beta-note">실제 슬라이드 제작 검증을 기다리고 있습니다. 연결과 로그인 확인 후 선택할 수 있습니다.</p>' : ''}${provider.reason ? `<details class="provider-diagnostic"><summary>연결 진단 상세</summary><p>${e(provider.reason)}</p></details>` : ''}${!provider.ready ? `<div class="setup-instructions"><p>설치가 안 되어 있다면 공식 안내에 따라 설치한 뒤, 터미널에서 본인 계정으로 로그인해 주세요.</p>${safeExternalLink(provider.install_url, '공식 설치 안내 ↗')}${provider.login_command ? `<p>로그인 명령</p><code>${e(provider.login_command)}</code>` : ''}${provider.auth_mode === 'api_key' ? '<p>현재 API 키 연결이 감지되었습니다. 정액제 계정으로 로그인한 뒤 다시 확인하세요.</p>' : ''}</div>` : ''}<button class="button secondary" data-check-provider="${e(provider.id)}" ${state.providerBusy ? 'disabled' : ''}>${state.providerBusy ? '연결 확인 중…' : '설치·로그인 다시 확인'}</button></article>`).join('') || '<div class="empty-panel"><h2>AI 연결 정보를 불러오지 못했습니다.</h2><p>작업실 실행 파일이 최신인지 확인하고 다시 연결해 주세요.</p><button class="button secondary" data-action="refresh-capabilities">준비 상태 다시 불러오기</button></div>'}</div><div class="setup-bottom"><div><strong>${selected?.ready ? `${e(selected.label)} 연결 준비 완료` : '설치와 로그인을 확인해 주세요'}</strong><p>${selected?.ready ? '이제 첫 이야기를 시작할 수 있습니다.' : '준비가 끝나면 연결 확인을 눌러 주세요.'}</p></div><button class="button primary" data-action="setup-complete" ${!selected?.ready || state.providerBusy ? 'disabled' : ''}>작업실 시작하기 →</button>${state.run ? '<button class="text-button" data-action="back-work">현재 프로젝트로 돌아가기</button>' : ''}</div><details class="technical-details"><summary>제작 도구와 진단 상세</summary><p>파일 검사와 미리보기에 사용하는 로컬 도구의 상태입니다.</p><pre class="source-text">${e(JSON.stringify({ rendering: state.capabilities.rendering, ready: state.capabilities.ready, reason: state.capabilities.reason }, null, 2))}</pre></details></section>`;
+  $('#main-content').innerHTML = `<section class="setup-page"><span class="eyebrow">시작 준비</span><h1>내 AI 구독으로<br>작업실을 연결하세요.</h1><p class="setup-intro">Intent-Slide는 이 컴퓨터${state.capabilities.platform?.label ? ` (${e(state.capabilities.platform.label)})` : ''}에서 실행됩니다. 설치된 AI 도구의 기존 로그인과 설정을 사용하며, 비밀번호나 API 키를 이 화면에 입력하지 않습니다. 작업에 필요한 요청과 자료는 선택한 AI 제공자에게 전달됩니다.</p><div class="setup-steps"><span>1. 자동 탐색</span><span>2. 내 계정 연결</span><span>3. 첫 대화 시작</span></div>${discoveryMarkup()}<div class="provider-grid">${providers.map((provider) => `<article class="provider-card ${state.preferred.provider === provider.id ? 'selected' : ''}"><label><input type="radio" name="setup-provider" value="${e(provider.id)}" ${state.preferred.provider === provider.id ? 'checked' : ''}><strong>${e(provider.label)}</strong>${provider.beta || provider.id === 'claude' ? '<span class="badge warning">Beta</span>' : ''}</label><p class="provider-status ${provider.ready ? 'ready' : ''}">${e(provider.statusText)}</p>${provider.id === 'claude' ? '<p class="beta-note">실제 슬라이드 제작 검증을 기다리고 있습니다. 연결과 로그인 확인 후 선택할 수 있습니다.</p>' : ''}${provider.billing_notice ? `<p class="billing-notice">${e(provider.billing_notice)}</p>` : ''}${provider.reason ? `<details class="provider-diagnostic"><summary>연결 진단 상세</summary><p>${e(provider.reason)}</p></details>` : ''}${!provider.ready ? `<div class="setup-instructions"><p>준비된 AI 도구와 기존 로그인을 자동으로 찾습니다. 계정 연결이 필요하면 공식 절차에 따라 본인 계정으로 로그인해 주세요.</p>${provider.install_url ? `<details class="optional-tool"><summary>선택 사항 · AI 도구 추가 안내</summary>${safeExternalLink(provider.install_url, '공식 도구 안내 ↗')}</details>` : ''}${provider.login_command && provider.id !== 'codex' ? `<p>로그인 명령</p><code>${e(provider.login_command)}</code>` : ''}${provider.auth_mode === 'api_key' ? '<p>현재 API 키 연결이 감지되었습니다. 정액제 계정으로 로그인한 뒤 다시 확인하세요.</p>' : ''}</div>` : ''}<button class="button secondary" data-check-provider="${e(provider.id)}" ${state.providerBusy ? 'disabled' : ''}>${state.providerBusy ? '연결 확인 중…' : '로그인·연결 다시 확인'}</button></article>`).join('') || '<div class="empty-panel"><h2>AI 연결 정보를 불러오지 못했습니다.</h2><p>작업실 실행 파일이 최신인지 확인하고 다시 연결해 주세요.</p><button class="button secondary" data-action="refresh-capabilities">준비 상태 다시 불러오기</button></div>'}</div><div class="setup-bottom"><div><strong>${selected?.ready ? `${e(selected.label)} 연결 준비 완료` : 'AI 계정 연결을 확인해 주세요'}</strong><p>${selected?.ready ? '이제 첫 이야기를 시작할 수 있습니다.' : '로그인한 뒤 다시 탐색을 눌러 주세요.'}</p></div><button class="button primary" data-action="setup-complete" ${!selected?.ready ? 'disabled' : ''}>작업실 시작하기 →</button>${state.run ? '<button class="text-button" data-action="back-work">현재 프로젝트로 돌아가기</button>' : ''}</div><details class="technical-details"><summary>제작 도구와 진단 상세</summary><p>파일 검사와 미리보기에 사용하는 로컬 도구의 상태입니다.</p><pre class="source-text">${e(JSON.stringify({ rendering: state.capabilities.rendering, ready: state.capabilities.ready, reason: state.capabilities.reason }, null, 2))}</pre></details></section>`;
 }
 
 function safeExternalLink(value, label) {
@@ -105,30 +208,70 @@ function safeExternalLink(value, label) {
 
 function populateProviderSelect(id, selection) {
   const select = document.getElementById(id);
-  select.innerHTML = providersView(state.capabilities).map((provider) => `<option value="${e(provider.id)}">${e(provider.label)}${provider.id === 'claude' ? ' (Beta)' : ''} · ${e(provider.statusText)}</option>`).join('');
-  select.value = selection.provider;
+  const markup = '<option value="">AI를 선택하세요</option>' + providersView(state.capabilities).map((provider) => `<option value="${e(provider.id)}" ${provider.ready ? '' : 'disabled'}>${e(provider.label)}${provider.beta || provider.id === 'claude' ? ' (Beta)' : ''} · ${e(provider.statusText)}</option>`).join('');
+  setSelectOptions(select, markup);
+  select.value = selection?.provider || '';
+  populateExecutionOptions(id, selection || {});
   updateProviderStatus(id);
+  if (id === 'run-provider') lockProviderForm();
+}
+
+function setSelectOptions(select, markup) {
+  if (select.dataset.optionsMarkup !== markup) { select.innerHTML = markup; select.dataset.optionsMarkup = markup; }
+}
+
+function lockProviderForm() {
+  const busy = state.pending || activeJobs(state.run).length > 0 || state.providerContext?.id !== state.run?.id;
+  $('#run-provider').disabled = busy;
+  for (const suffix of ['model', 'effort']) {
+    const select = document.getElementById(`run-provider-${suffix}`);
+    select.disabled = busy || (select.options.length <= 1 && !select.value);
+  }
+  $('#provider-form button[type="submit"]').disabled = busy;
+}
+
+function readExecutionForm(id) {
+  return { provider: document.getElementById(id).value,
+    model: document.getElementById(`${id}-model`).value || null,
+    effort: document.getElementById(`${id}-effort`).value || null };
+}
+
+function populateExecutionOptions(id, selection = {}) {
+  const provider = selectedProvider({ provider: document.getElementById(id).value });
+  const models = modelOptions(provider);
+  const model = document.getElementById(`${id}-model`);
+  let modelMarkup = '<option value="">AI 도구 기본 모델</option>' + models.map((item) => `<option value="${e(item.value)}">${e(item.label)}</option>`).join('');
+  if (selection.model && !models.some((item) => item.value === selection.model)) modelMarkup += `<option value="${e(selection.model)}">${e(selection.model)} · 기존 설정, 목록 확인 필요</option>`;
+  setSelectOptions(model, modelMarkup);
+  model.value = selection.model || '';
+  model.disabled = !models.length && !selection.model;
+  const efforts = effortOptions(provider, model.value || null);
+  const effort = document.getElementById(`${id}-effort`);
+  let effortMarkup = '<option value="">AI 도구 기본 추론 설정</option>' + efforts.map((item) => `<option value="${e(item.value)}">${e(item.label)}</option>`).join('');
+  if (selection.effort && !efforts.some((item) => item.value === selection.effort)) effortMarkup += `<option value="${e(selection.effort)}">${e(selection.effort)} · 기존 설정, 지원 확인 필요</option>`;
+  setSelectOptions(effort, effortMarkup);
+  effort.value = selection.effort || '';
+  effort.disabled = !efforts.length && !selection.effort;
 }
 
 function updateProviderStatus(id) {
   const provider = selectedProvider({ provider: document.getElementById(id).value });
-  document.getElementById(`${id}-status`).textContent = provider ? `${provider.statusText} · ${provider.id === 'claude' ? 'Beta: 실제 슬라이드 제작 검증 대기' : '연결된 CLI의 기본 모델을 사용합니다.'}` : 'AI 연결을 먼저 확인해 주세요.';
+  document.getElementById(`${id}-status`).textContent = provider ? `${provider.statusText} · ${provider.id === 'claude' ? 'Beta: 모델 옵션은 문서 기반이며 실제 제작·이용 가능 여부는 검증 대기입니다.' : modelOptions(provider).length ? '연결된 AI가 제공한 모델과 추론 옵션입니다.' : '모델 목록이 없어 AI 도구의 기본 설정을 사용합니다.'}` : 'AI 연결을 먼저 확인해 주세요.';
+  const billing = document.getElementById(`${id}-billing`);
+  billing.textContent = typeof provider?.billing_notice === 'string' ? provider.billing_notice : '';
+  billing.hidden = !billing.textContent;
 }
 
-async function checkProvider(id) {
+function checkProvider() {
   if (state.providerBusy || state.authExpired) return;
-  const generation = state.bootGeneration;
-  state.providerBusy = true; renderSetup();
-  try {
-    await refreshProviderState(api, state, id, () => generation === state.bootGeneration && !state.authExpired);
-  } catch (error) { if (generation === state.bootGeneration) handleError(error); }
-  finally { state.providerBusy = false; renderRun(); }
+  return discoverProviders(true);
 }
 
 function startCreate() {
   if (state.authExpired) return renderSessionRequired();
   if (state.pending) return announce('현재 요청을 처리한 뒤 새 프로젝트를 시작해 주세요.', 'warning');
-  if (!selectedProvider()?.ready) return renderSetup();
+  state.welcomeAfterDiscovery = false;
+  if (!selectedProvider()?.ready) { renderSetup(); if (!state.providerBusy) discoverProviders(); return; }
   $('#create-error').hidden = true;
   populateProviderSelect('create-provider', state.preferred);
   $('#create-dialog').showModal();
@@ -300,13 +443,14 @@ function renderRun() {
   const scrollTop = chatBefore?.scrollTop || 0;
   const atBottom = !chatBefore || chatBefore.scrollHeight - (scrollTop + chatBefore.clientHeight) < 60;
   const isBusy = activeJobs(run).length > 0;
+  if ($('#provider-dialog').open) lockProviderForm();
   const readonly = isReadOnly(run);
   const action = nextAction(run);
   const execution = executionSelection(run, state.preferred);
   const provider = selectedProvider(execution);
   $('#breadcrumb').textContent = run.title;
   $('#last-updated').textContent = `${formatTime(run.updated_at)} 갱신`;
-  $('#main-content').innerHTML = `<div class="workspace-content"><div class="project-heading"><div><span class="eyebrow">${e(STAGES.find((stage) => stage.id === run.active_stage)?.label || '내 프레젠테이션')}</span><h1>${e(run.title)}</h1><div class="project-subtitle">${badge(run.status)}<span>${e(({hybrid: '제공 자료 + 외부 조사', provided_only: '제공 자료만 사용', external: '외부 조사 중심'})[run.source_mode] || '자료 범위 확인 중')}</span><button class="text-button" data-action="provider-settings" ${state.pending || isBusy || readonly ? 'disabled' : ''}>${e(provider?.label || (execution.provider === 'claude' ? 'Claude Code' : 'Codex'))} 설정</button></div></div><div class="project-actions">${actionMarkup(action)}${isBusy ? `<button class="text-button" data-command="cancel" ${state.pending ? 'disabled' : ''}>작업 취소</button>` : ''}${!readonly && action.kind !== 'download' ? `<button class="text-button" data-request-changes="${e(run.active_stage || 'intent')}" ${state.pending ? 'disabled' : ''}>수정 요청</button>` : ''}</div></div>${readonly ? '<p class="read-only-banner">기존 기록을 읽기 전용으로 보존합니다. 새로운 승인이나 진행률을 만들지 않습니다.</p>' : ''}${renderProgress(run)}<div class="next-action"><strong>지금 할 일</strong><span>${e(action.detail)}</span></div>${renderPageExecution(run)}${run.findings?.length ? `<section class="recovery-panel"><h2>확인할 사항</h2>${run.findings.slice(0, 3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('')}<button class="text-button" data-action="setup">AI 연결과 준비 상태 확인</button><details><summary>진행 기록 전체 보기</summary>${run.findings.slice(3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('') || '<p>추가 확인 사항이 없습니다.</p>'}</details></section>` : ''}${pendingQuestions(run).length ? `<section class="decision-panel" id="decision-panel" tabindex="-1" aria-labelledby="decision-title"><div class="section-heading"><div><span class="eyebrow">답변을 기다리고 있어요</span><h2 id="decision-title">다음으로 가기 전에 확인할 내용</h2></div><span class="badge warning">${pendingQuestions(run).length}개</span></div>${renderQuestions()}</section>` : ''}${renderRelease(run)}<div class="workspace-grid"><aside class="conversation" aria-labelledby="chat-title"><header class="conversation-header"><h2 id="chat-title">함께 내용 정리하기</h2><p>목적과 생각을 이야기해 주세요. 필요한 질문은 위에 표시합니다.</p></header><div class="chat-messages" id="chat-messages" role="log" aria-label="프로젝트 대화" aria-live="polite" aria-relevant="additions">${renderChat()}</div><form class="composer" id="message-form" data-run-id="${e(run.id)}"><label for="message-input" class="small muted">의도와 피드백 전달</label><textarea id="message-input" name="content" rows="3" maxlength="20000" placeholder="생각, 자료 설명, 바꾸고 싶은 부분을 남겨주세요." ${readonly ? 'disabled' : ''}>${e(state.drafts.get(run.id) || '')}</textarea><div class="composer-footer"><button class="attach-button" type="button" data-action="attach" ${state.pending || readonly ? 'disabled' : ''}>＋ 자료 첨부</button><button class="button primary send-button" type="submit" ${state.pending || readonly ? 'disabled' : ''}>보내기 ↑</button></div><input type="file" id="attachment-input" hidden></form><p class="composer-help">⌘ / Ctrl + Enter로 전송 · 승인은 검토 화면에서 기록합니다.</p></aside><div class="workspace-left"><div class="tabs" role="tablist" aria-label="작업 정보">${[['work', '단계와 결과'], ['evidence', '근거와 분석'], ['history', '작업 기록']].map(([id, label]) => `<button class="tab" id="tab-${id}" role="tab" aria-selected="${state.tab === id}" aria-controls="work-panel" tabindex="${state.tab === id ? 0 : -1}" data-tab="${id}">${label}${id === 'work' && pendingReviews(run).length ? `<span class="tab-count">${pendingReviews(run).length}</span>` : ''}</button>`).join('')}</div><section id="work-panel" role="tabpanel" aria-labelledby="tab-${state.tab}">${renderWorkPanel()}</section></div></div></div>`;
+  $('#main-content').innerHTML = `<div class="workspace-content"><div class="project-heading"><div><span class="eyebrow">${e(STAGES.find((stage) => stage.id === run.active_stage)?.label || '내 프레젠테이션')}</span><h1>${e(run.title)}</h1><div class="project-subtitle">${badge(run.status)}<span>${e(({hybrid: '제공 자료 + 외부 조사', provided_only: '제공 자료만 사용', external: '외부 조사 중심'})[run.source_mode] || '자료 범위 확인 중')}</span><button class="text-button" data-action="provider-settings" ${state.pending || isBusy || readonly ? 'disabled' : ''}>${e(provider?.label || ({ codex: 'Codex', claude: 'Claude Code' })[execution.provider] || execution.provider)} 설정</button></div></div><div class="project-actions">${actionMarkup(action)}${isBusy ? `<button class="text-button" data-command="cancel" ${state.pending ? 'disabled' : ''}>작업 취소</button>` : ''}${!readonly && action.kind !== 'download' ? `<button class="text-button" data-request-changes="${e(run.active_stage || 'intent')}" ${state.pending ? 'disabled' : ''}>수정 요청</button>` : ''}</div></div>${readonly ? '<p class="read-only-banner">기존 기록을 읽기 전용으로 보존합니다. 새로운 승인이나 진행률을 만들지 않습니다.</p>' : ''}${renderProgress(run)}<div class="next-action"><strong>지금 할 일</strong><span>${e(action.detail)}</span></div>${renderPageExecution(run)}${run.findings?.length ? `<section class="recovery-panel"><h2>확인할 사항</h2>${run.findings.slice(0, 3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('')}<button class="text-button" data-action="setup">AI 연결과 준비 상태 확인</button><details><summary>진행 기록 전체 보기</summary>${run.findings.slice(3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('') || '<p>추가 확인 사항이 없습니다.</p>'}</details></section>` : ''}${pendingQuestions(run).length ? `<section class="decision-panel" id="decision-panel" tabindex="-1" aria-labelledby="decision-title"><div class="section-heading"><div><span class="eyebrow">답변을 기다리고 있어요</span><h2 id="decision-title">다음으로 가기 전에 확인할 내용</h2></div><span class="badge warning">${pendingQuestions(run).length}개</span></div>${renderQuestions()}</section>` : ''}${renderRelease(run)}<div class="workspace-grid"><aside class="conversation" aria-labelledby="chat-title"><header class="conversation-header"><h2 id="chat-title">함께 내용 정리하기</h2><p>목적과 생각을 이야기해 주세요. 필요한 질문은 위에 표시합니다.</p></header><div class="chat-messages" id="chat-messages" role="log" aria-label="프로젝트 대화" aria-live="polite" aria-relevant="additions">${renderChat()}</div><form class="composer" id="message-form" data-run-id="${e(run.id)}"><label for="message-input" class="small muted">의도와 피드백 전달</label><textarea id="message-input" name="content" rows="3" maxlength="20000" placeholder="생각, 자료 설명, 바꾸고 싶은 부분을 남겨주세요." ${readonly ? 'disabled' : ''}>${e(state.drafts.get(run.id) || '')}</textarea><div class="composer-footer"><button class="attach-button" type="button" data-action="attach" ${state.pending || readonly ? 'disabled' : ''}>＋ 자료 첨부</button><button class="button primary send-button" type="submit" ${state.pending || readonly ? 'disabled' : ''}>보내기 ↑</button></div><input type="file" id="attachment-input" hidden></form><p class="composer-help">⌘ / Ctrl + Enter로 전송 · 승인은 검토 화면에서 기록합니다.</p></aside><div class="workspace-left"><div class="tabs" role="tablist" aria-label="작업 정보">${[['work', '단계와 결과'], ['evidence', '근거와 분석'], ['history', '작업 기록']].map(([id, label]) => `<button class="tab" id="tab-${id}" role="tab" aria-selected="${state.tab === id}" aria-controls="work-panel" tabindex="${state.tab === id ? 0 : -1}" data-tab="${id}">${label}${id === 'work' && pendingReviews(run).length ? `<span class="tab-count">${pendingReviews(run).length}</span>` : ''}</button>`).join('')}</div><section id="work-panel" role="tabpanel" aria-labelledby="tab-${state.tab}">${renderWorkPanel()}</section></div></div></div>`;
   const chat = $('#chat-messages');
   chat.scrollTop = atBottom ? chat.scrollHeight : scrollTop;
   if (focused && document.getElementById(focused)) {
@@ -360,11 +504,16 @@ function expireSession() {
   state.selection += 1;
   api.csrfToken = null;
   disconnectStream();
+  stopDiscovery();
   state.previewController?.abort();
   $('#detail-dialog').close();
   setConnection('offline', '접속 만료 · 새 링크로 연결');
   announce('실행 터미널의 새 접속 링크로 열어 주세요. 자동 재연결은 중지했습니다.', 'warning');
   renderSessionRequired();
+  for (const id of ['create-error', 'provider-error', 'changes-error']) {
+    const target = document.getElementById(id);
+    if (target.closest('dialog')?.open) { target.textContent = '작업실 접속이 만료되었습니다. 입력은 보존했습니다. 창을 닫고 실행 터미널의 새 접속 링크로 연결해 주세요.'; target.hidden = false; }
+  }
 }
 
 function streamRefreshError(error) {
@@ -413,6 +562,7 @@ async function selectRun(id) {
   if (state.authExpired) return renderSessionRequired();
   if (state.pending) return announce('현재 요청을 처리한 뒤 프로젝트를 전환해 주세요.', 'warning');
   preserveDrafts();
+  stopDiscovery(); state.welcomeAfterDiscovery = false;
   disconnectStream();
   state.selection += 1;
   const generation = state.selection;
@@ -607,26 +757,25 @@ document.addEventListener('click', async (event) => {
   if (state.authExpired) return renderSessionRequired();
   if (button.dataset.selectRun) return selectRun(button.dataset.selectRun);
   if (button.id === 'new-run' || button.dataset.action === 'new-project') return startCreate();
-  if (button.dataset.action === 'setup' || button.id === 'capabilities-button') return renderSetup();
-  if (button.dataset.action === 'home') { preserveDrafts(); state.screen = 'home'; renderWelcome(); return; }
-  if (button.dataset.action === 'back-work') { state.screen = 'work'; renderRun(); return; }
+  if (button.dataset.action === 'setup' || button.id === 'capabilities-button') { state.welcomeAfterDiscovery = false; renderSetup(); return; }
+  if (button.dataset.action === 'home') { stopDiscovery(); preserveDrafts(); state.welcomeAfterDiscovery = false; state.screen = 'home'; renderWelcome(); return; }
+  if (button.dataset.action === 'back-work') { stopDiscovery(); state.welcomeAfterDiscovery = false; state.screen = 'work'; renderRun(); return; }
   if (button.dataset.action === 'setup-complete') {
     if (!selectedProvider()?.ready) return;
     state.screen = 'work';
-    if (state.run) renderRun(); else { renderWelcome(); startCreate(); }
+    if (state.run) { stopDiscovery(); renderRun(); } else { renderWelcome(); startCreate(); }
     return;
   }
-  if (button.dataset.checkProvider) return checkProvider(button.dataset.checkProvider);
+  if (button.dataset.action === 'login-codex') return loginCodex();
+  if (button.dataset.checkProvider || button.dataset.action === 'discover-providers') return checkProvider();
   if (button.dataset.action === 'refresh-capabilities') {
-    try { state.capabilities = await api.request('/api/v2/capabilities'); renderSetup(); }
-    catch (error) { handleError(error); }
-    return;
+    return checkProvider();
   }
   if (button.dataset.action === 'provider-settings') {
     if (!state.run || state.pending || activeJobs(state.run).length) return;
     state.providerContext = { id: state.run.id, revision: state.run.revision, execution: executionSelection(state.run) };
     populateProviderSelect('run-provider', state.providerContext.execution);
-    $('#run-model-note').textContent = state.providerContext.execution.model ? `현재 모델: ${state.providerContext.execution.model} · 같은 AI를 선택하면 기존 모델과 추론 설정을 유지합니다.` : '연결된 CLI의 기본 모델과 추론 설정을 사용합니다.';
+    $('#run-model-note').textContent = '목록은 연결된 도구의 정보입니다. 기본값을 선택하면 모델과 추론 설정을 도구에 맡깁니다. 실행 중에는 설정을 바꿀 수 없습니다.';
     $('#provider-error').hidden = true;
     $('#provider-dialog').showModal();
     return;
@@ -697,7 +846,7 @@ document.addEventListener('click', async (event) => {
   if (button.dataset.action === 'attach') return $('#attachment-input').click();
   if (button.dataset.action === 'progress-detail') return showProgress();
   if (button.id === 'refresh') {
-    try { if (state.screen === 'setup') { state.capabilities = await api.request('/api/v2/capabilities'); renderSetup(); } else if (state.run) await refreshRun(); else await boot(); announce('최신 상태를 불러왔습니다.'); }
+    try { if (state.screen === 'setup') await discoverProviders(true); else if (state.run) await refreshRun(); else await boot(); announce('최신 상태를 불러왔습니다.'); }
     catch (error) { handleError(error); }
   }
 
@@ -712,7 +861,7 @@ document.addEventListener('submit', async (event) => {
     const data = new FormData(form);
     const files = [...$('#create-attachments').files];
     const provider = selectedProvider({ provider: data.get('provider') });
-    if (!provider?.ready) return handleError(new Error('선택한 AI의 설치·정액제 로그인을 먼저 확인해 주세요.'), $('#create-error'));
+    if (!provider?.ready) return handleError(new Error('선택한 AI의 설치와 지원되는 로그인 상태를 먼저 확인해 주세요.'), $('#create-error'));
     if (files.some((file) => file.size > 100 * 1024 * 1024)) return handleError(new Error('파일 한 개는 100MB 이내로 첨부해 주세요.'), $('#create-error'));
     state.pending = true;
     $('#create-submit').disabled = true;
@@ -721,12 +870,13 @@ document.addEventListener('submit', async (event) => {
     try {
       const request = String(data.get('request') || '').trim();
       if (!request) throw new Error('첫 이야기를 입력해 주세요.');
-      const payload = { title: String(data.get('title') || '').trim() || request.replace(/\s+/g, ' ').slice(0, 60), request, source_mode: data.get('source_mode'), execution: { provider: provider.id, model: null, effort: null } };
+      const execution = validateExecutionSelection(provider, readExecutionForm('create-provider'));
+      const payload = { title: String(data.get('title') || '').trim() || request.replace(/\s+/g, ' ').slice(0, 60), request, source_mode: data.get('source_mode'), execution };
       const key = JSON.stringify(payload);
       if (state.createAttempt?.key !== key) state.createAttempt = { key, operation_id: operationId() };
       const snapshot = await api.request('/api/v2/runs', { method: 'POST', body: { ...payload, operation_id: state.createAttempt.operation_id } });
       state.createAttempt = null; created = true;
-      disconnectStream(); preserveDrafts(); rememberProvider(provider.id);
+      stopDiscovery(); disconnectStream(); preserveDrafts(); rememberProvider(provider.id);
       state.selection += 1; state.eventSeq = 0; state.run = null; state.tab = 'work'; state.screen = 'work'; state.reviewContext = null;
       acceptSnapshot(snapshot);
       form.reset(); $('#create-dialog').close();
@@ -748,9 +898,10 @@ document.addEventListener('submit', async (event) => {
     try {
       if (state.providerContext?.id !== state.run?.id) throw new Error('프로젝트가 바뀌었습니다. 현재 프로젝트에서 설정을 다시 열어 주세요.');
       const provider = selectedProvider({ provider: form.elements.provider.value });
-      if (!provider?.ready) throw new Error('선택한 AI의 설치·정액제 로그인을 먼저 확인해 주세요.');
+      if (!provider?.ready) throw new Error('선택한 AI의 설치와 지원되는 로그인 상태를 먼저 확인해 주세요.');
       const previous = state.providerContext.execution;
-      const payload = provider.id === previous.provider ? previous : { provider: provider.id, model: null, effort: null };
+      if (activeJobs(state.run).length) throw new Error('실행을 취소하거나 마친 뒤 AI 설정을 변경해 주세요.');
+      const payload = validateExecutionSelection(provider, readExecutionForm('run-provider'), previous);
       const result = await sendCommand('configure_provider', payload, state.providerContext);
       if (result) { rememberProvider(provider.id); $('#provider-dialog').close(); announce('AI 설정을 저장했습니다. 다음 작업부터 적용됩니다.'); }
     } catch (error) {
@@ -825,8 +976,16 @@ document.addEventListener('submit', async (event) => {
 });
 
 document.addEventListener('change', (event) => {
-  if (event.target.name === 'setup-provider') { rememberProvider(event.target.value); renderSetup(); $('input[name="setup-provider"]:checked')?.focus(); }
-  if (['create-provider', 'run-provider'].includes(event.target.id)) updateProviderStatus(event.target.id);
+  if (event.target.name === 'setup-provider') { state.welcomeAfterDiscovery = false; rememberProvider(event.target.value); renderSetup(); $('input[name="setup-provider"]:checked')?.focus(); }
+  if (['create-provider', 'run-provider'].includes(event.target.id)) {
+    state.choiceGeneration += 1;
+    populateExecutionOptions(event.target.id); updateProviderStatus(event.target.id);
+  }
+  if (['create-provider-model', 'run-provider-model'].includes(event.target.id)) {
+    state.choiceGeneration += 1;
+    populateExecutionOptions(event.target.id.replace(/-model$/, ''), { model: event.target.value || null });
+  }
+  if (['create-provider-effort', 'run-provider-effort'].includes(event.target.id)) state.choiceGeneration += 1;
   if (event.target.id === 'attachment-input') upload(event.target.files[0]);
   if (event.target.id === 'changes-stage') {
     $('#changes-form').elements.scope.value = 'stage';
@@ -854,7 +1013,7 @@ $('#detail-dialog').addEventListener('close', () => {
   state.attachmentUrl = null;
 });
 
-window.addEventListener('beforeunload', disconnectStream);
+window.addEventListener('beforeunload', () => { state.login?.stop(); stopDiscovery(); disconnectStream(); });
 window.addEventListener('online', () => { if (!state.authExpired) state.run ? connectStream(state.run.id) : boot(); });
 window.addEventListener('hashchange', () => {
   const token = consumeLaunchToken();
@@ -864,8 +1023,9 @@ window.addEventListener('hashchange', () => {
 });
 
 async function boot() {
-  preserveDrafts(); disconnectStream(); state.selection += 1;
+  preserveDrafts(); state.login?.stop(); state.loginBusy = false; stopDiscovery(); disconnectStream(); state.selection += 1;
   const generation = ++state.bootGeneration;
+  const choice = state.choiceGeneration;
   try {
     const token = bootstrapToken;
     bootstrapToken = null;
@@ -877,15 +1037,17 @@ async function boot() {
     if (results[0].status === 'rejected') throw results[0].reason;
     state.runs = results[0].value.runs || [];
     if (results[1].status === 'fulfilled') state.capabilities = results[1].value;
-    state.preferred.provider = initialProvider(state.capabilities, state.preferred.provider);
+    else { state.capabilities = {}; if ([401, 403].includes(results[1].reason?.status)) throw results[1].reason; }
+    if (choice === state.choiceGeneration && !state.explicitProviderChoice) state.preferred.provider = initialProvider(state.capabilities, state.preferred.provider);
     renderRunList();
     setConnection('connected', '로컬 엔진 연결됨');
     $('#last-updated').textContent = '현재 상태 확인됨';
     const requested = new URLSearchParams(location.hash.slice(1)).get('run') || state.run?.id;
     if (requested && state.runs.some((run) => run.id === requested)) await selectRun(requested);
     else if (state.runs.length) await selectRun(state.runs[0].id);
-    else if (!selectedProvider()?.ready) renderSetup();
+    else if (!selectedProvider()?.ready) { state.welcomeAfterDiscovery = true; renderSetup(); }
     else renderWelcome();
+    if (generation === state.bootGeneration && !state.authExpired) discoverProviders();
   } catch (error) {
     if (generation !== state.bootGeneration) return;
     if ([401, 403].includes(error.status)) { expireSession(); return; }

@@ -16,7 +16,7 @@ Intent-Slide에 포함된 SlideMaster 코드의 고지와 설치되는 Python �
 
 특히 **PyMuPDF는 설치한 배포 메타데이터상 GNU AGPL 3.0 또는 Artifex 상용 라이선스**입니다. upstream 코드의 MIT 고지가 이 의존성의 별도 조건을 대체하지 않습니다. 아래는 수집한 원문·메타데이터 고지이며 제품 구성의 법적 호환성을 판정하거나 별도 허가를 부여하지 않습니다.
 
-패키지는 전역 설치하거나 wheel을 제품 ZIP에 복사하지 않습니다. setup이 `requirements-local.lock`의 고정 버전·해시를 확인해 사용자의 저장소 `.venv`에 설치합니다. [버전·공식 메타데이터 URL·wheel 해시](vendor/runtime-dependencies.json)를 보존합니다.
+패키지는 전역 설치하지 않습니다. 플랫폼별 wheel을 제품에 포함하며 `requirements-local.lock`의 고정 버전·해시와 대조해 저장소 내부 `.runtime/portable/`에 오프라인 설치합니다. [버전·공식 메타데이터 URL·wheel 해시](vendor/runtime-dependencies.json)를 보존합니다.
 
 | 패키지 | 버전 | wheel에 포함된 고지 |
 |---|---|---|
@@ -44,4 +44,10 @@ Intent-Slide에 포함된 SlideMaster 코드의 고지와 설치되는 Python �
 | Werkzeug | 3.1.8 | [원문1](licenses/runtime/werkzeug/licenses/LICENSE.txt) |
 | xlsxwriter | 3.2.9 | [원문1](licenses/runtime/xlsxwriter/LICENSE.txt) |
 
-Codex와 Claude Code 실행파일·인증 정보는 이 배포에 포함하지 않습니다. 각 사용자는 본인이 설치한 공식 CLI와 계정의 이용 조건에 따라 로그인합니다.
+Codex 0.153.4 공식 native 배포(원문 Apache-2.0 LICENSE·NOTICE 포함)는 번들에 포함합니다. Claude Code 실행 파일과 모든 사용자 인증 정보는 포함하지 않습니다. 각 사용자는 공식 도구와 계정의 이용 조건에 따라 로그인합니다.
+
+## 내장 실행 환경
+
+Python standalone·Codex·23개 Python 의존성의 플랫폼별 파일, SHA와 출처는 [런타임 manifest](vendor/portable/runtime-manifest.json), LibreOffice 26.8.0의 출처와 원문 고지는 [렌더러 manifest](vendor/portable/renderer-manifest.json)에 기록합니다. 각 압축 파일 내부의 제3자 고지도 보존합니다.
+
+PyMuPDF 1.28.2와 연결된 MuPDF 1.28.2의 공식 대응 소스 archive를 `vendor/portable/sources/`에 포함하고 manifest에서 출처·해시를 연결합니다. LibreOffice의 정확한 대응 소스 링크와 라이선스는 [렌더러 검토](docs/local-mvp/PORTABLE_RENDERER_REVIEW.md)에 기록합니다. 제품의 MIT 고지는 이 구성 요소의 별도 조건을 대체하지 않습니다.

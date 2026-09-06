@@ -1,3 +1,22 @@
+# 내장 런타임 버전 검증 — 2026-09-06
+
+상태: **PARTIAL**. 아래는 현재 구현의 실행 증거이며, 뒤의 v0.1.0 기록은 이전 버전의 증거입니다.
+
+| 주장 | 실제 확인 범위 |
+|---|---|
+| 클론 내부 파일로 환경 준비 | **VERIFIED — Mac ARM64:** 시스템 기본 PATH만 지정한 `./intent-slide setup` → 내장 Python·23개 wheel·Codex·LibreOffice 준비, READY, network_install=false |
+| 실제 PPTX 렌더·웹 서버 | **VERIFIED — Mac ARM64:** 내장 Python/Codex/LibreOffice로 3장 PPTX→개별 고해상도 PNG, 파일 순서·SHA, 실제 HTTP 세션·CSRF·종료 검사 통과 |
+| 모델 자동 발견·선택 | **VERIFIED — Mac ARM64:** 페이지 최초 방문에서 Codex 준비·자동 선택, 실제 모델 7개와 추론 목록 표시 |
+| 실제 모델 파일 작업 | **VERIFIED — Mac ARM64:** 포함된 Codex 0.153.4, GPT-6-Astra/ultra로 합성 2장 프로젝트의 의도 파일 생성·채택, G1 검토 대기·15%. 전체 G1–G5 완료는 별도 검사 |
+| UI | **VERIFIED:** 자동 연결·프로젝트 생성 폼·모델/추론 선택·단계 진행 표시. 390px 화면 가로 넘침 없음. 로그인 대기/실패/재시도 화면은 별도 모의 HTTP 응답으로 검증했으며 실제 계정 최초 OAuth는 수행하지 않음 |
+| 회귀 | **VERIFIED:** 전체 Python 251개 PASS, Windows 전용 1개 Mac에서 SKIP. 콘솔84개 PASS. 후속 경합/복사본 SHA/환경 시작 훅 수정 관련31개 PASS, 세션 쿠키 충돌 수정 관련7개 PASS. 중복 합산하지 않음 |
+| Windows·Intel Mac | **UNVERIFIED:** 내장 파일 출처·해시·아키텍처 확인. Windows 공식 MSI 추출 CI 성공. 전체 클론 시작·실제 렌더 CI는 예정 |
+| 기타 AI | Claude/Gemini/OpenCode 실제 계정별 모델 작업·G5는 **UNVERIFIED**. Gemini 이미지 바이트 제한은 AI_COMPATIBILITY.md에 명시 |
+
+Windows 기본 대상은 Windows 10·11 x64입니다. Windows ARM64, Linux, 미디어 기능이 제외된 Windows N 등 특수 구성은 이 내장 배포의 검증 범위가 아닙니다. GitHub Windows runner의 기존 VC++ 설치가 의존성을 가리지 않도록 공식 MSI 안의 동일한 VC++ DLL을 앱 전용 경로에 함께 두고 검사합니다. 모든 OS 패치·폰트·보안 제품 조합을 검증한 의미는 아닙니다.
+
+## 이전 v0.1.0 기록
+
 # 로컬 MVP 검증 현황
 
 2026-09-06 · 로컬 제작 검증 **COMPLETE · 100%**, 원격 발행 확인은 **UNVERIFIED**로 전체 출시 상태는 **PARTIAL**입니다. 실제 Codex 3장 제작의 G1–G5가 모두 VALID이며 최종 파일 검사와 이미지 검토를 통과했습니다. 제품 코드의 MIT 라이선스 선택은 완료됐습니다. 최종 ZIP·원격 발행·배포 다운로드 결과는 해당 GitHub Release와 출시 작업이력에 기록합니다.

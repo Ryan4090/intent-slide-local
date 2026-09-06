@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import os
+import sys
 import threading
 from pathlib import Path
 
@@ -9,25 +10,29 @@ from .contracts import ContractError
 
 
 class ServiceLease:
-    """Process-scoped flock released automatically on exit; no stale PID deletion."""
+    """Process-scoped file lock released on exit, including native Windows."""
     def __init__(self, root: Path):
         self.root = root
         self.file = None
 
     def __enter__(self):
-        import fcntl
         self.root.mkdir(parents=True, exist_ok=True)
-        self.file = (self.root / "service.lock").open("a+")
+        lock = self.root / "service.lock"
+        if lock.is_symlink():
+            raise ContractError("서비스 잠금은 실제 파일이어야 합니다")
+        self.file = lock.open("a+b")
         try:
-            fcntl.flock(self.file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
-        except BlockingIOError as exc:
+            if sys.platform == "win32":
+                import msvcrt
+                self.file.seek(0)
+                msvcrt.locking(self.file.fileno(), msvcrt.LK_NBLCK, 1)
+            else:
+                import fcntl
+                fcntl.flock(self.file.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError as exc:
             self.file.close()
             self.file = None
             raise ContractError("이 저장소를 사용하는 SlideMaster 서비스가 이미 실행 중입니다") from exc
-        self.file.seek(0)
-        self.file.truncate()
-        self.file.write(str(os.getpid()))
-        self.file.flush()
         return self
 
     def __exit__(self, *exc):

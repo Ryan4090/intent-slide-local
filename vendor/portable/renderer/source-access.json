@@ -1,0 +1,31 @@
+{
+  "version": "26.8.0.3",
+  "archives": [
+    {
+      "name": "libreoffice-dictionaries-26.8.0.3.tar.xz",
+      "sha256": "4849ca14733cf4d5896a2f5bb6db87ffade9d1fbeab92e63153dc79630995a60",
+      "url": "https://download.documentfoundation.org/libreoffice/src/26.8.0/libreoffice-dictionaries-26.8.0.3.tar.xz",
+      "verification": "OFFICIAL_CHECKSUM_METADATA_ONLY"
+    },
+    {
+      "name": "libreoffice-help-26.8.0.3.tar.xz",
+      "sha256": "8443f21b7127cbd084b472c01ff494ec6a31814f0b1b382004b68103ece90e35",
+      "url": "https://download.documentfoundation.org/libreoffice/src/26.8.0/libreoffice-help-26.8.0.3.tar.xz",
+      "verification": "OFFICIAL_CHECKSUM_METADATA_ONLY"
+    },
+    {
+      "name": "libreoffice-26.8.0.3.tar.xz",
+      "sha256": "42116e256933aa575974e420ffa04f7cd7096f4b7ca5d0907ddeaf2a07f68f94",
+      "url": "https://download.documentfoundation.org/libreoffice/src/26.8.0/libreoffice-26.8.0.3.tar.xz",
+      "verification": "OFFICIAL_CHECKSUM_METADATA_ONLY"
+    },
+    {
+      "name": "libreoffice-translations-26.8.0.3.tar.xz",
+      "sha256": "dc1419fc6f02840735b01f28b1cd453885e50fad2b2b2f5e6beab93868bf82a4",
+      "url": "https://download.documentfoundation.org/libreoffice/src/26.8.0/libreoffice-translations-26.8.0.3.tar.xz",
+      "verification": "OFFICIAL_CHECKSUM_METADATA_ONLY"
+    }
+  ],
+  "license_url": "https://www.libreoffice.org/licenses/",
+  "complete_third_party_source_coverage": "PARTIALLY_VERIFIED"
+}

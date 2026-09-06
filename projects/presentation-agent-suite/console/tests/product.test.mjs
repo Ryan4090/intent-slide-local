@@ -12,13 +12,15 @@ function released() {
       artifact('notes', 'notes', { name: '01.md' }), artifact('release', 'release', { depends_on: ['pptx', 'grid', 'g4', 'g5'] })] };
 }
 
-test('provider readiness requires confirmed subscription auth, never guessed or API-key auth', () => {
-  const providers = providersView({ providers: [{ id: 'codex', ready: null, auth_mode: 'unknown' }, { id: 'claude', ready: true, auth_mode: 'api_key' }, { id: 'fake', ready: true }] });
+test('actual readiness and explicit automatic connection eligibility remain distinct', () => {
+  const providers = providersView({ providers: [{ id: 'codex', ready: null, auto_connect: true, auth_mode: 'unknown' }, { id: 'gemini', ready: true, auto_connect: false, auth_mode: 'native_unverified' }, { id: '<invalid>', ready: true }] });
   assert.equal(providers.length, 2);
   assert.equal(providers[0].checked, false);
-  assert.equal(providers[1].ready, false);
-  assert.match(providers[1].statusText, /정액제/);
-  assert.equal(providersView({ providers: [{ id: 'codex', ready: true, auth_mode: 'subscription' }] })[0].ready, true);
+  assert.equal(providers[0].ready, false);
+  assert.equal(providers[1].ready, true); assert.equal(providers[1].autoConnect, false);
+  assert.equal(providersView({ providers: [{ id: 'codex', ready: true, auth_mode: 'subscription' }] })[0].autoConnect, false);
+  assert.equal(providersView({ providers: [{ id: 'codex', ready: true, auto_connect: true, auth_mode: 'subscription' }] })[0].ready, true);
+  assert.equal(providersView({ providers: [{ id: 'claude', ready: true, auto_connect: true, auth_mode: 'verified_native_mode' }] })[0].ready, true);
   assert.deepEqual(providersView(), []);
 });
 

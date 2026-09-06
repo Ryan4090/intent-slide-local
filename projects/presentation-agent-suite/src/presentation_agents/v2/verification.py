@@ -9,6 +9,7 @@ from __future__ import annotations
 import importlib.util
 import hashlib
 import json
+import os
 import posixpath
 import re
 import shutil
@@ -27,6 +28,7 @@ from presentation_agents import utils as legacy_utils
 
 from . import contracts
 from .contracts import ROUTES, ContractError, digest, file_hash, now, safe_path
+from . import portable_render
 
 _MAX_XML_BYTES = 16 * 1024 * 1024
 _MAX_PPTX_BYTES = 256 * 1024 * 1024
@@ -47,11 +49,15 @@ class VerificationCancelled(ContractError):
 def renderer_contract(repo_root: Path) -> dict:
     """Declare service prerequisites without pretending a candidate was rendered."""
     renderer = None
-    if legacy._officecli_bin():
+    if os.environ.get('INTENT_SLIDE_SOFFICE') and portable_render.find_soffice():
+        renderer = 'libreoffice-pdf'
+    elif legacy._officecli_bin():
         renderer = "officecli"
     elif (sys.platform == "darwin" and shutil.which("qlmanage") and shutil.which("swift")
           and (repo_root / "projects/presentation-agent-suite/scripts/render_quicklook_contact_sheet.swift").is_file()):
         renderer = "macos-quicklook-webkit"
+    elif portable_render.find_soffice():
+        renderer = 'libreoffice-pdf'
     return {
         "schema_version": "service-verification.v1", "owner": "service", "gate": "G4",
         "status": "PREREQUISITES_PRESENT" if renderer else "UNAVAILABLE",
@@ -227,7 +233,9 @@ def _gate_capture(repo_root: Path, project: Path) -> dict:
 
 def _environment_snapshot(repo_root: Path, route: str) -> dict:
     owner = safe_path(repo_root, ROUTES[route])
+    from . import stdio_transport
     paths = [Path(__file__), Path(legacy.__file__), Path(legacy_utils.__file__), Path(contracts.__file__),
+             Path(portable_render.__file__), Path(stdio_transport.__file__),
              repo_root / "projects/presentation-agent-suite/scripts/render_quicklook_contact_sheet.swift"]
     return {
         "shared_gate_bundle_sha256": _gate_helper(repo_root)._validator_bundle("svg-quality"),
@@ -380,6 +388,9 @@ def _verify_candidate(
     contact.unlink(missing_ok=True)
     started = time.time_ns()
     command = [sys.executable, str(script), str(project), "--require-render-success"]
+    selected_renderer = renderer_contract(repo_root)['renderer']
+    if selected_renderer == 'libreoffice-pdf':
+        command.append('--no-render')  # Shared content checks; service renders the actual PPTX below.
     try:
         result = legacy._run_bounded_subprocess(command, cwd=repo_root, timeout=600, cancelled=cancelled)
     except legacy.SubprocessCancelled as exc:
@@ -391,7 +402,7 @@ def _verify_candidate(
     log.write_text("[stdout]\n" + result.stdout + "\n[stderr]\n" + result.stderr, encoding="utf-8")
     if result.returncode != 0:
         raise ContractError(f"shared owner verifier failed with exit {result.returncode}; see {log.relative_to(workspace)}")
-    officecli = legacy._officecli_bin()
+    officecli = legacy._officecli_bin() if selected_renderer == 'officecli' else None
     renderer = "officecli"
     diagnostics: list[str] = []
     render_provenance = None
@@ -401,7 +412,16 @@ def _verify_candidate(
         if contact.exists():
             raise ContractError("untrusted render: OfficeCLI was unavailable but a contact sheet appeared")
         try:
-            rendered = legacy._render_macos_quicklook_contact_sheet(candidate, contact, diagnostics=diagnostics, cancelled=cancelled)
+            if selected_renderer == 'libreoffice-pdf':
+                try:
+                    portable_render.render_pptx(candidate, contact, cancelled=cancelled)
+                except (OSError, RuntimeError, ValueError, subprocess.TimeoutExpired) as exc:
+                    raise VerificationBlocked('PPTX render failed: '+str(exc)) from exc
+                rendered = True
+                renderer = 'libreoffice-pdf'
+            else:
+                rendered = legacy._render_macos_quicklook_contact_sheet(candidate, contact, diagnostics=diagnostics, cancelled=cancelled)
+                renderer = "macos-quicklook-webkit"
         except legacy.SubprocessCancelled as exc:
             contact.unlink(missing_ok=True)
             raise VerificationCancelled(str(exc)) from exc
@@ -411,7 +431,6 @@ def _verify_candidate(
         check_cancelled()
         if not rendered:
             raise VerificationBlocked("a real exported-PPTX renderer is unavailable: " + "; ".join(diagnostics))
-        renderer = "macos-quicklook-webkit"
         render_provenance = contact.with_suffix(".render.json")
         if (not render_provenance.is_file() or legacy._path_has_symlink(render_provenance, workspace)
                 or render_provenance.stat().st_ctime_ns < started or render_provenance.stat().st_size > 1024 * 1024):
@@ -439,8 +458,9 @@ def _verify_candidate(
             proof = json.loads(proof_bytes.decode("utf-8"))
         except (ValueError, UnicodeError) as exc:
             raise ContractError("isolated renderer provenance is invalid") from exc
-        if (not isinstance(proof, dict) or proof.get("schema_version") != "quicklook-render.v1"
-                or proof.get("method") != "isolated-slide-selection"
+        expected_schema, expected_method = ('portable-render.v1', 'libreoffice-pdf-pages') if renderer == 'libreoffice-pdf' else ('quicklook-render.v1', 'isolated-slide-selection')
+        if (not isinstance(proof, dict) or proof.get("schema_version") != expected_schema
+                or proof.get("method") != expected_method
                 or proof.get("source_sha256") != candidate_hash
                 or proof.get("contact_sheet_sha256") != contact_hash
                 or type(proof.get("slide_count")) is not int

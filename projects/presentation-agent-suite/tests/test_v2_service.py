@@ -50,7 +50,7 @@ class ServiceTests(unittest.TestCase):
             with self.assertRaisesRegex(ContractError, "이미 실행"):
                 with ServiceLease(self.root):
                     self.fail("a second service acquired the lease")
-            self.assertEqual((self.root / "service.lock").read_text(), str(os.getpid()))
+            self.assertTrue((self.root / "service.lock").is_file())
         with ServiceLease(self.root):
             self.assertTrue((self.root / "service.lock").is_file())
 
@@ -59,14 +59,13 @@ class ServiceTests(unittest.TestCase):
             self.assertTrue((self.root / "one/service.lock").is_file())
             self.assertTrue((self.root / "two/service.lock").is_file())
 
-    def test_exception_releases_lease_without_deleting_pid_files(self) -> None:
+    def test_exception_releases_lease_without_deleting_the_lock_file(self) -> None:
         with self.assertRaises(RuntimeError):
             with ServiceLease(self.root):
                 raise RuntimeError("simulated startup failure")
         with ServiceLease(self.root):
-            self.assertEqual((self.root / "service.lock").read_text(), str(os.getpid()))
+            self.assertTrue((self.root / "service.lock").is_file())
 
-    @unittest.skipUnless(os.name == "posix", "flock is a POSIX service boundary")
     def test_an_independent_process_holds_the_lease_until_it_exits(self) -> None:
         script = """
 import sys
@@ -99,7 +98,7 @@ with ServiceLease(Path(sys.argv[1])):
             process.terminate()
             process.wait(timeout=3)
             with ServiceLease(self.root):
-                self.assertEqual((self.root / "service.lock").read_text(), str(os.getpid()))
+                self.assertTrue((self.root / "service.lock").is_file())
             worker.join(timeout=1)
         finally:
             if process.poll() is None:

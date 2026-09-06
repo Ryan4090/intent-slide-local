@@ -1,0 +1,33 @@
+name: Clone-only Windows and Mac verification
+on:
+  workflow_dispatch:
+  push:
+    branches: ['codex/portable-runtime']
+permissions:
+  contents: read
+jobs:
+  clone:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, macos-15, macos-15-intel]
+    runs-on: ${{ matrix.os }}
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Windows launcher without a separately installed runtime
+        if: runner.os == 'Windows'
+        shell: cmd
+        run: |
+          set "PATH=%SystemRoot%\System32;%SystemRoot%"
+          call intent-slide.cmd setup
+          if errorlevel 1 exit /b 1
+          .runtime\portable\win32-x64\environment\Scripts\python.exe scripts\verify_portable_clone.py
+      - name: Mac launcher without a separately installed runtime
+        if: runner.os == 'macOS'
+        shell: bash
+        run: |
+          export PATH=/usr/bin:/bin:/usr/sbin:/sbin
+          ./intent-slide setup
+          if [ "$(uname -m)" = arm64 ]; then target=darwin-arm64; else target=darwin-x64; fi
+          ".runtime/portable/$target/environment/bin/python" scripts/verify_portable_clone.py

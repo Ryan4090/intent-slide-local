@@ -21,10 +21,7 @@ import json
 import os
 from pathlib import Path
 import re
-import select
 import shutil
-import signal
-import subprocess
 import threading
 import time
 from typing import Any
@@ -32,6 +29,7 @@ import uuid
 
 from .provider import CodexProvider, EventCallback, ProviderError
 from .provider_registry import CLAUDE_MODELS, EFFORTS, normalize_selection
+from .stdio_transport import TransportError, probe_command
 
 _MIN_VERSION = (2, 1, 248)  # --restricted is the file-tool isolation boundary.
 _TOOLS = ('Bash', 'Read', 'Write', 'Edit', 'Glob', 'Grep', 'WebSearch', 'WebFetch', 'AskUserQuestion')
@@ -53,52 +51,12 @@ _SETTINGS = {
 
 def _probe(command: list[str], timeout: float, limit: int = 65536) -> tuple[int, bytes]:
     """Read public CLI metadata with a deadline and bounded combined output."""
-    if os.name != 'posix':
-        raise ProviderError('PLATFORM_UNSUPPORTED', 'Local CLI transport requires a POSIX host')
     try:
-        proc = subprocess.Popen(command, stdin=subprocess.DEVNULL, stdout=subprocess.PIPE,
-                                stderr=subprocess.PIPE, start_new_session=True, env=_child_environment())
+        return probe_command(command, timeout=timeout, limit=limit, env=_child_environment())
+    except TransportError as exc:
+        raise ProviderError(exc.code, str(exc)) from exc
     except OSError as exc:
         raise ProviderError('UNAVAILABLE', 'Claude Code executable is not available') from exc
-    output = bytearray()
-    size = 0
-    deadline = time.monotonic() + timeout
-    streams = [proc.stdout, proc.stderr]
-    try:
-        while streams:
-            remaining = deadline - time.monotonic()
-            if remaining <= 0:
-                raise ProviderError('REQUEST_TIMEOUT', 'Claude Code metadata probe timed out')
-            ready, _, _ = select.select(streams, [], [], min(remaining, .1))
-            for stream in ready:
-                chunk = os.read(stream.fileno(), 4096)
-                if not chunk:
-                    streams.remove(stream)
-                    continue
-                size += len(chunk)
-                if size > limit:
-                    raise ProviderError('OUTPUT_LIMIT', 'Claude Code metadata exceeded its output limit')
-                if stream is proc.stdout:
-                    output.extend(chunk)
-        try:
-            code = proc.wait(timeout=max(.01, deadline-time.monotonic()))
-        except subprocess.TimeoutExpired as exc:
-            raise ProviderError('REQUEST_TIMEOUT', 'Claude Code metadata probe timed out') from exc
-        return code, bytes(output)
-    finally:
-        # A descendant can retain pipes after the direct CLI exits.
-        for sig in (signal.SIGTERM, signal.SIGKILL):
-            try:
-                os.killpg(proc.pid, sig)
-            except ProcessLookupError:
-                pass
-        try:
-            proc.wait(timeout=1)
-        except subprocess.TimeoutExpired:
-            pass
-        for stream in (proc.stdout, proc.stderr):
-            if stream:
-                stream.close()
 
 
 class ClaudeProvider(CodexProvider):
@@ -227,11 +185,10 @@ class ClaudeProvider(CodexProvider):
                 if effort:
                     self.command.extend(['--effort',effort])
                 try:
-                    self._process = subprocess.Popen(self.command, cwd=cwd, stdin=subprocess.PIPE,
-                        stdout=subprocess.PIPE, stderr=subprocess.PIPE, bufsize=0, start_new_session=True, env=_child_environment())
-                except OSError as exc:
+                    self._launch_process(self.command, cwd=cwd, env=_child_environment())
+                except ProviderError:
                     self._active.clear()
-                    raise ProviderError('UNAVAILABLE','Claude Code could not start') from exc
+                    raise
                 for target in (self._read_stdout,self._read_stderr,self._dispatch,self._watchdog):
                     worker = threading.Thread(target=target, daemon=True, name=f'claude-{target.__name__}')
                     self._threads.append(worker)

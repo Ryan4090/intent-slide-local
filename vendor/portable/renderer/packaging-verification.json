@@ -1,0 +1,53 @@
+{
+  "darwin-arm64": {
+    "status": "VERIFIED",
+    "file_bytes_checked": 17449,
+    "parts_checked": 4,
+    "sha256": "16a836aa85e2c88fcae99021673e5b0fbc93e8da256f7540f4a4833dfccf3cf6",
+    "version": "26.8.0.3",
+    "minimum_os": "11.0.0"
+  },
+  "darwin-x64": {
+    "status": "VERIFIED",
+    "file_bytes_checked": 17449,
+    "parts_checked": 4,
+    "sha256": "4f8fc25c25396ff624f4de2ab2c9fb2ed6587c4f81ae9301d75c06a0da147a65",
+    "version": "26.8.0.3",
+    "minimum_os": "11.0.0"
+  },
+  "builder_tests": {
+    "status": "VERIFIED",
+    "passed": 14,
+    "failed": 0,
+    "raw_log": "packaging-tests.log"
+  },
+  "source_archive_metadata": {
+    "status": "VERIFIED",
+    "scope": "Published upstream checksum metadata retrieved; source tar payloads not downloaded or rebuilt."
+  },
+  "roundtrip_signatures": {
+    "darwin-arm64": {
+      "status": "VERIFIED",
+      "archive_sha256": "16a836aa85e2c88fcae99021673e5b0fbc93e8da256f7540f4a4833dfccf3cf6",
+      "codesign_returncode": 0,
+      "method": "tarfile data-filter extraction then codesign --verify --deep --strict; application not launched"
+    },
+    "darwin-x64": {
+      "status": "VERIFIED",
+      "archive_sha256": "4f8fc25c25396ff624f4de2ab2c9fb2ed6587c4f81ae9301d75c06a0da147a65",
+      "codesign_returncode": 0,
+      "method": "tarfile data-filter extraction then codesign --verify --deep --strict; application not launched"
+    }
+  },
+  "win32-x64": {
+    "status": "VERIFIED",
+    "file_bytes_checked": 19428,
+    "parts_checked": 6,
+    "sha256": "f04e94e9e4227dd8ae593224af6ab403f774dedb82cbb67adb51a8f92b1bed14",
+    "comparison": "All original files match the CI archive; 10 added app-local DLLs match the same archive System64 payload",
+    "entry_pe_machine": "0x8664",
+    "authenticode": "UNVERIFIED",
+    "original_files_checked": 19418,
+    "additional_app_local_copies": 10
+  }
+}

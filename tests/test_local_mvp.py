@@ -91,12 +91,34 @@ class LocalMvpTests(unittest.TestCase):
             local_mvp.setup_environment(self.root, run=self.fake_runner)
         self.assertFalse(any("install" in c for c in self.commands))
 
-    def test_doctor_blocks_unsupported_os_and_reports_missing_cli(self):
+    def test_windows_is_supported_but_missing_tools_are_not_ready(self):
         report = local_mvp.inspect_environment(self.root, provider="claude", which=lambda name: None,
                                               system="win32", python_version=(3, 12), package_versions={})
-        self.assertFalse(report["platform"]["supported"])
+        self.assertTrue(report["platform"]["supported"])
         self.assertFalse(report["provider"]["installed"])
         self.assertFalse(report["renderer"]["available"])
+
+    def test_windows_uses_scripts_python_and_browser_launch_keeps_auto_selection(self):
+        self.assertEqual(local_mvp.environment_python(self.root, system='win32'), self.root/'.venv/Scripts/python.exe')
+        command = local_mvp.server_command(self.root, provider='auto', port=4317, no_runner=False, open_browser=True)
+        self.assertEqual(command[command.index('--provider')+1], 'auto')
+        self.assertIn('--open', command)
+
+    def test_setup_lock_excludes_another_process_then_releases(self):
+        runtime=self.root/'.runtime'
+        runtime.mkdir()
+        code = '''import importlib.util,sys
+from pathlib import Path
+s=importlib.util.spec_from_file_location('installer',sys.argv[1]); m=importlib.util.module_from_spec(s); s.loader.exec_module(m)
+try:
+    with m._setup_lock(Path(sys.argv[2])): pass
+except m.SetupError:
+    sys.exit(7)
+'''
+        command=[sys.executable,'-c',code,str(ROOT/'scripts/local_mvp.py'),str(runtime)]
+        with local_mvp._setup_lock(runtime):
+            self.assertEqual(subprocess.run(command,timeout=10,capture_output=True).returncode,7)
+        self.assertEqual(subprocess.run(command,timeout=10,capture_output=True).returncode,0)
 
     def test_connected_doctor_uses_registry_provider_instance_and_omits_account_payload(self):
         class Adapter:

@@ -2,28 +2,24 @@
 
 **의도를 함께 정하고, 근거를 확인하고, 편집 가능한 슬라이드로 완성하는 로컬 작업실.**
 
-GitHub에서 받아 자신의 Mac에서 실행합니다. AI 작업은 사용자가 직접 로그인한 공식 Codex 또는 Claude Code를 통해 진행합니다. 단계마다 무엇을 입력했고 무엇이 나왔는지, 무엇을 승인해야 하는지, 전체 작업이 몇 % 완료됐는지 확인할 수 있습니다. **Claude Code 연결은 베타**이며, 실제 정액제 모델 제작 시험은 아직 수행하지 못했습니다.
-
-> **실제 Codex 제작 검증 완료.** 3장 제작을 G1–G5와 전체 100%까지 확인했습니다. 지원 환경과 미검증 범위는 [검증 현황](docs/local-mvp/VERIFICATION.md)을 확인하세요.
+GitHub에서 클론하고 실행 파일을 열면 로컬 작업실이 시작됩니다. **Windows 10·11 x64 · Mac Apple Silicon · Intel**용 실행 환경과 기본 Codex를 포함합니다. 단계별 입력·출력, 승인할 체크포인트, 검증에 따른 전체 진행률을 확인할 수 있습니다.
 
 ## 시작하기
 
-macOS, Git, Python 3.12, 선택한 AI CLI가 필요합니다. 먼저 [Codex 공식 설치 안내](https://developers.openai.com/codex/cli/) 또는 [Claude Code 공식 설치 안내](https://code.claude.com/docs/en/setup)에 따라 사용할 CLI를 준비하세요. Python 의존성은 이 저장소의 `.venv`에 설치합니다.
-
-[Ryan4090/intent-slide-local](https://github.com/Ryan4090/intent-slide-local)을 복제하고 아래 순서로 실행합니다.
-
-```bash
+```sh
 git clone https://github.com/Ryan4090/intent-slide-local.git
-cd intent-slide-local
-codex login
-./intent-slide setup
-./intent-slide doctor --provider codex --connect
-./intent-slide start --provider codex
 ```
 
-Claude Code를 사용하려면 로그인 명령을 `claude auth login`으로 바꾸고 `--provider claude`를 선택하세요. 두 CLI를 모두 설치하거나 추가 구독할 필요는 없습니다. 실행 터미널에 출력되는 **접속 링크**로 브라우저를 열면 작업실에 연결됩니다. 해당 링크는 이 컴퓨터의 한 브라우저를 인증하는 일회용 링크입니다.
+- **Windows:** 폴더의 `Start Intent-Slide.cmd`를 엽니다.
+- **Mac:** 폴더의 `Start Intent-Slide.command`를 엽니다.
 
-Intent-Slide는 로그인 비밀번호·세션 토큰·API 키를 입력받지 않습니다. 정액제 로그인이 확인되지 않으면 연결 이유를 표시합니다. API 과금으로 자동 전환하지 않습니다. 모델 사용량과 계정의 추가 사용 설정은 각 공식 도구에서 관리합니다.
+내장 환경을 준비한 뒤 로컬 페이지가 자동으로 열립니다. Python·Node.js·npm·PowerPoint·LibreOffice를 별도로 설치하지 않습니다. 기존 Codex 로그인을 자동으로 찾고, 처음이라면 화면의 **Codex 계정으로 로그인** 버튼으로 공식 인증을 진행합니다. Git clone 자체는 코드를 실행하지 않으므로 실행 파일을 한 번 여는 단계는 필요합니다.
+
+설치 준비는 저장소 안의 파일만 사용합니다. AI 로그인·모델 실행·웹 리서치는 인터넷과 본인 계정이 필요합니다. 계정이나 유료 이용 권한을 배포본에 포함할 수는 없습니다.
+
+Codex가 기본이며, 이미 준비된 Claude Code·Gemini CLI·OpenCode 연결도 지원합니다. 도구가 제공한 모델을 화면에서 선택할 수 있습니다. 실제 계정 검증 및 기능 제한은 [AI 호환성](docs/local-mvp/AI_COMPATIBILITY.md)과 [검증 현황](docs/local-mvp/VERIFICATION.md)에 구분합니다. 모든 AI 서비스의 구독을 공통 인증으로 재사용한다는 의미는 아닙니다.
+
+자세한 실행·저장 위치·문제 해결은 [설치 안내](docs/local-mvp/INSTALLATION.md)를 확인하세요.
 
 ## 세 단계, 다섯 체크포인트
 
@@ -60,16 +56,10 @@ flowchart LR
 
 ## 지원과 개발
 
-첫 지원 OS는 **macOS**입니다. Windows·Linux 전체 제작 경로는 아직 검증하지 않았습니다. 실제 PPTX 미리보기는 macOS 렌더러를 사용하며 Microsoft PowerPoint 앱에서 확인했다는 의미는 아닙니다.
+현재 제작 엔진은 `projects/presentation-agent-suite/`에 있습니다. 실제 PPTX 미리보기는 내장 LibreOffice로 PDF를 만든 뒤 페이지별 PNG로 검사합니다. PowerPoint 앱에서 직접 확인한 결과와는 구분합니다. Linux와 Windows ARM64용 내장 배포는 제공하지 않습니다.
 
-2026-09-06 현재 Codex 구독을 사용한 새 제품의 실제 3장 제작은 **COMPLETE · 100%, G1–G5 모두 VALID**입니다. 서비스 G4는 실제 PPTX와 1920×1080 페이지 PNG 3개를 검사했고, G5는 같은 후보의 전체 미리보기와 개별 페이지를 열람해 통과했습니다. 실제 완료 화면·갤러리와 다운로드 클릭에 따른 PPTX 응답 HTTP 200을 확인했습니다. 브라우저가 저장한 파일의 위치는 미검증입니다.
+이전 v0.1.0에서는 Mac·Codex의 실제 3장 제작을 G1–G5·100%까지 확인했습니다. 현재 내장 런타임 버전의 검사와 이전 버전 증거는 [검증 현황](docs/local-mvp/VERIFICATION.md)에서 따로 기록합니다. Claude·Gemini·OpenCode의 실제 계정별 전체 제작은 확인된 범위만 표시합니다.
 
-이전 후보 ZIP의 새 가상환경 설치·Codex 연결·로컬 서버 시작·인증 경계·종료 검사도 통과했습니다. 공식 npm 패키지의 원래 실행기로 실제 모델의 검사 파일 생성·읽기를 확인했으며, npm 설치 과정 전체와 npm 경로의 전체 슬라이드 제작은 별도 미검증입니다.
+Intent-Slide 제품 소스는 [MIT](LICENSE)입니다. 포함된 Python·Codex·LibreOffice·PyMuPDF·글꼴은 각각의 조건을 따릅니다. [제3자 고지](THIRD_PARTY_NOTICES.md)와 `vendor/portable/`의 출처·SHA·대응 소스 파일 또는 공식 소스 링크를 함께 제공합니다.
 
-Claude Code 베타는 미로그인 차단·프로토콜 초기화·모의 회귀까지 확인했으며, 검증 환경에 Claude 구독이 없어 **실제 모델 제작은 미검증**입니다. 파일 업로드의 서버 검사는 통과했지만 OS 파일 선택기를 통한 실제 UI 업로드 검사는 자동 검증 도구의 안전 제어로 완료하지 못했습니다. 테스트와 실제 사용 검증의 구분은 [검증 현황](docs/local-mvp/VERIFICATION.md)에 기록합니다.
-
-현재 실제 제작 엔진은 `projects/presentation-agent-suite/`에 있습니다. 원본 SlideMaster의 특정 Git 커밋에서 가져온 파일과 출처는 [vendor manifest](vendor/slidemaster-manifest.json)에 기록합니다. 원본 코드는 [MIT 고지](licenses/slidemaster-MIT.txt), 번들 폰트와 Python 의존성은 각각의 라이선스를 따릅니다. Claude Code·Codex 실행 파일과 계정은 배포본에 포함하지 않습니다.
-
-Intent-Slide 제품 코드는 [MIT License](LICENSE)로 제공합니다. 포함된 제3자 코드·폰트·Python 의존성에는 각각의 조건이 적용되며, [제3자 고지](THIRD_PARTY_NOTICES.md)를 확인하세요. 배포 파일의 manifest와 체크섬은 해당 GitHub Release에서 확인합니다.
-
-이 배포본은 제품 실행에 필요한 파일만 포함합니다. 이전 비공개 실험 자료와 Git 이력, 사용자 프로젝트는 포함하지 않습니다. 설치와 지원 범위는 [설치 안내](docs/local-mvp/INSTALLATION.md), 파일 출처와 공개 범위는 [배포 절차](docs/local-mvp/DISTRIBUTION.md)에서 확인할 수 있습니다.
+배포에는 제품 실행 파일만 포함하며 기존 비공개 Git 이력·개인 프로젝트·인증 정보는 포함하지 않습니다. [배포 절차](docs/local-mvp/DISTRIBUTION.md)를 확인하세요.

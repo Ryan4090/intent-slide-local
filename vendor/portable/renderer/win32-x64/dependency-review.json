@@ -1,0 +1,67 @@
+{
+  "status": "PARTIALLY_VERIFIED",
+  "method": "PE import directory decoded with standard-library struct; selected entrypoints only; no native execution",
+  "selected_cpp_imports": [
+    {
+      "path": "LibreOffice/program/soffice.exe",
+      "sha256": "a2823391857db1dd8ebbd8234267f9ec58ec7e5b5fc434665c0ecec4671cb988",
+      "imports": [
+        "MSVCP140.dll",
+        "VCRUNTIME140_1.dll",
+        "VCRUNTIME140.dll"
+      ]
+    },
+    {
+      "path": "LibreOffice/program/soffice.bin",
+      "sha256": "6e3e16a5c8338138ea14666f7873b8f909eebf266fcacb4bb840906ca115c62e",
+      "imports": [
+        "VCRUNTIME140.dll"
+      ]
+    },
+    {
+      "path": "LibreOffice/program/mergedlo.dll",
+      "sha256": "ab197ef23b5b6475084ba9a8845b51921dc1ac5f5785920a444aac76aa4d5cd2",
+      "imports": [
+        "MSVCP140.dll",
+        "MSVCP140_2.dll",
+        "MSVCP140_1.dll",
+        "VCRUNTIME140_1.dll",
+        "VCRUNTIME140.dll"
+      ]
+    },
+    {
+      "path": "LibreOffice/program/python.exe",
+      "sha256": "7bded40d79d7b5601780519964794e4a5b605c180e7a7e84a512b204c515cd6c",
+      "imports": [
+        "MSVCP140.dll",
+        "VCRUNTIME140_1.dll",
+        "VCRUNTIME140.dll"
+      ]
+    }
+  ],
+  "ucrt": {
+    "bundled": false,
+    "supported_os_boundary": "Windows 10 or later supplies UCRT as an operating-system component",
+    "source": "https://learn.microsoft.com/en-us/cpp/windows/universal-crt-deployment?view=msvc-170"
+  },
+  "other_os_imports": {
+    "program/mergedlo.dll": [
+      "MFPlat.DLL",
+      "MFPlay.DLL",
+      "MFReadWrite.dll"
+    ]
+  },
+  "native_clean_windows_execution": "UNVERIFIED",
+  "loaded_dll_paths": "UNVERIFIED",
+  "runtime_notice": {
+    "path": "LibreOffice/license.txt",
+    "sha256": "e3752e56328b579e0e3be3039cf1106a4af31ee58db863ffd7624fa9421f6d7f",
+    "section": "Microsoft Visual C++ 2015 Runtime Libraries",
+    "installation_use_clause": "The included notice permits installing and using any number of copies.",
+    "backup_clause": "The included notice permits one backup copy for reinstallation.",
+    "rights_boundary": "The notice reserves other rights and contains sharing/transfer restrictions. An independent downstream redistribution grant has not been established in this review.",
+    "official_guidance": "https://learn.microsoft.com/en-us/cpp/windows/redistributing-visual-cpp-files?view=msvc-170",
+    "source_scope": "Only original runtime DLLs from the same pinned LibreOffice MSI are duplicated inside the LibreOffice application. No separately obtained SDK or system files are added.",
+    "independent_redistribution_rights": "UNVERIFIED"
+  }
+}

@@ -11,7 +11,7 @@ class RegistryTests(unittest.TestCase):
     def test_default_and_provider_string(self):
         self.assertEqual(normalize_selection(), {'provider':'codex','model':None,'effort':None})
         self.assertEqual(normalize_selection('claude')['provider'], 'claude')
-        self.assertEqual(PROVIDER_IDS, ('codex','claude'))
+        self.assertEqual(PROVIDER_IDS, ('codex','claude','gemini','opencode'))
     def test_closed_object_and_types(self):
         for value in ([], 3, True, {'provider':'other'}, {'provider':'codex','token':'secret'}, {'model':True}, {'effort':[]}):
             with self.subTest(value=value), self.assertRaises(ContractError): normalize_selection(value)

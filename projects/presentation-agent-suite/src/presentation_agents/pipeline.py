@@ -172,6 +172,10 @@ class SubprocessCancelled(ContractError):
 def _terminate_subprocess_tree(process: subprocess.Popen) -> None:
     """Kill the owned process and descendants, including nested POSIX sessions."""
     if os.name != "posix":
+        owner = getattr(process, '_intent_slide_owner', None)
+        if owner is not None:
+            owner.terminate()
+            return
         if process.poll() is None:
             process.kill()
         return
@@ -223,15 +227,16 @@ def _run_bounded_subprocess(
     """Run a child while draining both streams and retaining bounded diagnostics."""
     if cancelled is not None and cancelled():
         raise SubprocessCancelled("verification was cancelled before starting a child process")
-    process = subprocess.Popen(
-        command,
-        cwd=cwd,
-        env=env,
-        stdin=subprocess.DEVNULL,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-        start_new_session=os.name == "posix",
-    )
+    owner = None
+    if os.name == 'nt':
+        from presentation_agents.v2.stdio_transport import StdioTransport
+        owner = StdioTransport.launch(command, cwd=cwd, env=env, startup_timeout=min(timeout, 30))
+        process = owner.process
+        process._intent_slide_owner = owner
+        process.stdin.close()
+    else:
+        process = subprocess.Popen(command, cwd=cwd, env=env, stdin=subprocess.DEVNULL,
+                                   stdout=subprocess.PIPE, stderr=subprocess.PIPE, start_new_session=True)
     assert process.stdout is not None
     assert process.stderr is not None
     captured: dict[str, bytearray] = {
@@ -293,6 +298,8 @@ def _run_bounded_subprocess(
         for reader, stream in zip(readers, (process.stdout, process.stderr)):
             if not reader.is_alive():
                 stream.close()
+        if owner:
+            owner.close()
         if isinstance(exc, subprocess.TimeoutExpired):
             raise subprocess.TimeoutExpired(
                 command, timeout,
@@ -302,6 +309,8 @@ def _run_bounded_subprocess(
         raise
     process.stdout.close()
     process.stderr.close()
+    if owner:
+        owner.close()
     return subprocess.CompletedProcess(
         command,
         returncode,

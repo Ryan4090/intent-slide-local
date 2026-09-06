@@ -36,10 +36,16 @@
 
 ## 의존성과 라이선스
 
-`requirements-local.txt`는 9개 직접 런타임 의존성입니다. `requirements-local.lock`은 전이 의존성을 포함한 23개 패키지 버전과 공식 PyPI wheel 해시 612개를 고정합니다. 설치는 `--require-hashes --only-binary=:all:`로 실행하며 소스 빌드나 최신 버전 추정을 하지 않습니다. 여러 wheel 플랫폼의 해시가 있다는 사실은 여러 OS의 제품 지원을 뜻하지 않습니다. 실제 설치 검증은 macOS Apple Silicon/Python 3.12입니다.
+`requirements-local.txt`는 9개 직접 런타임 의존성입니다. `requirements-local.lock`은 전이 의존성을 포함한 23개 패키지 버전과 공식 PyPI wheel 해시 612개를 고정합니다. 설치는 `--require-hashes --only-binary=:all:`로 실행하며 소스 빌드나 최신 버전 추정을 하지 않습니다. 여러 wheel 플랫폼의 해시가 있다는 사실은 여러 OS의 제품 지원을 뜻하지 않습니다. 실제 플랫폼별 설치·렌더 검증은 VERIFICATION.md에 구분합니다.
 
 잠금 갱신은 명시적인 의존성 변경입니다. 버전 해석, 공식 release 해시, 실제 설치, 전이 의존성과 라이선스 고지, 관련 회귀를 함께 검토한 새 commit으로 갱신합니다. 기존 lock을 실행 중 자동 수정하지 않습니다.
 
-[제3자 고지](../../THIRD_PARTY_NOTICES.md)는 upstream MIT, Pretendard SIL OFL, geometry 자료의 Apache/MIT 및 Python 패키지별 조건을 구분합니다. PyMuPDF의 별도 AGPL/상용 라이선스 조건에 관해 이 배포 도구가 법적 호환성을 판정하지 않습니다. 공식 Codex·Claude Code 실행파일과 사용자 인증은 배포에 포함하지 않습니다.
+[제3자 고지](../../THIRD_PARTY_NOTICES.md)는 upstream MIT, Pretendard SIL OFL, geometry 자료의 Apache/MIT 및 Python 패키지별 조건을 구분합니다. PyMuPDF의 별도 AGPL/상용 라이선스 조건에 관해 이 배포 도구가 법적 호환성을 판정하지 않습니다. 공식 Codex native 실행 파일은 원문 고지와 함께 포함합니다. Claude Code 실행 파일과 사용자 인증은 포함하지 않습니다.
 
 현재 upstream manifest는 당시 checkout의 제작 owner를 가리킵니다. 개인 작업 트리에만 있던 Role/Lead 파서 변경은 포함되지 않았습니다. 과거 파일럿의 검증된 산출물과 새 제품 checkout에서의 재검증 가능성은 별개이며, owner나 검사 코드가 바뀐 후보는 현재 환경으로 G4를 다시 통과해야 합니다.
+
+## 클론만으로 실행하는 번들
+
+`vendor/portable/`은 런타임·wheel·렌더러·출처·고지를 일반 Git 파일로 포함합니다. 큰 압축 파일은 파일당 90MiB 이하 청크로 나누고 실행 준비 시 각 청크와 결합 결과 SHA를 모두 검사합니다. Git LFS, submodule, 실행 중 네트워크 설치는 사용하지 않습니다. 런타임 갱신은 별도 검토된 commit으로만 배포합니다.
+
+배포 생성은 커밋된 blob을 순서대로 스트리밍해 대용량 파일을 전체 메모리에 복사하지 않습니다. 플랫폼별 bundle manifest와 release manifest의 무결성 검사는 별개로 수행합니다. 공개 저장소에는 새 독립 이력 위에 이 스냅샷만 적용합니다.

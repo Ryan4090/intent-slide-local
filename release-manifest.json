@@ -1,5 +1,5 @@
 {
-  "file_count": 12431,
+  "file_count": 12574,
   "files": [
     {
       "bytes": 155,
@@ -73772,16 +73772,34 @@
       "sha256": "3954e0f56ff559a0e8eff09c9a9e728787d2e2dfb09a05106b5322764ad4972a"
     },
     {
+      "bytes": 171,
+      "mode": 420,
+      "path": ".gitattributes",
+      "sha256": "24f9cd81d30cb5038e7cb3eec4eed0d879d389b702bdb8dc0bf76d14eb5c1b54"
+    },
+    {
+      "bytes": 1183,
+      "mode": 420,
+      "path": ".github/workflows/portable-clone.yml",
+      "sha256": "aab4c3cfaaf742f67a34da3f78f5c752e29f5f07867f4020d58462765f292551"
+    },
+    {
+      "bytes": 2774,
+      "mode": 420,
+      "path": ".github/workflows/portable-renderer-build.yml",
+      "sha256": "82fa109b24ff8bd77926010e9cf4e2e647a9facca4a1f972a20d70b015a94faa"
+    },
+    {
       "bytes": 124,
       "mode": 420,
       "path": ".gitignore",
       "sha256": "bfe18010b1b28260d67bc98923b4ee58422e081011b464b93cbcfeeaf877f2aa"
     },
     {
-      "bytes": 2801,
+      "bytes": 3476,
       "mode": 420,
       "path": "AGENTS.md",
-      "sha256": "b10a28756b05496f5e38f8edf546994b89ad417542450324ecf0a354e492f179"
+      "sha256": "26569d5f48eed4e6ef4b91c391baa298a3dbf437c7710dd23c460f6c10fd9944"
     },
     {
       "bytes": 470,
@@ -73796,16 +73814,28 @@
       "sha256": "edb405ed938a9cd9066fbd99e19b22138908ec6c8704c03b56b63e25e086d3da"
     },
     {
-      "bytes": 7156,
+      "bytes": 5320,
       "mode": 420,
       "path": "README.md",
-      "sha256": "a29bf53eb117930c0855b0a52fb1cd1173b4098a657d893c740f5a2555968d65"
+      "sha256": "245143fe4e8c100298451cad3fac085418d1026f17c086523b05535e44ba4156"
     },
     {
-      "bytes": 6458,
+      "bytes": 168,
+      "mode": 420,
+      "path": "Start Intent-Slide.cmd",
+      "sha256": "3224d71b12e0da744f6eb01dcf8c2f85756ea72704e9ef2f0175339c060e2788"
+    },
+    {
+      "bytes": 238,
+      "mode": 493,
+      "path": "Start Intent-Slide.command",
+      "sha256": "21d8c4be6de45c3a8856a8c7e40093f0eefa1b3c6c46c896770d0425f102549c"
+    },
+    {
+      "bytes": 7339,
       "mode": 420,
       "path": "THIRD_PARTY_NOTICES.md",
-      "sha256": "26f48b3fe9dd070fb98d10314624e7735a3a90a532b338dce9130a7dae933c0f"
+      "sha256": "5f8ef1e791bba511e6208fa90e83f75a9d0082ea0d010379d41b54789b569a84"
     },
     {
       "bytes": 6746,
@@ -73814,22 +73844,34 @@
       "sha256": "bb3738628d4c0321dd321e56fc7ff589342e43f3f29754b72f00490abae9b92b"
     },
     {
+      "bytes": 4201,
+      "mode": 420,
+      "path": "docs/local-mvp/01_PORTABLE_CONNECTION_WORK_PACKET.md",
+      "sha256": "3fdfe98d07fde2ae566e6dc8a75ae64a7b5b1bdf4655ba00eb3a1b888c90794b"
+    },
+    {
+      "bytes": 7434,
+      "mode": 420,
+      "path": "docs/local-mvp/AI_COMPATIBILITY.md",
+      "sha256": "722f274b58351cee80931302f055d961917973583c8a829fbbac9b0c6f8c8cdf"
+    },
+    {
       "bytes": 3137,
       "mode": 420,
       "path": "docs/local-mvp/CLAUDE_COMPONENT_REVIEW.md",
       "sha256": "61a96b3d4e4a52ce37e05f8013dd24c3145939e55eaaec08b000e50ce3d845ce"
     },
     {
-      "bytes": 5430,
+      "bytes": 6253,
       "mode": 420,
       "path": "docs/local-mvp/DISTRIBUTION.md",
-      "sha256": "df258b0c3cfaa503e9b2c1962816ed5bfea2030a18cf7a0c801337ec8fbcc2a9"
+      "sha256": "a185700a10653dc1fe028c85e55b72b6176eff4568ee89ca06923218d2be362e"
     },
     {
-      "bytes": 6597,
+      "bytes": 4193,
       "mode": 420,
       "path": "docs/local-mvp/INSTALLATION.md",
-      "sha256": "775666cec566efd6ed340cfa53b6e69498787e7baaf236acf9af0f23e5f9fc9e"
+      "sha256": "5bdb5e06b19c5c45a246e0ab63f95f8d988e5ab92612765de5140322476d4f50"
     },
     {
       "bytes": 7663,
@@ -73838,10 +73880,22 @@
       "sha256": "8fd17de56e1ed24a6f9683f26c75208cc07b7befd61392e93c7a86bdeef16f63"
     },
     {
-      "bytes": 9507,
+      "bytes": 8969,
+      "mode": 420,
+      "path": "docs/local-mvp/PORTABLE_COMPONENT_REVIEW.md",
+      "sha256": "f0fa66482e456e00b1913e0add428c7a8f115fa4d835c88154ee4f61a7f17db7"
+    },
+    {
+      "bytes": 19165,
+      "mode": 420,
+      "path": "docs/local-mvp/PORTABLE_RENDERER_REVIEW.md",
+      "sha256": "a7725d07d40adca2fff549862e931e0f2b8e37b2155b9feec775b622676b19e2"
+    },
+    {
+      "bytes": 11888,
       "mode": 420,
       "path": "docs/local-mvp/VERIFICATION.md",
-      "sha256": "c90cce097b2af636ac8960536d6e39eab56a18c29bbac6d907e6a40851f78c1c"
+      "sha256": "033f00d9b28b5977645ca86404b48a5840f531bfa5cd5c6474848a1843f277bf"
     },
     {
       "bytes": 834,
@@ -73862,10 +73916,16 @@
       "sha256": "865e55a1427b36b3b6a463a6a721bb96e1edfad452612d25cfc3bcad2b451865"
     },
     {
-      "bytes": 529,
+      "bytes": 2502,
       "mode": 493,
       "path": "intent-slide",
-      "sha256": "d41689fa1e5d69e9a57dc0214062ffa059cdf203cee5213ac6d43bd1ac95e32b"
+      "sha256": "6cfe1cdf119402fb020b205c4b29402191f238941537dcafcfd2b6b3e9384862"
+    },
+    {
+      "bytes": 2283,
+      "mode": 420,
+      "path": "intent-slide.cmd",
+      "sha256": "aaf7ad52c768b06bf4c651deb64c37cd5816c14eda9afc8a06fdcf77b5161ca7"
     },
     {
       "bytes": 2201,
@@ -74174,16 +74234,22 @@
       "sha256": "2415d4821acd9df93e98733b31e8722ff6ff5f51200673e22d8746d8d0e05842"
     },
     {
-      "bytes": 18179,
+      "bytes": 19887,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/README.md",
-      "sha256": "4e4d588578dc14d4f647d465bb4b4ea00c842b6d06b2e94b9a5378a2d1c86b52"
+      "sha256": "4fec028dc2d7351f99b2e69c1708d756e3120ac2bc3cb993850b22343e85dc8d"
     },
     {
-      "bytes": 80822,
+      "bytes": 92325,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/app.mjs",
-      "sha256": "c8eb1a06cfe34dc5ec8d13325a8307b3a94f2d7c3823e7f760087fb7a592d4c7"
+      "sha256": "871543de73ad7ab024b0df9de9ecd6572c10e16c34346f5c00378cd3d3a9cf90"
+    },
+    {
+      "bytes": 3131,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/console/connection.mjs",
+      "sha256": "6fdb7e34a30672cd40ff5da6eca5c8ea1eb4c114f7bae06f42038f0c4fe838c4"
     },
     {
       "bytes": 25347,
@@ -74192,10 +74258,10 @@
       "sha256": "8e4896477b8df8a4f48f494d03574f2821fbffe51bcb4a9d198e38cfc448156b"
     },
     {
-      "bytes": 8611,
+      "bytes": 9292,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/index.html",
-      "sha256": "22d50be4291f4abde1241a6fa23ba1725a391f01ebbc1476950017ae59fd647b"
+      "sha256": "0f06da3822b28b179f59e7048687cc360a7d00092b124732966ad4b07050b874"
     },
     {
       "bytes": 161,
@@ -74204,16 +74270,22 @@
       "sha256": "ae79315ab36bf81848d7db9af2ecaaa76f1cb58d982fc8101d4283a913243434"
     },
     {
-      "bytes": 14724,
+      "bytes": 17639,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/product.mjs",
-      "sha256": "a64a7480800aae6f9c959e3ce0178d1475677ef2385b4d74d8d5079598836c9c"
+      "sha256": "08146edb8e0b6fc58496bac36f7e736795f0babda73603c18f16a40a40df835c"
     },
     {
-      "bytes": 46672,
+      "bytes": 48012,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/styles.css",
-      "sha256": "4a1fa982acd5b242224a06e7f3eb33dc28c78855f6ee97ef4db4b0a20ac7fdee"
+      "sha256": "cd390383722de08a82c89c3b1a0557c8836917b40988d23a3666248a388dd8e4"
+    },
+    {
+      "bytes": 12003,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/console/tests/connection.test.mjs",
+      "sha256": "3db6908482386236e115db6fa1e402a44c38e6ce252ae47e422d17b9681566fb"
     },
     {
       "bytes": 28508,
@@ -74222,16 +74294,16 @@
       "sha256": "eea492f1356bf8123bc7be845f77547be57467064036bb094f4cb48514d173ce"
     },
     {
-      "bytes": 15317,
+      "bytes": 15696,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/tests/product.test.mjs",
-      "sha256": "825e10eddc37b8315ce23365e2e2b041d4e790d4c9dab643f2c790357478124a"
+      "sha256": "feffbfc258a35a969e4f183cc968aed9fc07aa1f5d6a3fe7ac149e7d1fa4df62"
     },
     {
-      "bytes": 4037,
+      "bytes": 4154,
       "mode": 420,
       "path": "projects/presentation-agent-suite/console/tests/recovery.test.mjs",
-      "sha256": "aac7d33684539cd79c45685db16620e57523d9316d29bfcf7d9a14783f9ba4da"
+      "sha256": "549d94809e263681ed7a45ce8fc867f6a348be209174fb601b8780659bcfd6fd"
     },
     {
       "bytes": 702,
@@ -74240,10 +74312,10 @@
       "sha256": "71e3fd44e32520d096f86913978a2006baa1b355683d8d29eef89b43b02e1513"
     },
     {
-      "bytes": 2462,
+      "bytes": 5124,
       "mode": 420,
       "path": "projects/presentation-agent-suite/scripts/presentation_console.py",
-      "sha256": "3b92dd91cffdd6bf5a94ea0560b2df15b7384b3875230c590782ab4dcf66705e"
+      "sha256": "2eb280cf069b0e4ab34990a81d6ae7234cfb08ca8ee2747e9a456a50a9c2a5ed"
     },
     {
       "bytes": 786,
@@ -74288,10 +74360,10 @@
       "sha256": "d1432f6dff904588c1ede4f2995410d202a494b681ecde74fba849866e7eeefe"
     },
     {
-      "bytes": 145202,
+      "bytes": 145715,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/pipeline.py",
-      "sha256": "f68f914df1bbfd27943d9bde7fa3d2a63fac4ecff8e984ee61016d931a2f22f6"
+      "sha256": "8dc3145021bf2e8add70313b89b74a78001d0e6cc22430621860ef778cec0d82"
     },
     {
       "bytes": 2998,
@@ -74306,46 +74378,64 @@
       "sha256": "bacddc92ae8a6b729fcdaca1869fd8c5c0ef54da7c423c3c8079eeb8b6aa773c"
     },
     {
-      "bytes": 33077,
+      "bytes": 40686,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/src/presentation_agents/v2/acp_provider.py",
+      "sha256": "9df0f0c9772f31d7e82f958108aa0eb8a2f494ab99aa6b6d083f25834ac49ee5"
+    },
+    {
+      "bytes": 31156,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/claude_provider.py",
-      "sha256": "92ae8529b1ce69b097c2e798b2029539333656fe6ecde680fa1ac094c6c3de02"
+      "sha256": "bc4fc3483497ee1cd6e90cda8bdff190646e3cbf212c6c3674fcec62e8083a57"
     },
     {
-      "bytes": 23941,
+      "bytes": 25093,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/contracts.py",
-      "sha256": "820d5d9e47eeb515967693a5ca54ea584e17f5f6b26b0957d2340766e907c25f"
+      "sha256": "d29e679909a936f9e59af3b0f0db9b3867f371ae67cb6154bcea219a6f4c7f0a"
     },
     {
-      "bytes": 53739,
+      "bytes": 55309,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/engine.py",
-      "sha256": "989e5896af029f18a4950f034ed9e573ff7bcd942c45c26542a1333bda320e90"
+      "sha256": "57dc296c61c963b6f4e940ae1c859b858e14274bdfb113e93b60e267a1361078"
     },
     {
-      "bytes": 14413,
+      "bytes": 15626,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/evidence.py",
-      "sha256": "0104dde56b85ab0e6698457e4d753d92d69eccfc90a8ccfed6caee041a17d0cf"
+      "sha256": "84a01c35cd4bd5557e7a56f9cb79e60c30c4641d73c275102b2df2a6af21f29e"
     },
     {
-      "bytes": 16593,
+      "bytes": 3795,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/src/presentation_agents/v2/login.py",
+      "sha256": "5a20c422e01484f2c1bc18b5c8e5f9571e3a721e74e10c7205c74cec21d8475e"
+    },
+    {
+      "bytes": 6727,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/src/presentation_agents/v2/portable_render.py",
+      "sha256": "4f0ea63f4d2625008cfcba38d158b55bd6fe861da5d57f98c3ec21fd7a044b41"
+    },
+    {
+      "bytes": 17325,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/prompts.py",
-      "sha256": "f8fd7677694451ed2c2f559b4cd13182215e474f1866a5bb63f2b84148711312"
+      "sha256": "f61cff44484025a39f9210a61daea6871f3d1aa115db6485e66fac94ad12a678"
     },
     {
-      "bytes": 41439,
+      "bytes": 40362,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/provider.py",
-      "sha256": "fe5f9da9f869418a744356840ef0cbaf550c6fe3d4266ab9d7d54ad483a1e04e"
+      "sha256": "36126e96e608760e28cc884d674a609df3850e569bff8f106166594e7df0649f"
     },
     {
-      "bytes": 2615,
+      "bytes": 3769,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/provider_registry.py",
-      "sha256": "15d71019562f97e2f01028726bbc7e3f9447b9e696148e6caf12cfe23166105f"
+      "sha256": "1ec29a477d4126facd77f7866df36e85782623272264596f4bee511eae00a94c"
     },
     {
       "bytes": 16651,
@@ -74354,22 +74444,28 @@
       "sha256": "7a861781cf335da6c2f36ca003922918ef36eb8b9fbdf38e39d0fb889c5da3e4"
     },
     {
-      "bytes": 56335,
+      "bytes": 61826,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/runner.py",
-      "sha256": "018ff17ae210bd52f30390cbd68f791696ad0037adc479e32cba9af36025173c"
+      "sha256": "9f4da68b798ade49ffc00b51747d0f6545092ab2aeceff46c70878a0da85ac77"
     },
     {
-      "bytes": 8861,
+      "bytes": 9857,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/server.py",
-      "sha256": "0df848849f9a92fb2ed2f325e672101dbf6ac05dd604724400c369a3b1d4ebb9"
+      "sha256": "3b9ea034ce7f7f0bc506f8f6a442cac48bad9e7bd7deceac940aef4a57d068b7"
     },
     {
-      "bytes": 1750,
+      "bytes": 1965,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/service.py",
-      "sha256": "260316be86253672d43daa7772fdc4c02b8f4f7e81dab32006d97f210f39e1fe"
+      "sha256": "0326cd532f6b4596fb78cc6b7b4629b1cce12a452c8b0dfb24379ed05f47cdac"
+    },
+    {
+      "bytes": 14424,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/src/presentation_agents/v2/stdio_transport.py",
+      "sha256": "cf43a8f8ef145d7cbd5d00bdebd930be9d2c1c4901559335ce7ad7b06e3b3271"
     },
     {
       "bytes": 6051,
@@ -74378,10 +74474,10 @@
       "sha256": "41e25280a4634399b499b8071470b9c85a7f5ce5205cb23e2e011dc12451780b"
     },
     {
-      "bytes": 30200,
+      "bytes": 31429,
       "mode": 420,
       "path": "projects/presentation-agent-suite/src/presentation_agents/v2/verification.py",
-      "sha256": "dd5cb16c012f3e8149cc2a349856a97b7dba04aad6fa0880e6939c72e4c4e83f"
+      "sha256": "58fb127aa2c3f0e2447d5f94e9d5035fbb307dd82b1e42cdd9a6eab2b677fb1e"
     },
     {
       "bytes": 7886,
@@ -74394,6 +74490,12 @@
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/fixtures/claude-provider/README.md",
       "sha256": "960d894f15a8104a774e6976c51d16ddb4bdc4a94765222ae5ad27ca1380d327"
+    },
+    {
+      "bytes": 19462,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/tests/test_v2_acp_provider.py",
+      "sha256": "1845b7cd852eec41daf99fea13fc7e3113d529bfaa9937c3d59bb8bf72565ea9"
     },
     {
       "bytes": 15780,
@@ -74420,6 +74522,12 @@
       "sha256": "8f1fd25e23eb4c34b1799b1b3db010c05acffff78b4adb74db87394c123e4fba"
     },
     {
+      "bytes": 3467,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/tests/test_v2_discovery.py",
+      "sha256": "2fa7f859ba4271136e815ef627074b15b28142d98ef81485f0257d20bf1e7142"
+    },
+    {
       "bytes": 7531,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_engine.py",
@@ -74432,22 +74540,34 @@
       "sha256": "2daf0fbecfb4a81f7a0a8a01666598650968e18084d7e03aefca4b5f97a874ab"
     },
     {
+      "bytes": 3437,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/tests/test_v2_login.py",
+      "sha256": "2d3a1f4aa603b349abfe2e3f8a257e7e90c52f90f0c5540889e8e7969d72a2bd"
+    },
+    {
       "bytes": 8695,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_markdown_pdf.py",
       "sha256": "6cbbb8c0ae42cf177d66a3f5248833ee6e50050660e92f8f859405f6e7eb0557"
     },
     {
-      "bytes": 24559,
+      "bytes": 4659,
       "mode": 420,
-      "path": "projects/presentation-agent-suite/tests/test_v2_provider.py",
-      "sha256": "4b5e6f0d1c25b7fb772aad95c217b308a76ebaf5eff13d16f923db96053f7eb2"
+      "path": "projects/presentation-agent-suite/tests/test_v2_portable_render.py",
+      "sha256": "96e0a5199f67a88e6ee4586da0238f5a0aab845ac4812cf79d6aec573f987bd9"
     },
     {
-      "bytes": 2329,
+      "bytes": 24816,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/tests/test_v2_provider.py",
+      "sha256": "9ffca32d3025f561de7162ce878a802b4a7a35df98ff99fec129ede1b769c11b"
+    },
+    {
+      "bytes": 2349,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_provider_registry.py",
-      "sha256": "b78e9f2316540fc908e2d19aef0adf2af50980d9d1565f86ac1c071fbfe1c3c4"
+      "sha256": "7cfd02370b4f11cf88e0801bbbd55760351d2239708a8337a008ba1e2987f52c"
     },
     {
       "bytes": 3405,
@@ -74492,22 +74612,28 @@
       "sha256": "8b454f2bd6c1172e447bb0ffd9798ca2bfffd8a215e5bac8aa8975ed29572e98"
     },
     {
-      "bytes": 19348,
+      "bytes": 21561,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_runner.py",
-      "sha256": "3cfb608c715b41b568ba9bddea5c8b88880b22581105ba01eee6f46d119e71fb"
+      "sha256": "7a0032e407a785ab597b7e0e7df55fdee432a25f8d5cf37bd8fcc86e31e2183b"
     },
     {
-      "bytes": 4490,
+      "bytes": 5199,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_server.py",
-      "sha256": "9ad276a0d46d28fbaf3dc9be5f1b90b69aeeb93a378b73e1982b535a0fa66315"
+      "sha256": "4926801c16dfc962f1d4c36cdd8d4b8e97e37e3c081fc493751e9418294886e8"
     },
     {
-      "bytes": 6390,
+      "bytes": 6249,
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_service.py",
-      "sha256": "0a3207bb75b01cfc036d8635e8f0c9a510e66cdbd493331bf1302dd849fa594d"
+      "sha256": "7d7ec51c7dcf837b2b004393bfcc2d5fed127f1eaf3ef44c4b94907d02652ca9"
+    },
+    {
+      "bytes": 10152,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/tests/test_v2_stdio_transport.py",
+      "sha256": "78accfba7c98c75a356c5392ef8d695d114eddc166eb5869947862e1d97edefc"
     },
     {
       "bytes": 5333,
@@ -74520,6 +74646,12 @@
       "mode": 420,
       "path": "projects/presentation-agent-suite/tests/test_v2_svg_text_width.py",
       "sha256": "f2d300b6f0cd2a8dda1e610edf777183670d84aa8389e8674aa23ea1279b566a"
+    },
+    {
+      "bytes": 9679,
+      "mode": 420,
+      "path": "projects/presentation-agent-suite/tests/test_v2_user_sources.py",
+      "sha256": "f3862ba5b4a42d89be3834b8eb0ff9c1574b4cf1fd21bef0c15cfa32a07fe752"
     },
     {
       "bytes": 26224,
@@ -74552,28 +74684,754 @@
       "sha256": "c6223ceacc84af78af7a5003e12556370ddc692d60fa500ca624bd6200126f95"
     },
     {
-      "bytes": 14016,
+      "bytes": 29682,
       "mode": 420,
       "path": "scripts/build_local_release.py",
-      "sha256": "1d52446b5f80bd0c660c605fcf3cfa69e7f51fa4884f7f6cb9e773d2d91702e2"
+      "sha256": "197cb2142c50d57766af69727c13e069792992dd76023604a06b04341fd3ac63"
     },
     {
-      "bytes": 11969,
+      "bytes": 29423,
+      "mode": 420,
+      "path": "scripts/build_portable_renderer.py",
+      "sha256": "835cce3965f21698a4e168d5298858aaff6b5a6e118f42e3106210e95ce6efdc"
+    },
+    {
+      "bytes": 17757,
+      "mode": 420,
+      "path": "scripts/build_portable_runtime.py",
+      "sha256": "bf46cd094af87599d96d1333f8d5f41181705c7b1b52776360f2a12add0c6e29"
+    },
+    {
+      "bytes": 14617,
       "mode": 420,
       "path": "scripts/local_mvp.py",
-      "sha256": "a2ef50db79785b346465e19c42d4b0fa7e6447d3c2e8bbbb7c042ef79ee92cca"
+      "sha256": "3deeabdd8bad69e4c7379fde4bdfb6505d883200c7f9a97eabb0f71803933778"
     },
     {
-      "bytes": 5889,
+      "bytes": 18796,
+      "mode": 420,
+      "path": "scripts/portable_bootstrap.py",
+      "sha256": "bf790fa66cad9ba1e294c899495a69c80347e3d21abb2fe735741a79d13ab7b3"
+    },
+    {
+      "bytes": 4345,
+      "mode": 420,
+      "path": "scripts/verify_portable_clone.py",
+      "sha256": "94bf265b7c8a02955194468c54440b7311c1077f9e8d529d8e41fb82b16a237e"
+    },
+    {
+      "bytes": 7079,
       "mode": 420,
       "path": "tests/test_local_mvp.py",
-      "sha256": "386e492e1e1c75f879c59ac35ed107070b1bd5d3194b866c0db6702d419d309f"
+      "sha256": "c52809d308bca706db4d7bbbadeb75ff28e69ae8dac8596e6ea3c8beeb7f92a1"
     },
     {
-      "bytes": 12012,
+      "bytes": 22636,
       "mode": 420,
       "path": "tests/test_local_release.py",
-      "sha256": "88f190523948c12c8f1479f97ad07bc583eb6ed4433a79011bbbfe8a01fe075d"
+      "sha256": "43a37ca3ccf6931630c8534b1a71120ec3f91e6e80a981374e3770b786e6520c"
+    },
+    {
+      "bytes": 14304,
+      "mode": 420,
+      "path": "tests/test_portable_bootstrap.py",
+      "sha256": "077aafd82f1a5210e767df91c29b661a8f2e8187b2e3fe0cdcbfcc236c5cfcfc"
+    },
+    {
+      "bytes": 5835,
+      "mode": 420,
+      "path": "tests/test_portable_runtime_builder.py",
+      "sha256": "bdee15f871cc901386c9cc257ec1cb1b4a88bf87c1beb5c7a032633b608297b1"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/codex/darwin-arm64.tgz.part001",
+      "sha256": "d1a15fea000f15f0017fce304eddfb8185194745b1266306eb040af161acb672"
+    },
+    {
+      "bytes": 21300472,
+      "mode": 420,
+      "path": "vendor/portable/codex/darwin-arm64.tgz.part002",
+      "sha256": "54cded2d1bfc3a944158431ff5d4a1a492d008642d20cb9ab65a57fb0ddd08f3"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/codex/darwin-x64.tgz.part001",
+      "sha256": "e69967d40d99ab13b87dca4a5f0d902db4046ebd736ede6024f7b980353da7d9"
+    },
+    {
+      "bytes": 29172193,
+      "mode": 420,
+      "path": "vendor/portable/codex/darwin-x64.tgz.part002",
+      "sha256": "84060fa3a4c6b71fb7ea12f26bc27a9ccf261a91092f69ef780b0234671e424a"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/codex/win32-x64.tgz.part001",
+      "sha256": "29448c067dfd8dbc92fb6113e688ab4e1a65ce47ee4e566c237418d70d852a4c"
+    },
+    {
+      "bytes": 47123546,
+      "mode": 420,
+      "path": "vendor/portable/codex/win32-x64.tgz.part002",
+      "sha256": "5148c985ff14c6e7bac3ef6611aba2a950c4682e9f976bcde130e2792285b28a"
+    },
+    {
+      "bytes": 10926,
+      "mode": 420,
+      "path": "vendor/portable/licenses/codex-APACHE-2.0.txt",
+      "sha256": "d17f227e4df5da1600391338865ce0f3055211760a36688f816941d58232d8dc"
+    },
+    {
+      "bytes": 242,
+      "mode": 420,
+      "path": "vendor/portable/licenses/codex-NOTICE.txt",
+      "sha256": "9d71575ecfd9a843fc1677b0efb08053c6ba9fd686a0de1a6f5382fd3c220915"
+    },
+    {
+      "bytes": 34520,
+      "mode": 420,
+      "path": "vendor/portable/licenses/mupdf-COPYING.txt",
+      "sha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6"
+    },
+    {
+      "bytes": 34520,
+      "mode": 420,
+      "path": "vendor/portable/licenses/pymupdf-COPYING.txt",
+      "sha256": "57c8ff33c9c0cfc3ef00e650a1cc910d7ee479a8bc509f6c9209a7c2a11399d6"
+    },
+    {
+      "bytes": 16725,
+      "mode": 420,
+      "path": "vendor/portable/licenses/python-build-standalone-LICENSE.txt",
+      "sha256": "1f256ecad192880510e84ad60474eab7589218784b9a50bc7ceee34c2b91f1d5"
+    },
+    {
+      "bytes": 1081,
+      "mode": 420,
+      "path": "vendor/portable/licenses/ripgrep-15.2.0-LICENSE-MIT.txt",
+      "sha256": "0f96a83840e146e43c0ec96a22ec1f392e0680e6c1226e6f3ba87e0740af850f"
+    },
+    {
+      "bytes": 1211,
+      "mode": 420,
+      "path": "vendor/portable/licenses/ripgrep-15.2.0-UNLICENSE.txt",
+      "sha256": "7e12e5df4bae12cb21581ba157ced20e1986a0508dd10d0e8a4ab9a4cf94e85c"
+    },
+    {
+      "bytes": 1963,
+      "mode": 420,
+      "path": "vendor/portable/licenses/zsh-LICENCE.txt",
+      "sha256": "d06fdf3ef9b1ec69d6b9e170b0a9516fbad3523261ff1668bde3bfea6e0ef5f5"
+    },
+    {
+      "bytes": 24981445,
+      "mode": 420,
+      "path": "vendor/portable/python/darwin-arm64.tar.gz",
+      "sha256": "81a359f1cfadd4da11766534c5913791cea55f26e1bb902cacd2a531bb1e4b2b"
+    },
+    {
+      "bytes": 24686153,
+      "mode": 420,
+      "path": "vendor/portable/python/darwin-x64.tar.gz",
+      "sha256": "65b195c9cedc1fef6767f044f9822069adbd1bd9204d424ece4628776fdc04bb"
+    },
+    {
+      "bytes": 21980728,
+      "mode": 420,
+      "path": "vendor/portable/python/win32-x64.tar.gz",
+      "sha256": "7c45c9622400d578709a9b2cddbe8124cc21d382409d9f13406d706d28e31b14"
+    },
+    {
+      "bytes": 132483,
+      "mode": 420,
+      "path": "vendor/portable/renderer-manifest.json",
+      "sha256": "104aa63b3d153e1d8451cd0b238b845a55ab4988362daac9a1378f544112d33b"
+    },
+    {
+      "bytes": 489966,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-arm64/LICENSE",
+      "sha256": "4b720686b5c8f88af5eb67e36c12ff3295e9f9b25d335d1ceda08156e4ac484a"
+    },
+    {
+      "bytes": 1859,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-arm64/NOTICE",
+      "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part001",
+      "sha256": "20d3325da4c116828e6ad0d1f8f2431eb9edafa16032482e773352898154014d"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part002",
+      "sha256": "a195469b8d05b1a59ed69a9e243f9d01fac3ffa2f99eff0f00d463ddbf390dfc"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part003",
+      "sha256": "3c1dc2e5593708d1335cf57fc5e253e6455791c73eff4570c2cf13c0d55a0f35"
+    },
+    {
+      "bytes": 9686808,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-arm64/libreoffice-26.8.0-darwin-arm64.tar.gz.part004",
+      "sha256": "335ff97dc61a9800ff10b1efcebdf7e4166e6f61ac6881ff6f2569ce00d41f52"
+    },
+    {
+      "bytes": 487506,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-x64/LICENSE",
+      "sha256": "6f2742791724d351f1bd1d765bec935f765a2663a45aff5442eaf0b1db860574"
+    },
+    {
+      "bytes": 1859,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-x64/NOTICE",
+      "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part001",
+      "sha256": "2293578b85f36eb60aa615aed8b3ab09caff9f640fb77ced0b43f32e02f460cd"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part002",
+      "sha256": "df2a90cfe0cdd87dd115d7a52c947646b0f9511a2143a9a8f298bc91b3e0fea7"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part003",
+      "sha256": "df5d1f0c1accaaf79e0ed0e79709f684dc9d2532677a829d0c0c26e9af0db071"
+    },
+    {
+      "bytes": 19990265,
+      "mode": 420,
+      "path": "vendor/portable/renderer/darwin-x64/libreoffice-26.8.0-darwin-x64.tar.gz.part004",
+      "sha256": "31db08ed7e7c4ac515f01fc3464102ab837a31d2981de025c9c174abd0cdbdff"
+    },
+    {
+      "bytes": 1941,
+      "mode": 420,
+      "path": "vendor/portable/renderer/packaging-tests.log",
+      "sha256": "0dee02cf8eddb7ebdf89918c64a092a5712ce3d4d2a773635d1a8c34528d11fa"
+    },
+    {
+      "bytes": 1861,
+      "mode": 420,
+      "path": "vendor/portable/renderer/packaging-verification.json",
+      "sha256": "f5c47ae867058c19f214c74467d14433917e4b432b876e151a14f2a6765c4bd7"
+    },
+    {
+      "bytes": 1452,
+      "mode": 420,
+      "path": "vendor/portable/renderer/source-access.json",
+      "sha256": "59b84aa668dff752905167457a23dc1530ac5971d993e8ce559a982c6aba7cdd"
+    },
+    {
+      "bytes": 1859,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/NOTICE",
+      "sha256": "8d34210ebbfaee4ba258ef7b30c3044170f356ab82c8259c81b53860bcdeef7b"
+    },
+    {
+      "bytes": 4622,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/ci-provenance.json",
+      "sha256": "20826b8bde3550fd85bdc06289eaaaca54a1f21ed53bfad61b99ef96c6946f12"
+    },
+    {
+      "bytes": 2617,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/dependency-review.json",
+      "sha256": "e6fddef6842c355745d07dd5f30c1864a7331192ed7b4b3897497a7d77a4887b"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part001",
+      "sha256": "073b2e81e4f14d6be585d66ede28d606f5c3df61b67b8649cc8b4bce21fb45ff"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part002",
+      "sha256": "57c1a461fb6bfab5b6a11125250343be358de65d49f9fa72c0d7a14cf8a81888"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part003",
+      "sha256": "fbdd957c0ff6f50d190422a30965ae36aa795f247ed3f798f24910766754646c"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part004",
+      "sha256": "5401662c880e0f426d82c506b558486968f5971f6e4197b5f7a082b0546b300b"
+    },
+    {
+      "bytes": 94371840,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part005",
+      "sha256": "161014aaa03992bd58b0d655a53571844ca79cb354ea18ce7fd863440df86ca6"
+    },
+    {
+      "bytes": 34903847,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/libreoffice-26.8.0-win32-x64-app-local-v1.tar.gz.part006",
+      "sha256": "bb94b0cd3fcb60ce307c7fbce7f128c580ab541134484a8c651b751b42346444"
+    },
+    {
+      "bytes": 512187,
+      "mode": 420,
+      "path": "vendor/portable/renderer/win32-x64/license.txt",
+      "sha256": "e3752e56328b579e0e3be3039cf1106a4af31ee58db863ffd7624fa9421f6d7f"
+    },
+    {
+      "bytes": 161424,
+      "mode": 420,
+      "path": "vendor/portable/runtime-manifest.json",
+      "sha256": "7e13fd99e0a066b6a392f658c1fb56c06bc727159acc73e3e66a8103fdd02266"
+    },
+    {
+      "bytes": 68898646,
+      "mode": 420,
+      "path": "vendor/portable/sources/mupdf-1.28.2-source.tar.gz",
+      "sha256": "44075a84e329db55b9bef5f342a70fd26d69e48ad1d33cb89d9664581c641156"
+    },
+    {
+      "bytes": 87903557,
+      "mode": 420,
+      "path": "vendor/portable/sources/pymupdf-1.28.2.tar.gz",
+      "sha256": "5e0be7908a715aa20333caddd73f1d6f01e4cd0c26e869fa2dd0b7f344da2249"
+    },
+    {
+      "bytes": 109924,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/beautifulsoup4-4.15.0-py3-none-any.whl",
+      "sha256": "d6f88de62e1d4e38ecb1077eb9724cd0eff29d2a08ca16a401e9b9e93f117cf9"
+    },
+    {
+      "bytes": 8458,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/blinker-1.9.0-py3-none-any.whl",
+      "sha256": "ba0efaa9080b619ff2f3459d1d500c57bddea4a6b424b60a91141db6fd2f08bc"
+    },
+    {
+      "bytes": 136983,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/certifi-2026.7.22-py3-none-any.whl",
+      "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+    },
+    {
+      "bytes": 344456,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/charset_normalizer-3.5.1-cp312-cp312-macosx_10_13_universal2.whl",
+      "sha256": "5b6d1386bf0096d26d3a863dc0a487a5b4eb9aa93cf5ba69683d29dde6b9d60f"
+    },
+    {
+      "bytes": 125251,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/click-8.5.0-py3-none-any.whl",
+      "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360"
+    },
+    {
+      "bytes": 18059,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/et_xmlfile-2.0.0-py3-none-any.whl",
+      "sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa"
+    },
+    {
+      "bytes": 103424,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/flask-3.1.3-py3-none-any.whl",
+      "sha256": "f4bcbefc124291925f1a26446da31a5178f9483862233b23c0c96a20701f670c"
+    },
+    {
+      "bytes": 68550,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/idna-3.19-py3-none-any.whl",
+      "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4"
+    },
+    {
+      "bytes": 16234,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/itsdangerous-2.2.0-py3-none-any.whl",
+      "sha256": "c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef"
+    },
+    {
+      "bytes": 134899,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/jinja2-3.1.6-py3-none-any.whl",
+      "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+    },
+    {
+      "bytes": 8602094,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/lxml-6.1.3-cp312-cp312-macosx_10_13_universal2.whl",
+      "sha256": "0c0710ac085a157b593c38fbcacd950f15c4afa8e2057527185875ab302752bc"
+    },
+    {
+      "bytes": 12020,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/markupsafe-3.0.3-cp312-cp312-macosx_11_0_arm64.whl",
+      "sha256": "1872df69a4de6aead3491198eaf13810b565bdbeec3ae2dc8780f14458ec73ce"
+    },
+    {
+      "bytes": 11903109,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/numpy-2.5.2-cp312-cp312-macosx_11_0_arm64.whl",
+      "sha256": "4bbd96c833ecc8cc069ce518078fc8c60cb9cbfb0fea5b7a803ad65035596d03"
+    },
+    {
+      "bytes": 250910,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/openpyxl-3.1.5-py2.py3-none-any.whl",
+      "sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2"
+    },
+    {
+      "bytes": 4780323,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/pillow-12.3.0-cp312-cp312-macosx_11_0_arm64.whl",
+      "sha256": "ffd0c5368496f41b0944be820fcb7a838aa6e623d250b01acf2643939c3f99d7"
+    },
+    {
+      "bytes": 23875605,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/pymupdf-1.28.2-cp310-abi3-macosx_11_0_arm64.whl",
+      "sha256": "7113846b35dbf0a033f088e4f4fb543dabeb4b0b12c112966a1ca1ee2d5eacae"
+    },
+    {
+      "bytes": 472788,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/python_pptx-1.0.2-py3-none-any.whl",
+      "sha256": "160838e0b8565a8b1f67947675886e9fea18aa5e795db7ae531606d68e785cba"
+    },
+    {
+      "bytes": 73075,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/requests-2.34.2-py3-none-any.whl",
+      "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"
+    },
+    {
+      "bytes": 37370,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/soupsieve-2.9.2-py3-none-any.whl",
+      "sha256": "8089a26fd974ca7a1f30276d3d8492ab266ab15af581642dfe8aa162e0c1c823"
+    },
+    {
+      "bytes": 45571,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "bytes": 131087,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/urllib3-2.7.0-py3-none-any.whl",
+      "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897"
+    },
+    {
+      "bytes": 226459,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/werkzeug-3.1.8-py3-none-any.whl",
+      "sha256": "63a77fb8892bf28ebc3178683445222aa500e48ebad5ec77b0ad80f8726b1f50"
+    },
+    {
+      "bytes": 175315,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-arm64/xlsxwriter-3.2.9-py3-none-any.whl",
+      "sha256": "9a5db42bc5dff014806c58a20b9eae7322a134abb6fce3c92c181bfb275ec5b3"
+    },
+    {
+      "bytes": 109924,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/beautifulsoup4-4.15.0-py3-none-any.whl",
+      "sha256": "d6f88de62e1d4e38ecb1077eb9724cd0eff29d2a08ca16a401e9b9e93f117cf9"
+    },
+    {
+      "bytes": 8458,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/blinker-1.9.0-py3-none-any.whl",
+      "sha256": "ba0efaa9080b619ff2f3459d1d500c57bddea4a6b424b60a91141db6fd2f08bc"
+    },
+    {
+      "bytes": 136983,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/certifi-2026.7.22-py3-none-any.whl",
+      "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+    },
+    {
+      "bytes": 344456,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/charset_normalizer-3.5.1-cp312-cp312-macosx_10_13_universal2.whl",
+      "sha256": "5b6d1386bf0096d26d3a863dc0a487a5b4eb9aa93cf5ba69683d29dde6b9d60f"
+    },
+    {
+      "bytes": 125251,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/click-8.5.0-py3-none-any.whl",
+      "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360"
+    },
+    {
+      "bytes": 18059,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/et_xmlfile-2.0.0-py3-none-any.whl",
+      "sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa"
+    },
+    {
+      "bytes": 103424,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/flask-3.1.3-py3-none-any.whl",
+      "sha256": "f4bcbefc124291925f1a26446da31a5178f9483862233b23c0c96a20701f670c"
+    },
+    {
+      "bytes": 68550,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/idna-3.19-py3-none-any.whl",
+      "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4"
+    },
+    {
+      "bytes": 16234,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/itsdangerous-2.2.0-py3-none-any.whl",
+      "sha256": "c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef"
+    },
+    {
+      "bytes": 134899,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/jinja2-3.1.6-py3-none-any.whl",
+      "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+    },
+    {
+      "bytes": 4638308,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/lxml-6.1.3-cp312-cp312-macosx_10_13_x86_64.whl",
+      "sha256": "623c8799c17128753c65699f1c3aa32402657393a9ad6db09ed8b98ddf76611d"
+    },
+    {
+      "bytes": 11615,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/markupsafe-3.0.3-cp312-cp312-macosx_10_13_x86_64.whl",
+      "sha256": "d53197da72cc091b024dd97249dfc7794d6a56530370992a5e1a08983ad9230e"
+    },
+    {
+      "bytes": 16891693,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/numpy-2.5.2-cp312-cp312-macosx_10_13_x86_64.whl",
+      "sha256": "14e373cfc6387177e8409dac3c7159be8eb05cd77096cd7c950268b86f62831c"
+    },
+    {
+      "bytes": 250910,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/openpyxl-3.1.5-py2.py3-none-any.whl",
+      "sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2"
+    },
+    {
+      "bytes": 5345969,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/pillow-12.3.0-cp312-cp312-macosx_10_13_x86_64.whl",
+      "sha256": "ba09209fbe443b4acccebe845d8a138b89a8f4fbaeedd44953490b5315d5e965"
+    },
+    {
+      "bytes": 24645079,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/pymupdf-1.28.2-cp310-abi3-macosx_10_15_x86_64.whl",
+      "sha256": "5fc315b425ff1f7afdd1ea2f348205cb19b806767daae7ce4d64115799c2bae1"
+    },
+    {
+      "bytes": 472788,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/python_pptx-1.0.2-py3-none-any.whl",
+      "sha256": "160838e0b8565a8b1f67947675886e9fea18aa5e795db7ae531606d68e785cba"
+    },
+    {
+      "bytes": 73075,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/requests-2.34.2-py3-none-any.whl",
+      "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"
+    },
+    {
+      "bytes": 37370,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/soupsieve-2.9.2-py3-none-any.whl",
+      "sha256": "8089a26fd974ca7a1f30276d3d8492ab266ab15af581642dfe8aa162e0c1c823"
+    },
+    {
+      "bytes": 45571,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "bytes": 131087,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/urllib3-2.7.0-py3-none-any.whl",
+      "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897"
+    },
+    {
+      "bytes": 226459,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/werkzeug-3.1.8-py3-none-any.whl",
+      "sha256": "63a77fb8892bf28ebc3178683445222aa500e48ebad5ec77b0ad80f8726b1f50"
+    },
+    {
+      "bytes": 175315,
+      "mode": 420,
+      "path": "vendor/portable/wheels/darwin-x64/xlsxwriter-3.2.9-py3-none-any.whl",
+      "sha256": "9a5db42bc5dff014806c58a20b9eae7322a134abb6fce3c92c181bfb275ec5b3"
+    },
+    {
+      "bytes": 109924,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/beautifulsoup4-4.15.0-py3-none-any.whl",
+      "sha256": "d6f88de62e1d4e38ecb1077eb9724cd0eff29d2a08ca16a401e9b9e93f117cf9"
+    },
+    {
+      "bytes": 8458,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/blinker-1.9.0-py3-none-any.whl",
+      "sha256": "ba0efaa9080b619ff2f3459d1d500c57bddea4a6b424b60a91141db6fd2f08bc"
+    },
+    {
+      "bytes": 136983,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/certifi-2026.7.22-py3-none-any.whl",
+      "sha256": "62f22742b58a1a33014a2b6b706588a8d7e2a88ae7bd1a6ebe8c992928483775"
+    },
+    {
+      "bytes": 200551,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/charset_normalizer-3.5.1-cp312-cp312-win_amd64.whl",
+      "sha256": "3617ac3cfd8b9888f145ad89dd6e692285834b0201c6074a5eeaad3fd4d668c2"
+    },
+    {
+      "bytes": 125251,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/click-8.5.0-py3-none-any.whl",
+      "sha256": "255bc9599cf7748b4b1a446ccc735421bd08a2ae529a8b88597d3de5664ee360"
+    },
+    {
+      "bytes": 18059,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/et_xmlfile-2.0.0-py3-none-any.whl",
+      "sha256": "7a91720bc756843502c3b7504c77b8fe44217c85c537d85037f0f536151b2caa"
+    },
+    {
+      "bytes": 103424,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/flask-3.1.3-py3-none-any.whl",
+      "sha256": "f4bcbefc124291925f1a26446da31a5178f9483862233b23c0c96a20701f670c"
+    },
+    {
+      "bytes": 68550,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/idna-3.19-py3-none-any.whl",
+      "sha256": "815e7be7a7806d54abb586dc943addc79e8b2ee16915059658cbeff4b1b43bf4"
+    },
+    {
+      "bytes": 16234,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/itsdangerous-2.2.0-py3-none-any.whl",
+      "sha256": "c6242fc49e35958c8b15141343aa660db5fc54d4f13a1db01a3f5891b98700ef"
+    },
+    {
+      "bytes": 134899,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/jinja2-3.1.6-py3-none-any.whl",
+      "sha256": "85ece4451f492d0c13c5dd7c13a64681a86afae63a5f347908daf103ce6d2f67"
+    },
+    {
+      "bytes": 4005999,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/lxml-6.1.3-cp312-cp312-win_amd64.whl",
+      "sha256": "3e9a00d1c2c30936f7add097c41afc5da6556c580909104aafd382cac92a855c"
+    },
+    {
+      "bytes": 15105,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/markupsafe-3.0.3-cp312-cp312-win_amd64.whl",
+      "sha256": "26a5784ded40c9e318cfc2bdb30fe164bdb8665ded9cd64d500a34fb42067b1c"
+    },
+    {
+      "bytes": 12464674,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/numpy-2.5.2-cp312-cp312-win_amd64.whl",
+      "sha256": "28ac63476ec7651484215ee7fa15a1f78b57c14621f01e392afe17b9a1390ce4"
+    },
+    {
+      "bytes": 250910,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/openpyxl-3.1.5-py2.py3-none-any.whl",
+      "sha256": "5282c12b107bffeef825f4617dc029afaf41d0ea60823bbb665ef3079dc79de2"
+    },
+    {
+      "bytes": 7227137,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/pillow-12.3.0-cp312-cp312-win_amd64.whl",
+      "sha256": "a2b55dd6b2a4c4b7d87ffa56bdb33fdc5fdb9a462173861a7bc097f17d91cb09"
+    },
+    {
+      "bytes": 19826532,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/pymupdf-1.28.2-cp310-abi3-win_amd64.whl",
+      "sha256": "ebd244918798502d7b4504c90410d1711a4d7675a32584ca30f1bab419ecbffe"
+    },
+    {
+      "bytes": 472788,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/python_pptx-1.0.2-py3-none-any.whl",
+      "sha256": "160838e0b8565a8b1f67947675886e9fea18aa5e795db7ae531606d68e785cba"
+    },
+    {
+      "bytes": 73075,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/requests-2.34.2-py3-none-any.whl",
+      "sha256": "2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0"
+    },
+    {
+      "bytes": 37370,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/soupsieve-2.9.2-py3-none-any.whl",
+      "sha256": "8089a26fd974ca7a1f30276d3d8492ab266ab15af581642dfe8aa162e0c1c823"
+    },
+    {
+      "bytes": 45571,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/typing_extensions-4.16.0-py3-none-any.whl",
+      "sha256": "481caa481374e813c1b176ada14e97f1f67a4539ce9cfeb3f350d78d6370c2e8"
+    },
+    {
+      "bytes": 131087,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/urllib3-2.7.0-py3-none-any.whl",
+      "sha256": "9fb4c81ebbb1ce9531cce37674bbc6f1360472bc18ca9a553ede278ef7276897"
+    },
+    {
+      "bytes": 226459,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/werkzeug-3.1.8-py3-none-any.whl",
+      "sha256": "63a77fb8892bf28ebc3178683445222aa500e48ebad5ec77b0ad80f8726b1f50"
+    },
+    {
+      "bytes": 175315,
+      "mode": 420,
+      "path": "vendor/portable/wheels/win32-x64/xlsxwriter-3.2.9-py3-none-any.whl",
+      "sha256": "9a5db42bc5dff014806c58a20b9eae7322a134abb6fce3c92c181bfb275ec5b3"
     },
     {
       "bytes": 60270,
@@ -74590,7 +75448,7 @@
   ],
   "method": "allowlisted committed Git objects; deterministic stored ZIP; no runtime or personal projects",
   "schema_version": "intent-slide-release.v1",
-  "source_commit": "5098ae145ebd6b746537e4e7fdf9a7cc59a44d08",
+  "source_commit": "bdc7151a248d98aa24e30abbd1cc560a82519b0a",
   "upstream": {
     "boundary": "Upstream baseline is provenance. Downstream product changes and distribution exclusions are listed.",
     "excluded_files": [
@@ -74701,13 +75559,21 @@
       "projects/presentation-agent-suite/console/package.json",
       "projects/presentation-agent-suite/console/styles.css",
       "projects/presentation-agent-suite/scripts/presentation_console.py",
+      "projects/presentation-agent-suite/src/presentation_agents/pipeline.py",
+      "projects/presentation-agent-suite/src/presentation_agents/v2/contracts.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/engine.py",
+      "projects/presentation-agent-suite/src/presentation_agents/v2/evidence.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/prompts.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/provider.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/runner.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/server.py",
+      "projects/presentation-agent-suite/src/presentation_agents/v2/service.py",
       "projects/presentation-agent-suite/src/presentation_agents/v2/store.py",
-      "projects/presentation-agent-suite/tests/test_v2_provider.py"
+      "projects/presentation-agent-suite/src/presentation_agents/v2/verification.py",
+      "projects/presentation-agent-suite/tests/test_v2_provider.py",
+      "projects/presentation-agent-suite/tests/test_v2_runner.py",
+      "projects/presentation-agent-suite/tests/test_v2_server.py",
+      "projects/presentation-agent-suite/tests/test_v2_service.py"
     ],
     "source_commit": "450bd21305a175fa009213c4c2fb4811f0d322dc"
   }

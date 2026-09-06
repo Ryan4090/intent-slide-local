@@ -228,7 +228,8 @@ def _calculate(expression: str, bindings: dict[str, float]) -> float:
         raise ContractError("calculation divides by zero or exceeds the arithmetic limit") from exc
 
 
-def validate_research(data: dict, intent: dict, artifacts: list[dict], *, partial: bool = False, artifact_root: Path | None = None) -> dict:
+def validate_research(data: dict, intent: dict, artifacts: list[dict], *, partial: bool = False, artifact_root: Path | None = None,
+                      user_messages: list[dict] | None = None) -> dict:
     """Verify research structure, source excerpts, provenance, and arithmetic.
 
     SUPPORTED is a worker's semantic assessment. Each support receives a separate
@@ -243,7 +244,9 @@ def validate_research(data: dict, intent: dict, artifacts: list[dict], *, partia
     sources = _records(result.get("sources", []), "sources")
     claims = _records(result.get("claims", []), "claims")
     known_artifacts = _records(artifacts, "artifacts")
-    reader = EvidenceReader(artifact_root, known_artifacts)
+    reader = EvidenceReader(artifact_root, known_artifacts, user_messages=user_messages)
+    user_statement_sources = set()
+    user_statement_claims = set()
     source_mode = intent.get("source_mode")
     if not isinstance(source_mode, str) or source_mode not in {"provided_only", "external", "hybrid"}:
         raise ContractError("intent source_mode is invalid")
@@ -267,8 +270,14 @@ def validate_research(data: dict, intent: dict, artifacts: list[dict], *, partia
                 datetime.fromisoformat(accessed_at.replace("Z", "+00:00"))
             except ValueError as exc:
                 raise ContractError("source.accessed_at must be an ISO date or timestamp") from exc
-            if source["origin"] == "provided" and not reader.provided_origin(artifact_id):
-                raise ContractError("provided source must trace to a service-imported user attachment")
+            provided_kind = reader.provided_origin_kind(artifact_id)
+            if provided_kind == "user-message":
+                if source["origin"] != "provided":
+                    raise ContractError("a user statement cannot be relabelled as an external source")
+                user_statement_sources.add(source["id"])
+            if source["origin"] == "provided":
+                if not provided_kind:
+                    raise ContractError("provided source must trace to a service-imported user attachment or original user statement")
         else:
             _explanation(source.get("limitations"), "unavailable source limitations")
         if source.get("url") is not None:
@@ -305,6 +314,10 @@ def validate_research(data: dict, intent: dict, artifacts: list[dict], *, partia
                 raise ContractError("claim references an unknown or unavailable source")
             if status == "PROVIDED" and source["origin"] != "provided":
                 raise ContractError("PROVIDED claims must cite user-provided sources")
+            if source_id in user_statement_sources:
+                user_statement_claims.add(claim["id"])
+                if status in {"SUPPORTED", "PARTIAL"}:
+                    raise ContractError("a user statement is PROVIDED, ASSUMPTION or PROPOSAL, not an independently supported fact")
             support["verification"] = reader.verify_support(source, support)
         # Never retain a worker-invented validation stamp.
         claim["verification"] = {"source_locations": "VERIFIED" if supports else "NOT_APPLICABLE",
@@ -356,6 +369,10 @@ def validate_research(data: dict, intent: dict, artifacts: list[dict], *, partia
         visiting.add(identifier)
         for input_id in claim["input_claim_ids"]:
             verify_calculation(input_id)
+        if any(input_id in user_statement_claims for input_id in claim["input_claim_ids"]):
+            user_statement_claims.add(identifier)
+            if claim["evidence_status"] in {"SUPPORTED", "PARTIAL"}:
+                raise ContractError("a calculation based on a user statement cannot upgrade it to an independently supported fact")
         calculation = claim.get("calculation")
         if not isinstance(calculation, dict):
             raise ContractError("derived calculation requires expression and bindings")

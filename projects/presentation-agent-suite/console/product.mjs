@@ -19,20 +19,22 @@ export const ARTIFACT_LABELS = {
 
 export function providersView(capabilities = {}) {
   return (Array.isArray(capabilities?.providers) ? capabilities.providers : [])
-    .filter((provider) => ['codex', 'claude'].includes(provider?.id))
+    .filter((provider) => typeof provider?.id === 'string' && /^[a-z][a-z0-9_-]{0,63}$/.test(provider.id))
     .map((provider) => ({ ...provider,
-      ready: provider.ready === true && provider.auth_mode === 'subscription',
+      ready: provider.ready === true,
+      autoConnect: provider.ready === true && provider.auto_connect === true,
       checked: provider.ready !== null && provider.ready !== undefined,
-      label: provider.label || (provider.id === 'codex' ? 'Codex' : 'Claude Code'),
-      statusText: provider.ready === true && provider.auth_mode === 'subscription' ? '정액제 로그인 연결됨'
-        : provider.auth_mode === 'api_key' ? '정액제 로그인으로 연결해 주세요'
+      label: provider.label || ({ codex: 'Codex', claude: 'Claude Code' })[provider.id] || provider.id,
+      statusText: provider.ready === true && provider.auto_connect === true ? '연결 준비 완료'
+        : provider.ready === true ? '연결됨 · 로그인·과금 설정 확인 필요'
+          : provider.auth_mode === 'api_key' ? '지원되는 로그인 방식으로 연결해 주세요'
           : provider.ready == null ? '연결 확인 필요' : '준비가 필요합니다',
     }));
 }
 
 export function executionSelection(run, preferred = {}) {
   const value = run?.execution || preferred || {};
-  return { provider: ['codex', 'claude'].includes(value.provider) ? value.provider : 'codex',
+  return { provider: typeof value.provider === 'string' && /^[a-z][a-z0-9_-]{0,63}$/.test(value.provider) ? value.provider : 'codex',
     model: typeof value.model === 'string' && value.model ? value.model : null,
     effort: typeof value.effort === 'string' && value.effort ? value.effort : null };
 }
@@ -241,6 +243,50 @@ export async function refreshProviderState(api, state, provider, isCurrent = () 
 }
 
 export function initialProvider(capabilities, preferred) {
-  if (['codex', 'claude'].includes(preferred)) return preferred;
-  return ['codex', 'claude'].includes(capabilities?.default_provider) ? capabilities.default_provider : 'codex';
+  const ready = providersView(capabilities).filter((provider) => provider.autoConnect);
+  return ready.find((provider) => provider.id === preferred)?.id
+    || ready.find((provider) => provider.id === capabilities?.recommended_provider)?.id
+    || ready[0]?.id || null;
+}
+
+export function applyDiscoverySnapshot(state, capabilities, choiceGeneration) {
+  state.capabilities = capabilities;
+  if (choiceGeneration !== state.choiceGeneration || state.explicitProviderChoice) return;
+  const provider = initialProvider(capabilities, state.preferred.provider);
+  if (provider && provider !== state.preferred.provider) state.preferred = { provider, model: null, effort: null };
+}
+
+/** Only options actually supplied by the selected provider are offered. */
+export function modelOptions(provider) {
+  const seen = new Set();
+  return (Array.isArray(provider?.models) ? provider.models : []).flatMap((model) => {
+    if (!model || typeof model !== 'object') return [];
+    const value = model.model || model.id || model.value;
+    if (typeof value !== 'string' || !/^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/.test(value) || seen.has(value)) return [];
+    seen.add(value);
+    return [{ ...model, value, label: String(model.displayName || model.name || value) }];
+  });
+}
+
+export function effortOptions(provider, model) {
+  const models = modelOptions(provider);
+  const selected = model ? models.find((item) => item.value === model)
+    : models.find((item) => item.value === provider?.default_model) || models.find((item) => item.isDefault === true);
+  const seen = new Set();
+  const reported = selected?.supportedReasoningEfforts ?? selected?.efforts;
+  return (Array.isArray(reported) ? reported : []).flatMap((item) => {
+    const value = typeof item === 'string' ? item : item?.reasoningEffort || item?.value || item?.id;
+    if (typeof value !== 'string' || !/^[a-z][a-z0-9_-]{0,39}$/.test(value) || seen.has(value)) return [];
+    seen.add(value);
+    return [{ value, label: value }];
+  });
+}
+
+export function validateExecutionSelection(provider, selection, previous = null) {
+  if (!provider?.ready || !provider.id || selection?.provider !== provider.id) throw new Error('선택한 AI의 연결 상태를 먼저 확인해 주세요.');
+  const value = { provider: provider.id, model: selection.model || null, effort: selection.effort || null };
+  if (previous && value.provider === previous.provider && value.model === previous.model && value.effort === previous.effort) return value;
+  if (value.model && !modelOptions(provider).some((item) => item.value === value.model)) throw new Error('이 AI가 제공한 모델 목록에서 다시 선택해 주세요.');
+  if (value.effort && !effortOptions(provider, value.model).some((item) => item.value === value.effort)) throw new Error('선택한 모델이 지원하는 추론 설정을 확인해 주세요.');
+  return value;
 }

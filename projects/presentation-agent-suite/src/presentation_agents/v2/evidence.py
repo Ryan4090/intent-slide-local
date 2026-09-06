@@ -66,12 +66,18 @@ def canonical_source_url(value: str) -> str:
 class EvidenceReader:
     """Validate hashes, provenance, and exact source locations with bounded reads."""
 
-    def __init__(self, root: Path | None, artifacts: dict[str, dict[str, Any]]) -> None:
+    def __init__(self, root: Path | None, artifacts: dict[str, dict[str, Any]], *, user_messages: list[dict] | None = None) -> None:
         self.root = Path(root).resolve() if root is not None else None
         self.artifacts = artifacts
         self._paths: dict[str, Path] = {}
         self._texts: dict[str, list[str]] = {}
         self._pages: dict[tuple[str, int], str] = {}
+        self._user_messages = {}
+        for message in user_messages or []:
+            if message.get("role") == "user":
+                if message["id"] in self._user_messages:
+                    raise ContractError("duplicate service user statement identity")
+                self._user_messages[message["id"]] = message
 
     def verified_path(self, artifact_id: str) -> Path:
         if artifact_id in self._paths:
@@ -100,6 +106,10 @@ class EvidenceReader:
 
     def provided_origin(self, artifact_id: str) -> bool:
         """Only service-owned provenance can identify user-provided source data."""
+        return self.provided_origin_kind(artifact_id) is not None
+
+    def provided_origin_kind(self, artifact_id: str) -> str | None:
+        """User-statement receipts additionally bind to the current service record."""
         seen: set[str] = set()
         while artifact_id:
             if artifact_id in seen or len(seen) >= 64:
@@ -113,14 +123,21 @@ class EvidenceReader:
             if not isinstance(provenance, dict):
                 raise ContractError("source provenance must be service-owned metadata")
             if artifact.get("kind") == "attachment" and provenance.get("origin") in {"user-upload", "import"}:
-                return True
+                return provenance["origin"]
+            if artifact.get("kind") == "user_request" and provenance.get("origin") == "user-message":
+                message = self._user_messages.get(provenance.get("message_id"))
+                if not message or not isinstance(message.get("content"), str):
+                    raise ContractError("source must identify an original service user statement")
+                if hashlib.sha256(message["content"].encode("utf-8")).hexdigest() != artifact["sha256"]:
+                    raise ContractError("source bytes differ from the original service user statement")
+                return "user-message"
             parent = provenance.get("derived_from")
             if parent is None:
-                return False
+                return None
             if not isinstance(parent, str) or not parent:
                 raise ContractError("source provenance derived_from must identify one artifact")
             artifact_id = parent
-        return False
+        return None
 
     def verify_support(self, source: dict[str, Any], support: dict[str, Any]) -> dict[str, Any]:
         artifact_id = source["artifact_id"]
