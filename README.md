@@ -4,13 +4,13 @@
 
 GitHub에서 받아 자신의 Mac에서 실행합니다. AI 작업은 사용자가 직접 로그인한 공식 Codex 또는 Claude Code를 통해 진행합니다. 단계마다 무엇을 입력했고 무엇이 나왔는지, 무엇을 승인해야 하는지, 전체 작업이 몇 % 완료됐는지 확인할 수 있습니다. **Claude Code 연결은 베타**이며, 실제 정액제 모델 제작 시험은 아직 수행하지 못했습니다.
 
-> **현재: 로컬 제작 검증 완료, 공개 출시 준비 중.** 실제 Codex 3장 제작은 G1–G5와 전체 100%까지 통과했습니다. 최종 배포 ZIP·제품 라이선스 확정·GitHub 발행은 남아 있습니다. [출시 기준과 진행 기록](docs/local-mvp/00_WORK_PACKET.md)을 확인하세요.
+> **실제 Codex 제작 검증 완료.** 3장 제작을 G1–G5와 전체 100%까지 확인했습니다. 지원 환경과 미검증 범위는 [검증 현황](docs/local-mvp/VERIFICATION.md)을 확인하세요.
 
 ## 시작하기
 
 macOS, Git, Python 3.12, 선택한 AI CLI가 필요합니다. 먼저 [Codex 공식 설치 안내](https://developers.openai.com/codex/cli/) 또는 [Claude Code 공식 설치 안내](https://code.claude.com/docs/en/setup)에 따라 사용할 CLI를 준비하세요. Python 의존성은 이 저장소의 `.venv`에 설치합니다.
 
-공개 저장소는 [Ryan4090/intent-slide-local](https://github.com/Ryan4090/intent-slide-local)입니다. 현재 빈 저장소이며 코드 발행은 대기 중입니다. 코드가 발행되면 아래 순서로 복제하고 실행합니다.
+[Ryan4090/intent-slide-local](https://github.com/Ryan4090/intent-slide-local)을 복제하고 아래 순서로 실행합니다.
 
 ```bash
 git clone https://github.com/Ryan4090/intent-slide-local.git
@@ -70,6 +70,6 @@ Claude Code 베타는 미로그인 차단·프로토콜 초기화·모의 회귀
 
 현재 실제 제작 엔진은 `projects/presentation-agent-suite/`에 있습니다. 원본 SlideMaster의 특정 Git 커밋에서 가져온 파일과 출처는 [vendor manifest](vendor/slidemaster-manifest.json)에 기록합니다. 원본 코드는 [MIT 고지](licenses/slidemaster-MIT.txt), 번들 폰트와 Python 의존성은 각각의 라이선스를 따릅니다. Claude Code·Codex 실행 파일과 계정은 배포본에 포함하지 않습니다.
 
-현재 최상위 `LICENSE` 파일은 없으며 제품의 최상위 라이선스 확정은 진행 중입니다. 공개용 브랜드 파일 19개를 제외하는 코드와 회귀 검사는 반영됐지만, 이후 변경을 담은 새 ZIP은 아직 검증하지 않았습니다. 기존 후보 ZIP은 최종 공개 배포본이 아니며 GitHub 코드 push·release는 아직 수행하지 않았습니다. 포함 자료와 의존성의 고지는 [제3자 고지](THIRD_PARTY_NOTICES.md)를 확인하세요.
+Intent-Slide 제품 코드는 [MIT License](LICENSE)로 제공합니다. 포함된 제3자 코드·폰트·Python 의존성에는 각각의 조건이 적용되며, [제3자 고지](THIRD_PARTY_NOTICES.md)를 확인하세요. 배포 파일의 manifest와 체크섬은 해당 GitHub Release에서 확인합니다.
 
 이 배포본은 제품 실행에 필요한 파일만 포함합니다. 이전 비공개 실험 자료와 Git 이력, 사용자 프로젝트는 포함하지 않습니다. 설치와 지원 범위는 [설치 안내](docs/local-mvp/INSTALLATION.md), 파일 출처와 공개 범위는 [배포 절차](docs/local-mvp/DISTRIBUTION.md)에서 확인할 수 있습니다.

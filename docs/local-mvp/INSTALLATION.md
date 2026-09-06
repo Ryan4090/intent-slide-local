@@ -18,7 +18,7 @@
 
 ## 저장소 안에서 설치
 
-공개 주소는 [Ryan4090/intent-slide-local](https://github.com/Ryan4090/intent-slide-local)입니다. 빈 저장소 생성만 확인했으며 코드 발행은 대기 중입니다. 코드가 발행되면 터미널에서 다음을 실행합니다. ZIP 배포본을 사용하는 경우에는 압축을 푼 제품 폴더로 이동한 뒤 `setup`부터 실행합니다. 선택한 공식 CLI 로그인은 먼저 완료해야 합니다.
+공개 주소는 [Ryan4090/intent-slide-local](https://github.com/Ryan4090/intent-slide-local)입니다. 터미널에서 다음을 실행합니다. ZIP 배포본을 사용하는 경우에는 해당 GitHub Release의 manifest·체크섬을 확인하고, 압축을 푼 제품 폴더로 이동한 뒤 `setup`부터 실행합니다. 선택한 공식 CLI 로그인은 먼저 완료해야 합니다.
 
 ```sh
 git clone https://github.com/Ryan4090/intent-slide-local.git
@@ -67,6 +67,6 @@ cd intent-slide-local
 
 패키지와 글꼴의 조건은 [제3자 고지](../../THIRD_PARTY_NOTICES.md)를 확인하세요. 특히 PyMuPDF의 별도 AGPL/상용 라이선스 조건은 upstream MIT 고지와 구분됩니다.
 
-현재 최상위 `LICENSE` 파일은 없으며 제품 라이선스 확정과 GitHub 발행은 남아 있습니다. 브랜드 파일 19개 제외와 배포 경계 회귀는 반영됐지만 새 ZIP은 아직 만들지 않았습니다. 새 설치를 확인한 기존 ZIP은 해당 변경 전의 기술 검증용 후보이며 최종 공개 배포본이 아닙니다.
+제품 코드의 라이선스는 [MIT](../../LICENSE)로 선택 완료됐으며 제3자 자료의 별도 조건은 유지됩니다. 브랜드 파일 19개 제외와 배포 경계 회귀를 반영했습니다. 이 문서의 새 설치 증거는 이전 기술 검증용 ZIP에 한정하며, 최종 배포본과 원격 다운로드 검증 결과는 해당 GitHub Release와 출시 작업이력에 기록합니다.
 
 OS 파일 선택기를 통한 UI 업로드는 자동 검증 도구의 안전 제어로 검사하지 못했습니다. 서버 업로드 회귀 통과와 구분합니다. 최종 PPTX의 다운로드 응답은 확인했지만 브라우저 저장 위치는 미검증입니다. 자세한 증거와 남은 검사는 [검증 현황](VERIFICATION.md)을 확인하세요.

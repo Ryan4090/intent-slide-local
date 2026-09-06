@@ -1,5 +1,5 @@
 {
-  "file_count": 12430,
+  "file_count": 12431,
   "files": [
     {
       "bytes": 155,
@@ -73790,10 +73790,16 @@
       "sha256": "ecc1d4f19f8fce47c92850b66e848bde57be067f3c8a5abea22c21e8f6b95d43"
     },
     {
-      "bytes": 7570,
+      "bytes": 1082,
+      "mode": 420,
+      "path": "LICENSE",
+      "sha256": "edb405ed938a9cd9066fbd99e19b22138908ec6c8704c03b56b63e25e086d3da"
+    },
+    {
+      "bytes": 7156,
       "mode": 420,
       "path": "README.md",
-      "sha256": "737ef73b874d8b47f382766ecda43e0d443f565af83f91eff8146c747f2a481b"
+      "sha256": "a29bf53eb117930c0855b0a52fb1cd1173b4098a657d893c740f5a2555968d65"
     },
     {
       "bytes": 6458,
@@ -73802,10 +73808,10 @@
       "sha256": "26f48b3fe9dd070fb98d10314624e7735a3a90a532b338dce9130a7dae933c0f"
     },
     {
-      "bytes": 6591,
+      "bytes": 6746,
       "mode": 420,
       "path": "docs/local-mvp/00_WORK_PACKET.md",
-      "sha256": "47a0d5bbcd4f39486bc56c559fb5e2fc0551c4a81fb15bd1345824c0afb991b4"
+      "sha256": "bb3738628d4c0321dd321e56fc7ff589342e43f3f29754b72f00490abae9b92b"
     },
     {
       "bytes": 3137,
@@ -73820,22 +73826,22 @@
       "sha256": "df258b0c3cfaa503e9b2c1962816ed5bfea2030a18cf7a0c801337ec8fbcc2a9"
     },
     {
-      "bytes": 6588,
+      "bytes": 6597,
       "mode": 420,
       "path": "docs/local-mvp/INSTALLATION.md",
-      "sha256": "d78fdd6b87c9f3f4646dbebedc1538aef01b764c332eb8e2a0a11075b79b6475"
+      "sha256": "775666cec566efd6ed340cfa53b6e69498787e7baaf236acf9af0f23e5f9fc9e"
     },
     {
-      "bytes": 7186,
+      "bytes": 7663,
       "mode": 420,
       "path": "docs/local-mvp/PACKAGING_CHECKS.md",
-      "sha256": "d43d56d2e4259af56f7b88036a7d02eac4c034c73eabb23a4360f59cb0fd5730"
+      "sha256": "8fd17de56e1ed24a6f9683f26c75208cc07b7befd61392e93c7a86bdeef16f63"
     },
     {
-      "bytes": 9164,
+      "bytes": 9507,
       "mode": 420,
       "path": "docs/local-mvp/VERIFICATION.md",
-      "sha256": "47eaa1c539b1c82df9c6253dcb10383a3600f65479caf1cb8f12d4c67af7db8e"
+      "sha256": "c90cce097b2af636ac8960536d6e39eab56a18c29bbac6d907e6a40851f78c1c"
     },
     {
       "bytes": 834,
@@ -74584,7 +74590,7 @@
   ],
   "method": "allowlisted committed Git objects; deterministic stored ZIP; no runtime or personal projects",
   "schema_version": "intent-slide-release.v1",
-  "source_commit": "d80b5bab13ff7509826cd928c933d9b0d033515d",
+  "source_commit": "5098ae145ebd6b746537e4e7fdf9a7cc59a44d08",
   "upstream": {
     "boundary": "Upstream baseline is provenance. Downstream product changes and distribution exclusions are listed.",
     "excluded_files": [
