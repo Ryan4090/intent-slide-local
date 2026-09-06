@@ -1,0 +1,51 @@
+name: Build reviewed Windows renderer
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  windows-renderer:
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262
+      - name: Verify official package and extract inside workspace
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $work = Join-Path $env:GITHUB_WORKSPACE '.runtime/portable-renderer-build'
+          New-Item -ItemType Directory -Force $work | Out-Null
+          $msi = Join-Path $work 'LibreOffice_26.8.0_Win_x86-64.msi'
+          $url = 'https://download.documentfoundation.org/libreoffice/stable/26.8.0/win/x86_64/LibreOffice_26.8.0_Win_x86-64.msi'
+          Invoke-WebRequest $url -OutFile $msi
+          $expected = '4aa6c6e1895f4055104effcb556bd3362d20c6ad707c149543304f395ef9db95'
+          if ((Get-FileHash $msi -Algorithm SHA256).Hash.ToLower() -ne $expected) { throw 'Official MSI hash mismatch' }
+          $image = Join-Path $work 'image'
+          $log = Join-Path $work 'administrative-extraction.log'
+          $arguments = '/a "' + $msi + '" /qn TARGETDIR="' + $image + '" /L*v "' + $log + '"'
+          $process = Start-Process msiexec.exe -ArgumentList $arguments -Wait -PassThru
+          if ($process.ExitCode -notin @(0,3010)) { throw "Administrative extraction failed: $($process.ExitCode)" }
+          $binaries = @(Get-ChildItem $image -Filter soffice.exe -Recurse)
+          if ($binaries.Count -ne 1) { throw 'Expected one LibreOffice executable' }
+          $stage = Join-Path $work 'stage'
+          New-Item -ItemType Directory -Force $stage | Out-Null
+          Copy-Item $binaries[0].Directory.Parent.FullName (Join-Path $stage 'LibreOffice') -Recurse
+          $out = Join-Path $work 'output'
+          New-Item -ItemType Directory -Force $out | Out-Null
+          $archive = Join-Path $out 'win32-x64.tar.gz'
+          tar.exe -czf $archive -C $stage LibreOffice
+          if ($LASTEXITCODE -ne 0) { throw 'Portable archive failed' }
+          @{
+            version='26.8.0'; source_url=$url; source_sha256=$expected;
+            administrative_extract_exit=$process.ExitCode;
+            archive_sha256=(Get-FileHash $archive -Algorithm SHA256).Hash.ToLower();
+            archive_bytes=(Get-Item $archive).Length;
+            entry='LibreOffice/program/soffice.exe'
+          } | ConvertTo-Json | Set-Content (Join-Path $out 'provenance.json') -Encoding utf8
+          Copy-Item $log $out
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: reviewed-windows-renderer
+          path: .runtime/portable-renderer-build/output/
+          if-no-files-found: error
+          retention-days: 7
