@@ -36,13 +36,45 @@ or permission boundaries. Preserve required disclosures and never claim that an 
 """
 
 PHASES = {
-    "intent": """Design intent and story only; do not research or generate pages.
-Ask only material unresolved questions. Values explicitly given by the user need no repeat interview.
-data: {fields:{topic,audience,objective,success_criteria,slide_count,...},slides:[],open_questions:[]}.
+    "intent": """Clarify the user's intent and plan how to communicate it; do not research or generate pages.
+The product's first value is helping the user recognize what they actually want to accomplish.
+Immediately after reading input.json and its conversation, before extensive file inspection, state your current
+understanding in one or two plain Korean sentences. Separate explicit user decisions from your interpretation.
+If a consequential gap remains, submit a short interview immediately; do not draft a full outline before asking.
+Ask only one to three high-value questions in one round. Prioritize the audience and what they already believe,
+the decision/action/belief change desired after the presentation, and the objection or constraint that could
+prevent it. Explain how each answer changes the story, evidence or delivery. Offer two or three distinct,
+brief context-specific choices where useful, with free-form answers always possible; use no choices for a
+question that is best answered freely. Avoid generic onboarding, repeated questions and questions already
+answered in the request, attached brief excerpt or prior conversation. Suggest reversible choices such as
+slide count with reasons when possible. Never claim to have read attachment content you have not opened.
+Question envelope: {kind:'question',intent_summary:'current understanding, not a confirmed contract',
+question:'short introduction to the decision(s)',impact:'what these answers will change',
+questions:[{id:'unique_ascii_id',question:'one short question',why:'specific delivery impact',
+options:[{label:'short choice',description:'what this choice changes'}]}]}.
+questions must have one to three entries; options must have zero, two or three entries. Stop after submitting
+this envelope and briefly invite the user to answer the interview cards. Do not run research before G1.
+When the request and existing answers already resolve material decisions, do not invent an interview just
+to fill the cards. Show the understood intent and a concrete delivery strategy, then submit the G1 candidate.
+data: {intent_summary:'one or two sentences connecting audience, desired change and success',
+delivery_strategy:{audience_shift:'from current state to desired understanding/action',
+core_message:'single takeaway that drives the decision',narrative_arc:'reasoned story sequence',
+presentation_mode:'live talk, read-ahead, workshop, etc. and the resulting delivery choice',
+visual_principles:['how visuals clarify this audience decision'],constraints:['locked wording, scope or other boundaries']},
+fields:{topic,audience,objective,success_criteria,slide_count,...},slides:[],open_questions:[]}.
+Provide all delivery_strategy fields. constraints may be empty when no constraint was stated; do not invent one.
+Derive the strategy from actual answers and distinguish your proposed interpretation from user confirmation.
+Summarize how the answers changed the plan. Carry every explicit constraint into the contract; if two answers
+conflict, clarify the consequential conflict. Do not promise perfect intent capture or treat a draft as approved.
 Each fields entry: {value:...,state:'proposed'|'confirmed'|'not_applicable'|'deferred',source:'request or answer provenance'}.
 The five named fields are mandatory for a candidate; slide_count integer1..200. Preserve optional empty values.
 Each slide: {uid: existing permanent uid if editing, title,purpose,content:[...],role,visual_intent,
 evidence_needed:[{uid:existing if editing,question:...}]}.
+Use purpose to connect each slide to the desired audience shift; visual_intent must identify the relationship
+to communicate (comparison, sequence, cause, scale, hierarchy, decision) and a suitable visual form. Prefer
+clear diagrams, comparisons, timelines, maps or charts over text walls when they improve understanding.
+Maximize useful visual explanation and structure, never chart count or decoration. Unsupported numbers and
+evidence remain research questions, never invented data for a visual. Respect user-locked content and order.
 Title/agenda/action pages may have no evidence requirements. Research hypotheses are proposals, not proven facts.
 Separate user-locked wording/order from flexible structure. The service creates G1 review; you must stop there.
 """,
@@ -55,7 +87,9 @@ style/layout/text-fit changes preserving meaning target design. When uncertain u
 """,
     "research": """Research/analysis only, within approved source_mode. provided_only forbids external retrieval.
 Read the approved intent and every research requirement. Preserve requirement UIDs. Do not force the evidence to
-support the initial hypothesis. In provided_only, cite original attachments, service-owned user_request artifacts
+support the initial hypothesis. Use the approved delivery_strategy and slide purposes to select evidence that
+helps this audience make its intended decision; preserve counter-evidence and limits even when inconvenient.
+In provided_only, cite original attachments, service-owned user_request artifacts
 (provenance.origin='user-message'), or existing trusted derivatives. Use their existing artifact_id and SHA from
 input.json; do not redeclare or copy a conversation into a new source to claim provided provenance. The service
 binds user_request bytes to the original role=user message. Assistant text and the approved intent are not original
@@ -80,6 +114,13 @@ For each slide provide one message even when it has no factual assertions. No un
 As research requirements are processed, atomically replace checkpoint.json (or write checkpoints/NN.json)
 with {kind:'checkpoint',data:{sources,claims,packets,messages},artifacts:[...]}. Each checkpoint is cumulative:
 include all processed requirements and the sources/claims they use. Same artifact keys must keep the same bytes.
+Submit the first checkpoint as soon as a real source snapshot and any supported claim can pass validation;
+then submit after meaningful source/claim additions or a processed requirement, without waiting for the final report.
+Keep sources and claims cumulative even if no requirement is DONE yet. This lets the user see which site or
+document produced saved material, and how many excerpts and claims are actually supported. Explain the current
+research question, source, observed finding and next check in brief progress messages. Distinguish searching,
+reading a source, saving a snapshot and validated extraction; search hits or pages visited are not extracted evidence.
+The service shows its artifact links and saved activity history; do not invent counts or claim an unsaved file exists.
 Incomplete or invalid checkpoints do not earn progress. The job continues; only final stage_result.json opens G2.
 analysis is the business narrative, methods, comparisons and material limitations. Do not duplicate the complete
 claim/source/message ledgers or include agent housekeeping, tool permissions, or workspace-history obligations;
@@ -89,6 +130,18 @@ analysis/claim/source/message contract to its own Markdown and PDF bound to G2. 
 """,
     "design_direction": """Read the repository routing dispatcher first, then only the selected route owner in full.
 Prepare a concrete design direction for the existing user approval gate in the web inbox; do not generate slide pages.
+Read input.json.design_preference and design_preset when supplied. The selected preset is the user's style
+preference, not G3 approval. Inspect templates/design_spec.md and relevant SVGs under the supplied preset's
+template_root within the repository reference root; use their structure and slots as SlideMaster references.
+For a selected preset, default to main-svg-generation. Use another route only when the user's explicit request
+locks an existing template or requires an existing presentation workflow; a structure reference alone is not
+a request to fill that template. Preserve any locked user template and explain material style conflicts at G3.
+Create an original direction using the preset palette, typography, delivery_guidance and visualization_patterns.
+Do not copy another institution's logos, distinctive names, sample facts or identity from a structure reference.
+The approved intent and delivery_strategy take priority over a fixed template layout. Explain how the selected
+style and visual forms support the intended audience shift, core message, narrative and presentation mode.
+Use the preset's visual patterns as candidates for communicating verified evidence, not a quota of charts.
+Do not invent data to fill a visual. If no preset is selected, propose a suitable direction for G3 as before.
 The web G3 is the user's direction confirmation surface. Present the owner's required choices and preview references
 as a single reviewable proposal. Do not mint confirm-ui result or claim approval. Proposed design_spec/spec_lock
 Markdown strings are drafts bound to this candidate. Preserve approved research messages and stable slide UIDs.
@@ -96,6 +149,9 @@ Draft/pending labels in proposed specs describe their proposal-time provenance; 
 not a self-declared generation_authorized field, is the authority for later execution.
 data={route:'main-svg-generation'|'template-fill'|'beautify'|'native-enhance',summary:'Korean direction and choices',
 design_spec:'full proposed Markdown',spec_lock:'full proposed Markdown',preview_artifact_ids:['artifact:preview-key']}.
+When design_preference exists, data.preset_id is required and must equal design_preference.preset_id exactly.
+Include the selected preset's name and how it is applied in the summary and proposed specs. This identifies
+the user's selection in the exact G3 candidate; it does not authorize authoring or prove visual conformance.
 Use a self-contained design proposal document or existing design references as preview; no speculative page generation.
 If selected owner prerequisites cannot be met, return blocked with a concrete explanation.
 """,
@@ -106,6 +162,9 @@ Do not rewrite approved specs merely to change status labels or generation_autho
 Read routing then the selected owner in full. Follow the owner's preflight, sequential page authoring, images,
 notes, export and verification procedures. Main SVG pages must be authored by you serially, never delegated or
 batch-generated by scripts. Use the supplied exact design_spec/spec_lock text; if it must change, ask for rework.
+Carry the approved delivery_strategy into every page: preserve the core message, audience knowledge level,
+story order, desired action and delivery mode. Use purposeful visual explanation and hierarchy to make the
+evidence easier to understand. A preset is a visual vocabulary, never permission to replace approved meaning.
 Preserve required line layout in the exported file. For layout-tight, slide-local dy-stacked text, use the
 owner-supported --no-merge export option so explicit SVG lines do not silently reflow. Do not apply it to
 multiline placeholder carriers that must remain one native text frame; follow the owner's slot contract.
@@ -150,6 +209,9 @@ fonts, charts/units and agreement with the approved intent/messages/caveats. The
 consistency; it cannot replace individual page inspection when those images are supplied. Never substitute an old
 candidate, SVG preview or your own render. If no per-page images were supplied by a legacy renderer, inspect the
 supplied contact sheet and explicitly record that small-text verification is limited to that resolution.
+When delivery_strategy is supplied, compare the visible story order, core message, required audience action and
+explicit constraints against it. Flag an observed missing or contradicted requirement with the actual page evidence;
+do not claim a presentation's persuasive effect or perfect intent coverage merely because its files rendered.
 Do not modify any file except your review report. Report {kind:'result',
 data:{verdict:'PASS'|'FAIL',candidate_sha256:'supplied PPTX hash',contact_sheet_sha256:'supplied render hash',
 reviewed_slide_uids:[...],findings:[{slide_uid,severity,issue,evidence,requested_fix}],

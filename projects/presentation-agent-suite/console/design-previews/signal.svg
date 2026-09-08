@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">시그널 — 결론과 근거 중심의 전략 보고</title>
+  <desc id="desc">남색 결론 제목과 청록 비교 차트, 우측 해석으로 구성한 스타일 예시. 차트는 실제 데이터가 아닙니다.</desc>
+  <rect width="640" height="360" fill="#EDF5F5"/>
+  <rect x="0" y="0" width="640" height="8" fill="#007D8A"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="32" y="40" fill="#007D8A" font-size="13" font-weight="700" letter-spacing="2">SIGNAL / DECISION</text>
+    <text x="32" y="86" fill="#102B46" font-size="32" font-weight="750">결정에 필요한 핵심부터</text>
+    <text x="32" y="112" fill="#476272" font-size="15">결론 → 비교 근거 → 다음 행동</text>
+    <rect x="32" y="140" width="342" height="166" rx="6" fill="#FFFFFF"/>
+    <text x="49" y="169" fill="#102B46" font-size="16" font-weight="700">판단을 바꾸는 근거</text>
+    <text x="49" y="200" fill="#476272" font-size="13">현황</text><rect x="106" y="187" width="113" height="18" rx="3" fill="#A8C0CB"/>
+    <text x="49" y="234" fill="#476272" font-size="13">대안 A</text><rect x="106" y="221" width="224" height="18" rx="3" fill="#007D8A"/>
+    <text x="49" y="268" fill="#476272" font-size="13">대안 B</text><rect x="106" y="255" width="166" height="18" rx="3" fill="#102B46"/>
+    <rect x="392" y="140" width="216" height="166" rx="6" fill="#102B46"/>
+    <text x="412" y="172" fill="#8FDBE0" font-size="13">SO WHAT</text>
+    <text x="412" y="210" fill="#FFFFFF" font-size="23" font-weight="700">의미를 해석하고</text>
+    <text x="412" y="242" fill="#FFFFFF" font-size="23" font-weight="700">행동을 제안</text>
+    <path d="M413 272 H574 M562 266 L574 272 L562 278" fill="none" stroke="#8FDBE0" stroke-width="2"/>
+    <text x="32" y="336" fill="#476272" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="336" fill="#476272" font-size="12">01</text>
+  </g>
+</svg>

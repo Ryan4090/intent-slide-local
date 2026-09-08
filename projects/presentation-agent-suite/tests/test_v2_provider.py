@@ -59,7 +59,11 @@ for line in sys.stdin:
         assert params == {"refreshToken":False}
         reply(request, {"requiresOpenaiAuth":True,"account":None if mode == "no_auth" else {"type":("apiKey" if mode == "api_auth" else "unknownVendor" if mode == "unknown_auth" else "chatgpt"),"email":"private@example.test","accountId":"private-id"}})
     elif method == "model/list":
-        reply(request, {"data":[{"id":"fixture-model","model":"fixture-model","displayName":"Fixture","isDefault":True,"defaultReasoningEffort":"medium","supportedReasoningEfforts":[{"reasoningEffort":"low"},{"reasoningEffort":"high"},{"reasoningEffort":"ultra"}]}],"nextCursor":None})
+        model = {"id":"fixture-model","model":"fixture-model","displayName":"Fixture","isDefault":True,"defaultReasoningEffort":"medium","supportedReasoningEfforts":[{"reasoningEffort":"low"},{"reasoningEffort":"medium"},{"reasoningEffort":"high"},{"reasoningEffort":"ultra"}]}
+        if mode == "missing_effort_default": model.pop("defaultReasoningEffort")
+        if mode == "unsupported_effort_default": model["defaultReasoningEffort"] = "max"
+        if mode == "missing_effort_options": model.pop("supportedReasoningEfforts")
+        reply(request, {"data":[model],"nextCursor":None})
     elif method == "account/rateLimits/read":
         reply(request, {"accountId":"private-id","rateLimits":{"primary":{"usedPercent":12,"windowDurationMins":300,"resetsAt":1234},"credits":{"balance":"private balance"}}})
     elif method in ("thread/start", "thread/resume"):
@@ -72,7 +76,10 @@ for line in sys.stdin:
         reply(request, {"thread":{"id":"thread-1","status":{"type":"idle"}},"model":"fixture-model","cwd":cwd,"approvalPolicy":"on-request","approvalsReviewer":"user","sandbox":{"type":"dangerFullAccess" if mode == "bad_policy" else "workspaceWrite","writableRoots":[cwd],"networkAccess":False}})
     elif method == "turn/start":
         assert params["sandboxPolicy"] == {"type":"workspaceWrite","writableRoots":[cwd],"networkAccess":False,"excludeSlashTmp":True,"excludeTmpdirEnvVar":True}
-        assert params["effort"] in ("low","ultra")
+        if mode in ("missing_effort_default", "unsupported_effort_default", "missing_effort_options"):
+            assert "effort" not in params
+        else:
+            assert params["effort"] in ("low","medium","ultra")
         if mode == "turn_error":
             send({"id":request["id"],"error":{"code":-32000,"message":"private sensitive upstream details"}});continue
         if mode == "early_complete":
@@ -155,7 +162,7 @@ class ProviderTests(unittest.TestCase):
         events: list[dict] = []
         provider = self.provider()
         ack = provider.start_turn(self.cwd, "hello", events.append)
-        self.assertEqual(ack, {"thread_id":"thread-1", "turn_id":"turn-1", "model":"fixture-model", "effort":"ultra"})
+        self.assertEqual(ack, {"thread_id":"thread-1", "turn_id":"turn-1", "model":"fixture-model", "effort":"medium"})
         request = self.wait_for(events, "item/commandExecution/requestApproval")
         self.assertEqual(request["id"], 71)
         with self.assertRaises(ValueError):
@@ -196,6 +203,25 @@ class ProviderTests(unittest.TestCase):
         self.wait_for(events, "item/tool/requestUserInput")
         provider.respond("ask-1", {"answers":{"audience":{"answers":["임원"]}}})
         self.wait_for(events, "turn/completed")
+
+    def test_missing_or_unsupported_catalog_default_leaves_effort_to_native_server(self) -> None:
+        for mode in ("missing_effort_default", "unsupported_effort_default", "missing_effort_options"):
+            with self.subTest(mode=mode):
+                provider = self.provider(mode)
+                events = []
+                ack = provider.start_turn(self.cwd, "hello", events.append)
+                self.assertIsNone(ack["effort"])
+                self.wait_for(events, "turn/completed")
+
+    def test_explicit_effort_is_preserved_and_unsupported_choice_rejected(self) -> None:
+        provider = self.provider()
+        provider.preflight()
+        self.assertEqual(provider._choose_effort("fixture-model", "ultra"), "ultra")
+        self.assertEqual(provider._choose_effort("fixture-model", "low"), "low")
+        self.assertEqual(provider._choose_effort("fixture-model", None), "medium")
+        with self.assertRaises(ProviderError) as raised:
+            provider._choose_effort("fixture-model", "max")
+        self.assertEqual(raised.exception.code, "EFFORT_UNAVAILABLE")
 
     def test_cancel_requires_final_interrupted_event(self) -> None:
         provider = self.provider("cancel")

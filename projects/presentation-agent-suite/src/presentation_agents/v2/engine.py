@@ -15,11 +15,12 @@ from pathlib import Path
 
 from .contracts import (
     STAGES, WEIGHTS, ROUTES, Conflict, ContractError, canonical, digest,
-    file_hash, make_units, normalize_intent, now, required, safe_path, uid,
+    file_hash, make_units, normalize_intent, normalize_interview, now, required, safe_path, uid,
     validate_research,
 )
 from .store import Store
 from .provider_registry import normalize_selection
+from .design_catalog import normalize_preference
 
 
 class Engine:
@@ -27,7 +28,7 @@ class Engine:
         self.store = Store(root)
         self.root = self.store.root
 
-    def create(self, title: str, request: str, source_mode: str, operation_id: str, *, execution=None) -> dict:
+    def create(self, title: str, request: str, source_mode: str, operation_id: str, *, execution=None, design_preference=None) -> dict:
         if source_mode not in {"provided_only", "external", "hybrid"}:
             raise ContractError("invalid source mode")
         for value, name in ((title, "title"), (request, "request"), (operation_id, "operation_id")):
@@ -41,6 +42,7 @@ class Engine:
                 "status": "INTENT_INTERVIEW", "active_stage": "intent", "active_phase": "intent",
                 "created_at": now(), "updated_at": now(), "intent": None, "research": None,
                 "direction": None, "candidate": None, "release": None,
+                "design_preference": normalize_preference(design_preference),
                 "artifacts": [], "reviews": [], "approvals": [], "questions": [], "jobs": [],
                 "units": [], "findings": [], "model": {}, "execution": normalize_selection(execution),
                 "changes": [], "plan_history": [],
@@ -86,6 +88,7 @@ class Engine:
             return self._legacy_view(body)
         result = copy.deepcopy(body)
         result.setdefault("execution", normalize_selection())
+        result.setdefault("design_preference", None)
         latest_jobs = {job['phase']: job for job in result['jobs']}
         jobs = {job['id']: job for job in result['jobs']}
         result['historical_findings'] = []
@@ -361,6 +364,23 @@ class Engine:
         def apply(body):
             if body.get("legacy"):
                 raise ContractError("기존 기록은 읽기 전용입니다. 새 작업으로 시작해 주세요")
+            if command == "select_design":
+                preference = normalize_preference(payload)
+                if preference == body.get("design_preference"):
+                    return "현재 선택한 디자인입니다"
+                if body["status"] == "COMPLETE":
+                    raise ContractError("완료 결과의 디자인을 바꾸려면 먼저 디자인 수정 요청을 남겨 주세요")
+                if (any(j["status"] in {"QUEUED", "RUNNING", "WAITING_USER"} for j in body["jobs"])
+                        or any(q["status"] in {"PENDING", "DISPATCHING"} for q in body["questions"])
+                        or body.get("pending_change")):
+                    raise Conflict("현재 실행과 질문·변경 확인을 마친 뒤 디자인을 선택해 주세요")
+                body["design_preference"] = preference
+                if body["active_stage"] == "design":
+                    self._invalidate(body, "design", "사용자가 디자인 스타일을 변경했습니다")
+                else:
+                    # Style selection changes worker inputs, not approved intent or evidence.
+                    body["content_revision"] += 1
+                return "선택한 스타일을 다음 디자인 제안에 반영합니다"
             if command == "configure_provider":
                 if any(j["status"] in {"QUEUED", "RUNNING", "WAITING_USER"} for j in body["jobs"]):
                     raise Conflict("실행을 취소하거나 마친 뒤 AI 도구를 변경해 주세요")
@@ -445,9 +465,13 @@ class Engine:
             input_ids.update(a["id"] for a in body["artifacts"] if a["valid"] and a["kind"] in {"direction", "spec"})
         if body["active_phase"] == "design_review" and body["candidate"]:
             input_ids.update(body["candidate"]["artifact_ids"])
-        return digest({"phase": body["active_phase"], "revision": body["content_revision"],
-                       "artifacts": [(a["id"], a["sha256"]) for a in body["artifacts"] if a["valid"] and a["id"] in input_ids],
-                       "user_messages": [m["content"] for m in body["messages"] if m["role"] == "user"]})
+        inputs = {"phase": body["active_phase"], "revision": body["content_revision"],
+                  "artifacts": [(a["id"], a["sha256"]) for a in body["artifacts"] if a["valid"] and a["id"] in input_ids],
+                  "user_messages": [m["content"] for m in body["messages"] if m["role"] == "user"]}
+        # Preserve hashes for existing runs that have never selected a style.
+        if body.get("design_preference") is not None:
+            inputs["design_preference"] = body["design_preference"]
+        return digest(inputs)
 
     def claim_job(self, run_id: str) -> dict:
         claimed = {}
@@ -541,6 +565,9 @@ class Engine:
                     raise ContractError("design direction is not the active phase")
                 if data.get("route") not in ROUTES:
                     raise ContractError("a known design route is required")
+                preference = body.get("design_preference")
+                if preference and data.get("preset_id") != preference["preset_id"]:
+                    raise ContractError("design direction must identify the user's currently selected preset_id")
                 for key in ("summary", "design_spec", "spec_lock", "preview_artifact_ids"):
                     required(data.get(key), key)
                 ids = {a["id"] for a in body["artifacts"] if a["valid"] and a["stage"] == "design"}
@@ -598,9 +625,11 @@ class Engine:
             return message
         return self.store.mutate(run_id, event, values, apply)
 
-    def add_question(self, run_id: str, question: str, impact: str, *, provider_request_id=None, provider_params=None):
+    def add_question(self, run_id: str, question: str, impact: str, *, provider_request_id=None, provider_params=None,
+                     questions=None, intent_summary=None):
+        interview = normalize_interview(question, impact, questions=questions, intent_summary=intent_summary)
         def apply(body):
-            body["questions"].append({"id": uid("question"), "stage": body["active_stage"], "question": question, "impact": impact, "status": "PENDING",
+            body["questions"].append({"id": uid("question"), "stage": body["active_stage"], **interview, "status": "PENDING",
                                       "provider_request_id": provider_request_id, "provider_params": provider_params, "created_at": now()})
             body["status"] = "WAITING_USER"
             return question

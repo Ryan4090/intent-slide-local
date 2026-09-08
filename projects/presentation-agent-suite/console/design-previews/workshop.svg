@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">스파크 — 질문하고 비교하는 참여형 발표</title>
+  <desc id="desc">연한 라임색 바탕과 각진 선택 카드로 질문, 비교, 행동을 이끄는 스타일 예시.</desc>
+  <rect width="640" height="360" fill="#F2F6E8"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <rect x="32" y="23" width="71" height="24" fill="#24352C"/><text x="42" y="40" fill="#FFFFFF" font-size="12" font-weight="700">SPARK</text>
+    <text x="119" y="40" fill="#647E25" font-size="13" font-weight="700" letter-spacing="2">ASK / COMPARE / ACT</text>
+    <text x="32" y="100" fill="#24352C" font-size="33" font-weight="750">함께 답을 발견하는 질문</text>
+    <text x="32" y="128" fill="#5C6B4C" font-size="15">어떤 선택이 우리의 목적에 가까울까요?</text>
+    <rect x="32" y="157" width="178" height="140" fill="#FFFFFF" stroke="#BECBA3" stroke-width="2"/>
+    <rect x="230" y="157" width="178" height="140" fill="#E0EBBD" stroke="#647E25" stroke-width="2"/>
+    <rect x="428" y="157" width="180" height="140" fill="#FFFFFF" stroke="#BECBA3" stroke-width="2"/>
+    <text x="49" y="186" fill="#647E25" font-size="13" font-weight="700">01 / QUESTION</text><text x="247" y="186" fill="#526C18" font-size="13" font-weight="700">02 / COMPARE</text><text x="445" y="186" fill="#647E25" font-size="13" font-weight="700">03 / ACTION</text>
+    <text x="49" y="228" fill="#24352C" font-size="25" font-weight="700">질문하기</text><text x="247" y="228" fill="#24352C" font-size="25" font-weight="700">비교하기</text><text x="445" y="228" fill="#24352C" font-size="25" font-weight="700">정해보기</text>
+    <text x="49" y="273" fill="#5C6B4C" font-size="13">각자의 생각을 꺼내기</text><text x="247" y="273" fill="#526C18" font-size="13">기준으로 차이 읽기</text><text x="445" y="273" fill="#5C6B4C" font-size="13">다음 행동 합의하기</text>
+    <text x="32" y="336" fill="#5C6B4C" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="336" fill="#5C6B4C" font-size="12">10</text>
+  </g>
+</svg>

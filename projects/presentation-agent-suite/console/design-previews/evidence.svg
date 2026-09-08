@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">프루프 — 결과와 한계를 함께 보여주는 분석</title>
+  <desc id="desc">푸른색 분석 제목, 비교 차트와 해석·한계 영역을 분리한 스타일 예시. 실제 데이터가 아닙니다.</desc>
+  <rect width="640" height="360" fill="#EFF4FA"/><rect width="640" height="62" fill="#143F65"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="32" y="40" fill="#FFFFFF" font-size="26" font-weight="750">무엇이 확인되었는가</text>
+    <text x="32" y="95" fill="#2866AD" font-size="13" font-weight="700" letter-spacing="1">PROOF / QUESTION → METHOD → FINDING</text>
+    <rect x="32" y="116" width="350" height="185" rx="3" fill="#FFFFFF"/>
+    <text x="50" y="142" fill="#143F65" font-size="16" font-weight="700">비교 가능한 근거</text>
+    <path d="M63 169 V264 H356 M63 225 H356 M63 188 H356" fill="none" stroke="#D7E2ED" stroke-width="1"/>
+    <rect x="93" y="212" width="36" height="52" fill="#A9C3E0"/><rect x="137" y="186" width="36" height="78" fill="#2866AD"/>
+    <rect x="225" y="195" width="36" height="69" fill="#A9C3E0"/><rect x="269" y="163" width="36" height="101" fill="#2866AD"/>
+    <text x="133" y="284" fill="#516D87" font-size="12" text-anchor="middle">비교군 A</text><text x="265" y="284" fill="#516D87" font-size="12" text-anchor="middle">비교군 B</text>
+    <text x="408" y="141" fill="#143F65" font-size="18" font-weight="700">결과의 의미</text>
+    <rect x="408" y="159" width="182" height="5" rx="2" fill="#A9C3E0"/><rect x="408" y="177" width="145" height="5" rx="2" fill="#A9C3E0"/>
+    <line x1="408" y1="213" x2="608" y2="213" stroke="#C0D0E0"/>
+    <text x="408" y="242" fill="#143F65" font-size="18" font-weight="700">해석의 한계</text>
+    <text x="408" y="268" fill="#516D87" font-size="14">단위 · 기간 · 표본 · 출처</text>
+    <text x="32" y="335" fill="#516D87" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="335" fill="#516D87" font-size="12">04</text>
+  </g>
+</svg>

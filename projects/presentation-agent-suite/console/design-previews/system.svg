@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">아키텍트 — 구조와 흐름을 명확하게 설명</title>
+  <desc id="desc">짙은 청록색 바탕에 민트색 연결선으로 입력, 처리, 전달을 계층화한 시스템 구조 예시.</desc>
+  <rect width="640" height="360" fill="#102D32"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="32" y="38" fill="#69D4BC" font-size="13" font-weight="700" letter-spacing="2">ARCHITECT / STRUCTURE &amp; FLOW</text>
+    <text x="32" y="87" fill="#ECF8F4" font-size="32" font-weight="750">복잡함 속의 작동 원리</text>
+    <text x="32" y="115" fill="#ABD1C8" font-size="15">구성 요소와 정보의 이동을 연결합니다.</text>
+    <rect x="32" y="153" width="133" height="129" rx="5" fill="#1B4147" stroke="#527B78"/>
+    <text x="98" y="185" fill="#69D4BC" font-size="13" text-anchor="middle">INPUT</text><text x="98" y="227" fill="#ECF8F4" font-size="22" font-weight="700" text-anchor="middle">입력</text>
+    <path d="M166 217 H221 M211 209 L221 217 L211 225" fill="none" stroke="#69D4BC" stroke-width="2"/>
+    <rect x="235" y="148" width="170" height="64" rx="5" fill="#69D4BC"/><rect x="235" y="226" width="170" height="64" rx="5" fill="#1B4147" stroke="#69D4BC"/>
+    <text x="320" y="187" fill="#102D32" font-size="21" font-weight="700" text-anchor="middle">핵심 처리</text><text x="320" y="265" fill="#ECF8F4" font-size="20" text-anchor="middle">지원 기능</text>
+    <path d="M320 212 V226 M406 181 H438 V217 H463 M453 209 L463 217 L453 225" fill="none" stroke="#69D4BC" stroke-width="2"/>
+    <rect x="477" y="153" width="131" height="129" rx="5" fill="#1B4147" stroke="#527B78"/>
+    <text x="542" y="185" fill="#69D4BC" font-size="13" text-anchor="middle">OUTPUT</text><text x="542" y="227" fill="#ECF8F4" font-size="22" font-weight="700" text-anchor="middle">전달</text>
+    <text x="32" y="336" fill="#ABD1C8" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="336" fill="#ABD1C8" font-size="12">06</text>
+  </g>
+</svg>

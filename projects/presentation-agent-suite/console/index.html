@@ -28,13 +28,15 @@
   <dialog id="create-dialog" aria-labelledby="create-title">
     <form id="create-form" class="dialog-content">
       <div class="dialog-heading"><div><span class="eyebrow">새 프레젠테이션</span><h2 id="create-title">어떤 이야기를 전하고 싶나요?</h2></div><button type="button" class="icon-button" data-close-dialog aria-label="새 프로젝트 창 닫기">×</button></div>
-      <p class="muted">주제만 정해져 있어도 괜찮습니다. 대화로 목적·청중·구성을 함께 정리합니다.</p>
+      <p class="muted">주제만 정해져 있어도 괜찮습니다. 이해한 의도와 핵심 질문을 먼저 보여드리고, 전달 전략을 함께 정합니다.</p>
+      <div class="create-journey"><strong>01 의도 대화</strong><span>02 근거 조사</span><span>03 슬라이드 제작</span></div>
       <label for="project-request">처음 이야기</label><textarea id="project-request" name="request" rows="4" maxlength="20000" placeholder="예: 임원진에게 새 사업을 제안하려고 해요. 시장 가능성과 실행 계획을 10장 정도로 설명하고 싶어요." required></textarea>
       <label for="project-title">프로젝트 이름 <span class="muted">· 선택</span></label><input id="project-title" name="title" maxlength="160" placeholder="비워두면 첫 이야기로 이름을 정합니다" autocomplete="off">
       <select id="create-provider" name="provider" hidden aria-hidden="true"><option value="codex">Codex</option></select><p class="small muted">Codex와 함께 만드는 프레젠테이션</p><p id="create-provider-status" class="small muted"></p>
-      <p id="create-provider-billing" class="billing-notice" hidden></p><div class="execution-options"><div><label for="create-provider-model">모델</label><select id="create-provider-model" name="model"></select></div><div><label for="create-provider-effort">추론 설정</label><select id="create-provider-effort" name="effort"></select></div></div>
+      <p id="create-provider-billing" class="billing-notice" hidden></p><details class="create-settings"><summary>모델·추론 설정</summary><p class="small muted">미선택 시 모델의 권장 추론 설정을 사용합니다. 권장 정보가 없으면 현재 연결된 Codex 설정을 유지합니다.</p><div class="execution-options"><div><label for="create-provider-model">모델</label><select id="create-provider-model" name="model"></select></div><div><label for="create-provider-effort">추론 설정</label><select id="create-provider-effort" name="effort"></select></div></div></details>
       <label for="create-attachments">참고 자료 <span class="muted">· 선택</span></label><input id="create-attachments" type="file" multiple><p class="small muted">원본 파일은 한 개에 100MB까지 첨부할 수 있습니다.</p>
       <fieldset class="source-options"><legend>자료 활용 범위</legend><label><input type="radio" name="source_mode" value="hybrid" checked><span><strong>제공 자료 + 외부 조사</strong><small>자료를 바탕으로 필요한 근거를 보완합니다.</small></span></label><label><input type="radio" name="source_mode" value="provided_only"><span><strong>제공 자료만 사용</strong><small>첨부한 자료의 분석과 검증으로 진행합니다.</small></span></label><label><input type="radio" name="source_mode" value="external"><span><strong>외부 조사 중심</strong><small>의도를 확정한 뒤 관련 근거를 조사합니다.</small></span></label></fieldset>
+      <details class="create-settings create-design"><summary>표현 방향 · 10가지 디자인 <small>기본: 시그널 · 제작 전 변경 가능</small></summary><p class="small muted">구성 예시를 골라 주세요. 실제 내용과 시각화는 의도를 확인한 뒤 설계합니다.</p><fieldset class="design-choices"><legend class="sr-only">새 프로젝트 디자인</legend><div id="create-design-options"></div></fieldset></details>
       <p class="form-error" id="create-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" class="button secondary" data-close-dialog>취소</button><button type="submit" class="button primary" id="create-submit">의도 대화 시작하기 <span aria-hidden="true">→</span></button></div>
     </form>
   </dialog>

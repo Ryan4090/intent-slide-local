@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">프레임 — 새로운 관점을 전달하는 에디토리얼</title>
+  <desc id="desc">종이색 바탕에 보라색 큰 제목, 비대칭 열과 개념 관계도를 배치한 스타일 예시.</desc>
+  <rect width="640" height="360" fill="#F5F0E8"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="32" y="37" fill="#6949BC" font-size="13" font-weight="700" letter-spacing="2">FRAME / A NEW PERSPECTIVE</text>
+    <line x1="32" y1="51" x2="608" y2="51" stroke="#282039" stroke-width="1"/>
+    <text x="32" y="105" fill="#282039" font-size="33" font-weight="750">다르게 보면,</text>
+    <text x="32" y="148" fill="#6949BC" font-size="33" font-weight="750">다른 답이 보입니다.</text>
+    <text x="32" y="197" fill="#68606F" font-size="15">하나의 관점에서 시작해</text>
+    <text x="32" y="223" fill="#68606F" font-size="15">사례와 개념의 관계를 읽습니다.</text>
+    <rect x="32" y="255" width="270" height="43" fill="#E9E0D4"/>
+    <text x="45" y="282" fill="#282039" font-size="15">관점 → 구조 → 새로운 이해</text>
+    <line x1="330" y1="77" x2="330" y2="298" stroke="#D5CBBB" stroke-width="1"/>
+    <path d="M426 141 L537 164 L494 252 Z" fill="none" stroke="#A497BE" stroke-width="2"/>
+    <circle cx="426" cy="141" r="40" fill="#6949BC"/><circle cx="537" cy="164" r="40" fill="#E4DCF3"/><circle cx="494" cy="252" r="40" fill="#282039"/>
+    <text x="426" y="147" fill="#FFFFFF" font-size="17" text-anchor="middle">관점</text><text x="537" y="170" fill="#282039" font-size="17" text-anchor="middle">사례</text><text x="494" y="258" fill="#FFFFFF" font-size="17" text-anchor="middle">의미</text>
+    <line x1="32" y1="317" x2="608" y2="317" stroke="#D5CBBB" stroke-width="1"/>
+    <text x="32" y="339" fill="#68606F" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="339" fill="#68606F" font-size="12">03</text>
+  </g>
+</svg>

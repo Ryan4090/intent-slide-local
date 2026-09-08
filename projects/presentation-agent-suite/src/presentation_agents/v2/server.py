@@ -12,6 +12,8 @@ from flask import Flask, Response, jsonify, request, send_file, send_from_direct
 from .contracts import Conflict, ContractError
 from .engine import Engine
 from .provider_registry import mvp_selection
+from .design_catalog import CATALOG_VERSION, list_design_presets
+from .research_activity import project_research_activity
 
 
 def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_token: str | None = None, instance_id: str | None = None) -> Flask:
@@ -23,6 +25,10 @@ def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_toke
     app.extensions["bootstrap_token"] = bootstrap
     app.extensions["bootstrap_used"] = False
     bootstrap_lock = threading.Lock()
+
+    def present_run(snapshot):
+        # Enrich only the response, never persist this view over the raw ledger.
+        return {**snapshot, "research_activity": project_research_activity(snapshot, engine.root)}
 
     @app.get('/healthz')
     def health():
@@ -85,18 +91,22 @@ def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_toke
 
     @app.get("/api/v2/runs")
     def list_runs():
-        return jsonify(runs=engine.list())
+        return jsonify(runs=[present_run(run) for run in engine.list()])
+
+    @app.get("/api/v2/design-presets")
+    def design_presets():
+        return jsonify(version=CATALOG_VERSION, presets=list_design_presets())
 
     @app.post("/api/v2/runs")
     def create_run():
         data = json_object()
         selection = mvp_selection(data.get("execution"))
-        result = engine.create(data.get("title", "새 프레젠테이션"), data.get("request", ""), data.get("source_mode", "hybrid"), data.get("operation_id", ""), execution=selection)
-        return jsonify(result), 201
+        result = engine.create(data.get("title", "새 프레젠테이션"), data.get("request", ""), data.get("source_mode", "hybrid"), data.get("operation_id", ""), execution=selection, design_preference=data.get("design_preference"))
+        return jsonify(present_run(result)), 201
 
     @app.get("/api/v2/runs/<run_id>")
     def snapshot(run_id):
-        return jsonify(engine.snapshot(run_id))
+        return jsonify(present_run(engine.snapshot(run_id)))
 
     @app.post("/api/v2/runs/<run_id>/commands")
     def command(run_id):
@@ -124,7 +134,7 @@ def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_toke
                 if not any(j["status"] in {"RUNNING", "QUEUED", "WAITING_USER"} for j in result["jobs"]) and result["status"] != "COMPLETE":
                     result = engine.command(run_id, "run", {}, f"auto-{data['operation_id']}", result["revision"])
             runner.kick()
-        return jsonify(result)
+        return jsonify(present_run(result))
 
     @app.post("/api/v2/runs/<run_id>/attachments")
     def attachment(run_id):
@@ -135,7 +145,7 @@ def create_app(engine: Engine, console_dir: Path, runner=None, *, bootstrap_toke
             revision = int(request.form.get("expected_revision", ""))
         except ValueError:
             raise ContractError("expected_revision is required") from None
-        return jsonify(engine.add_attachment(run_id, file.filename, file.read(), request.form.get("operation_id", ""), revision))
+        return jsonify(present_run(engine.add_attachment(run_id, file.filename, file.read(), request.form.get("operation_id", ""), revision)))
 
     @app.get("/api/v2/runs/<run_id>/artifacts/<artifact_id>")
     def artifact(run_id, artifact_id):

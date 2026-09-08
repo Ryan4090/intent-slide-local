@@ -15,10 +15,12 @@ from datetime import datetime, timezone
 from pathlib import Path
 from xml.etree import ElementTree as ET
 
-from .contracts import Conflict, ContractError, digest, file_hash, now, safe_path, uid
+from .contracts import Conflict, ContractError, digest, file_hash, normalize_interview, now, safe_path, uid
 from .engine import Engine
+from .design_catalog import get_design_preset
 from .prompts import prompt_for
 from .provider import ProviderError
+from .research_activity import append_research_activity, research_event
 from .login import BrowserLogin
 from .provider_registry import MVP_PROVIDER_IDS, mvp_selection, normalize_selection, provider_factory as make_provider, provider_metadata
 
@@ -421,6 +423,9 @@ class Runner:
                 return "유실·변조된 선택적 중간 원본을 제외하고 새 시도를 준비했습니다"
             self._mutate_live_job(run_id, job["id"], "checkpoint.unavailable", omit_unavailable)
         packet = {key: body[key] for key in ("id", "request", "source_mode", "intent", "research", "direction", "candidate", "messages", "approvals", "changes")}
+        packet["design_preference"] = copy.deepcopy(body.get("design_preference"))
+        packet["design_preset"] = (get_design_preset(packet["design_preference"]["preset_id"])
+                                   if packet["design_preference"] else None)
         packet.update(phase=job["phase"], artifacts=artifacts, job_id=job["id"],
                       provider_selection=normalize_selection(job.get("provider_selection")))
         if packet["provider_selection"]["provider"] == "claude" and job["phase"] in {"design_direction", "design_build"}:
@@ -786,6 +791,16 @@ class Runner:
                 self._current_input(run_id, job)
             except Conflict:
                 return
+            activity = research_event(event, job)
+            if activity:
+                def record_activity(body, active):
+                    append_research_activity(body, activity)
+                    active["heartbeat_at"] = now()
+                    return activity["message"]
+                try:
+                    self._mutate_live_job(run_id, job["id"], "research.activity", record_activity)
+                except Conflict:
+                    return
             if method == "item/started":
                 approval_context.record(params)
             if event.get("id") is not None and method.startswith(("item/", "mcpServer/")):
@@ -896,9 +911,11 @@ class Runner:
         if not isinstance(result, dict):
             raise ContractError("stage result envelope must be an object")
         if result.get("kind") == "question":
+            prompt = normalize_interview(result.get("question", "확인이 필요합니다"), result.get("impact", "다음 단계 입력"),
+                                         questions=result.get("questions"), intent_summary=result.get("intent_summary"))
             def interview(body, active):
                 body["questions"].append({"id": uid("question"), "job_id": job["id"], "stage": job["stage"], "status": "PENDING",
-                    "question": result.get("question", "확인이 필요합니다"), "impact": result.get("impact", "다음 단계 입력"),
+                    **prompt,
                     "provider_request_id": None, "provider_params": None, "created_at": now()})
                 self._end_wait(active)
                 active.update(status="COMPLETED", finished_at=now())

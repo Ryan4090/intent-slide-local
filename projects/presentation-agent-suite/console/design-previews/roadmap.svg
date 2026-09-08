@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">마일스톤 — 목표까지의 실행 순서</title>
+  <desc id="desc">따뜻한 황토색 단계선 위에 준비, 실행, 확산의 세 단계를 구성한 스타일 예시.</desc>
+  <rect width="640" height="360" fill="#FBF5E8"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="32" y="38" fill="#996600" font-size="13" font-weight="700" letter-spacing="2">MILESTONE / FROM HERE TO THERE</text>
+    <text x="32" y="87" fill="#3A3325" font-size="32" font-weight="750">목표까지, 실행의 순서를 세우다</text>
+    <text x="32" y="116" fill="#726348" font-size="15">단계 · 의존 관계 · 완료 기준을 한눈에</text>
+    <path d="M74 186 H566" fill="none" stroke="#D9BF84" stroke-width="4"/>
+    <circle cx="112" cy="186" r="22" fill="#3A3325"/><circle cx="320" cy="186" r="22" fill="#996600"/><circle cx="528" cy="186" r="22" fill="#FBF5E8" stroke="#996600" stroke-width="3"/>
+    <text x="112" y="193" fill="#FFFFFF" font-size="18" font-weight="700" text-anchor="middle">1</text><text x="320" y="193" fill="#FFFFFF" font-size="18" font-weight="700" text-anchor="middle">2</text><text x="528" y="193" fill="#996600" font-size="18" font-weight="700" text-anchor="middle">3</text>
+    <rect x="32" y="224" width="160" height="75" rx="4" fill="#EFE4CA"/><rect x="240" y="224" width="160" height="75" rx="4" fill="#EFE4CA"/><rect x="448" y="224" width="160" height="75" rx="4" fill="#EFE4CA"/>
+    <text x="112" y="253" fill="#3A3325" font-size="21" font-weight="700" text-anchor="middle">준비</text><text x="320" y="253" fill="#3A3325" font-size="21" font-weight="700" text-anchor="middle">실행</text><text x="528" y="253" fill="#3A3325" font-size="21" font-weight="700" text-anchor="middle">확산</text>
+    <text x="112" y="279" fill="#726348" font-size="13" text-anchor="middle">범위와 성공 기준</text><text x="320" y="279" fill="#726348" font-size="13" text-anchor="middle">담당과 완료 조건</text><text x="528" y="279" fill="#726348" font-size="13" text-anchor="middle">검증 후 다음 단계</text>
+    <text x="32" y="336" fill="#726348" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="336" fill="#726348" font-size="12">05</text>
+  </g>
+</svg>

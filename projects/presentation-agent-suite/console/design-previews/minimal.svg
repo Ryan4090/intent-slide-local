@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">포커스 — 한 장에 하나의 핵심 메시지</title>
+  <desc id="desc">넓은 흰 여백과 검정색 대형 문장, 단일 시각적 초점으로 구성한 미니멀 스타일 예시.</desc>
+  <rect width="640" height="360" fill="#F8F8F5"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="32" y="40" fill="#60676B" font-size="13" font-weight="700" letter-spacing="3">FOCUS</text>
+    <text x="32" y="138" fill="#212528" font-size="44" font-weight="750">한 장.</text>
+    <text x="32" y="198" fill="#212528" font-size="44" font-weight="750">하나의 핵심.</text>
+    <text x="35" y="245" fill="#60676B" font-size="16">청중에게 남길 생각을 선명하게</text>
+    <circle cx="503" cy="175" r="68" fill="#ECEDEA"/><circle cx="503" cy="175" r="43" fill="#C8CBC6"/><circle cx="503" cy="175" r="18" fill="#212528"/>
+    <line x1="32" y1="309" x2="608" y2="309" stroke="#D7DAD5" stroke-width="1"/>
+    <text x="32" y="336" fill="#60676B" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="336" fill="#60676B" font-size="12">09</text>
+  </g>
+</svg>

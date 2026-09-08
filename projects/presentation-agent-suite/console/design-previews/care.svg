@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">공감 — 경험에서 배움으로 이어지는 이야기</title>
+  <desc id="desc">따뜻한 흰색 바탕과 녹색의 둥근 요소로 상황, 이해, 적용의 여정을 보여주는 스타일 예시.</desc>
+  <rect width="640" height="360" fill="#F4F4EA"/><rect x="0" width="9" height="360" fill="#467763"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="36" y="39" fill="#467763" font-size="13" font-weight="700" letter-spacing="2">CARE / EXPERIENCE TO UNDERSTANDING</text>
+    <text x="36" y="87" fill="#23483F" font-size="31" font-weight="750">이해는 사람의 경험에서 시작됩니다</text>
+    <text x="36" y="116" fill="#5C7167" font-size="15">상황에 공감하고, 원리를 이해하고, 행동으로 연결</text>
+    <path d="M124 203 C186 136 240 136 304 203 S430 270 513 203" fill="none" stroke="#A8BEA3" stroke-width="4"/>
+    <circle cx="124" cy="203" r="48" fill="#E0E9D8"/><circle cx="320" cy="203" r="48" fill="#467763"/><circle cx="516" cy="203" r="48" fill="#E0E9D8"/>
+    <text x="124" y="211" fill="#23483F" font-size="23" font-weight="700" text-anchor="middle">상황</text><text x="320" y="211" fill="#FFFFFF" font-size="23" font-weight="700" text-anchor="middle">이해</text><text x="516" y="211" fill="#23483F" font-size="23" font-weight="700" text-anchor="middle">적용</text>
+    <text x="124" y="280" fill="#5C7167" font-size="14" text-anchor="middle">어떤 경험인가요</text><text x="320" y="280" fill="#5C7167" font-size="14" text-anchor="middle">왜 일어날까요</text><text x="516" y="280" fill="#5C7167" font-size="14" text-anchor="middle">무엇을 바꿀까요</text>
+    <text x="36" y="336" fill="#5C7167" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="336" fill="#5C7167" font-size="12">08</text>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" role="img" aria-labelledby="title desc">
+  <title id="title">도약 — 문제에서 기회로 이어지는 제안</title>
+  <desc id="desc">짙은 자주색 바탕의 문제 영역에서 밝은 산호색 해결 영역으로 전환되는 스타일 예시.</desc>
+  <rect width="640" height="360" fill="#321B2B"/><rect x="356" width="284" height="360" fill="#FFF1E9"/>
+  <g font-family="Pretendard, Apple SD Gothic Neo, sans-serif">
+    <text x="32" y="40" fill="#F7B498" font-size="13" font-weight="700" letter-spacing="2">PITCH / CHANGE</text>
+    <text x="32" y="106" fill="#FFFFFF" font-size="39" font-weight="750">왜 지금,</text>
+    <text x="32" y="155" fill="#FFFFFF" font-size="39" font-weight="750">이 변화인가?</text>
+    <text x="32" y="197" fill="#DDC8D5" font-size="15">청중의 문제에서 출발하는 제안</text>
+    <rect x="32" y="235" width="258" height="48" rx="4" fill="#5A3446"/>
+    <text x="48" y="265" fill="#FFFFFF" font-size="16">현재의 문제와 확인된 한계</text>
+    <circle cx="356" cy="176" r="28" fill="#BB472F"/><path d="M343 176 H369 M360 167 L369 176 L360 185" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
+    <text x="391" y="102" fill="#BB472F" font-size="13" font-weight="700">THE OPPORTUNITY</text>
+    <text x="391" y="143" fill="#321B2B" font-size="28" font-weight="750">가능한 변화</text>
+    <path d="M400 236 L449 212 L490 224 L539 173 L592 157" fill="none" stroke="#BB472F" stroke-width="6" stroke-linejoin="round"/>
+    <circle cx="592" cy="157" r="6" fill="#BB472F"/>
+    <text x="391" y="278" fill="#714D58" font-size="15">검증 근거 → 실행 → 요청</text>
+    <text x="32" y="336" fill="#DDC8D5" font-size="12">스타일 미리보기 · 예시 구조</text><text x="584" y="336" fill="#714D58" font-size="12">02</text>
+  </g>
+</svg>

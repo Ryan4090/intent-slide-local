@@ -80,6 +80,20 @@ def safe_path(root: Path, relative: str, *, exists: bool = True) -> Path:
 
 def normalize_intent(data: dict, source_mode: str, previous: dict | None = None) -> dict:
     result = copy.deepcopy(data)
+    if "intent_summary" in result:
+        _bounded_text(result["intent_summary"], "intent_summary", 2000)
+    if "delivery_strategy" in result:
+        strategy = result["delivery_strategy"]
+        if not isinstance(strategy, dict):
+            raise ContractError("delivery_strategy must be an object")
+        for key in ("audience_shift", "core_message", "narrative_arc", "presentation_mode"):
+            _bounded_text(strategy.get(key), f"delivery_strategy.{key}", 2000)
+        for key in ("visual_principles", "constraints"):
+            values = strategy.get(key)
+            if not isinstance(values, list) or len(values) > 20 or (key == "visual_principles" and not values):
+                raise ContractError(f"delivery_strategy.{key}: bounded text list required")
+            for value in values:
+                _bounded_text(value, f"delivery_strategy.{key}", 1000)
     fields = result.get("fields", {})
     for key in ("topic", "audience", "objective", "success_criteria", "slide_count"):
         entry = fields.get(key)
@@ -134,6 +148,53 @@ def _text(value: Any, name: str) -> str:
     if not isinstance(value, str) or not value.strip():
         raise ContractError(f"{name}: nonempty text required")
     return value
+
+
+def _bounded_text(value: Any, name: str, limit: int) -> str:
+    result = _text(value, name)
+    if len(result) > limit:
+        raise ContractError(f"{name}: text exceeds {limit} characters")
+    return result
+
+
+def normalize_interview(question: str, impact: str, *, questions=None, intent_summary=None) -> dict:
+    """Optional short interview cards; answers still use the existing user command."""
+    result = {"question": _bounded_text(question, "question", 6000),
+              "impact": _bounded_text(impact, "impact", 2000)}
+    if intent_summary is not None:
+        result["intent_summary"] = _bounded_text(intent_summary, "intent_summary", 2000)
+    if questions is None:
+        return result
+    if not isinstance(questions, list) or not 1 <= len(questions) <= 3:
+        raise ContractError("interview.questions must contain one to three questions")
+    seen = set()
+    result["questions"] = []
+    for item in questions:
+        if not isinstance(item, dict):
+            raise ContractError("interview question must be an object")
+        identifier = _bounded_text(item.get("id"), "interview.id", 64)
+        if not re.fullmatch(r"[A-Za-z0-9_-]+", identifier) or identifier in seen:
+            raise ContractError("interview question IDs must be unique safe identifiers")
+        seen.add(identifier)
+        normalized = {"id": identifier,
+                      "question": _bounded_text(item.get("question"), "interview.question", 1000),
+                      "why": _bounded_text(item.get("why"), "interview.why", 1000)}
+        options = item.get("options", [])
+        if not isinstance(options, list) or len(options) not in {0, 2, 3}:
+            raise ContractError("interview options must be empty or contain two to three choices")
+        normalized["options"] = []
+        labels = set()
+        for option in options:
+            if not isinstance(option, dict):
+                raise ContractError("interview option must be an object")
+            label = _bounded_text(option.get("label"), "interview.option.label", 200)
+            if label in labels:
+                raise ContractError("interview option labels must be unique")
+            labels.add(label)
+            normalized["options"].append({"label": label,
+                "description": _bounded_text(option.get("description"), "interview.option.description", 500)})
+        result["questions"].append(normalized)
+    return result
 
 
 def _records(value: Any, name: str, key: str = "id") -> dict[str, dict]:

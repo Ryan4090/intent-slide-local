@@ -9,6 +9,7 @@ from typing import Callable
 
 from .contracts import Conflict, ContractError, canonical, digest, now
 from .provider_registry import normalize_selection
+from .design_catalog import normalize_preference
 
 
 class Store:
@@ -52,8 +53,13 @@ class Store:
 
     def create(self, body: dict, operation_id: str) -> dict:
         def creation_payload(value):
-            return {**{k: value[k] for k in ("title", "request", "source_mode")},
-                    "execution": normalize_selection(value.get("execution"))}
+            result = {**{k: value[k] for k in ("title", "request", "source_mode")},
+                      "execution": normalize_selection(value.get("execution"))}
+            preference = normalize_preference(value.get("design_preference"))
+            # Missing/None retains the exact receipt hash of existing projects.
+            if preference is not None:
+                result["design_preference"] = preference
+            return result
         payload_sha = digest(creation_payload(body))
         with self.connect() as db:
             db.execute("BEGIN IMMEDIATE")

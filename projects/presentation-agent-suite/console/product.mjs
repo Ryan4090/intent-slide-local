@@ -95,7 +95,7 @@ export function releaseView(run = {}) {
 export function nextAction(run = {}) {
   if (isReadOnly(run)) return { kind: 'history', label: '기존 기록 보기', detail: '이 작업은 읽기 전용으로 보존되어 있습니다.' };
   const question = pendingQuestions(run)[0];
-  if (question) return { kind: 'question', label: '질문에 답변하기', detail: '답변을 기다리고 있습니다. 아래 질문을 확인해 주세요.' };
+  if (question) return { kind: 'question', label: '질문에 답변하기', detail: '답변을 기다리고 있습니다. 질문에 답하면 전달 전략을 구체화합니다.' };
   const review = pendingReviews(run)[0];
   if (review) return { kind: 'review', label: `${CHECKPOINTS.find((item) => item.id === review.gate)?.label || '결과'} 검토하기`, reviewId: review.id, detail: '내용을 검토한 뒤 승인하거나 수정을 요청해 주세요.' };
   const release = releaseView(run);

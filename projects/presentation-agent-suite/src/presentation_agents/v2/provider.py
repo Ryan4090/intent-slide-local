@@ -29,7 +29,6 @@ from typing import Any
 from .stdio_transport import StdioTransport, TransportError, resolve_command
 
 EventCallback = Callable[[dict[str, Any]], None]
-_EFFORTS = ("none", "minimal", "low", "medium", "high", "xhigh", "max", "ultra")
 _USER_REQUESTS = {
     "item/commandExecution/requestApproval",
     "item/fileChange/requestApproval",
@@ -429,13 +428,15 @@ class CodexProvider:
                 turn_params = {
                     "threadId": new_id, "cwd": str(cwd),
                     "input": [{"type": "text", "text": prompt}],
-                    "model": actual_model, "effort": chosen_effort,
+                    "model": actual_model,
                     "approvalPolicy": "on-request", "approvalsReviewer": "user",
                     "sandboxPolicy": {
                         "type": "workspaceWrite", "writableRoots": [str(cwd)],
                         "networkAccess": False, "excludeSlashTmp": True, "excludeTmpdirEnvVar": True,
                     },
                 }
+                if chosen_effort is not None:
+                    turn_params["effort"] = chosen_effort
                 ack = self._rpc("turn/start", turn_params)
                 turn = ack.get("turn", {})
                 turn_id = turn.get("id")
@@ -467,7 +468,7 @@ class CodexProvider:
             if not Path(root).resolve().is_relative_to(cwd):
                 raise ProviderError("POLICY_MISMATCH", "Codex inherited writable roots outside the attempt directory")
 
-    def _choose_effort(self, model: str, requested: str | None) -> str:
+    def _choose_effort(self, model: str, requested: str | None) -> str | None:
         entry = next((m for m in self._models if m["model"] == model or m.get("id") == model), None)
         if not entry:
             raise ProviderError("MODEL_UNAVAILABLE", "The effective model is absent from the model catalog; select an available model")
@@ -476,10 +477,14 @@ class CodexProvider:
             if requested not in supported:
                 raise ProviderError("EFFORT_UNAVAILABLE", "The selected model does not support that reasoning effort")
             return requested
-        ranked = [x for x in _EFFORTS if x in supported]
-        if not ranked:
-            raise ProviderError("EFFORT_UNAVAILABLE", "Codex did not report a supported reasoning effort")
-        return ranked[-1]
+        default = entry.get("defaultReasoningEffort")
+        if isinstance(default, str) and default in supported:
+            return default
+        # model/list documents this as the suggested client default. When older
+        # or inconsistent metadata cannot establish one, omit the per-turn
+        # override and let the native server retain its own configuration.
+        # None must never silently mean the most expensive supported effort.
+        return None
 
     def respond(self, request_id: int | str, decision_payload: dict[str, Any]) -> None:
         """Answer one pending user request; never create persistent permission rules."""

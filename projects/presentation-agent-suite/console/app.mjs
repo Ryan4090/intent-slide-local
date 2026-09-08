@@ -10,6 +10,7 @@ import {
   modelOptions, effortOptions, validateExecutionSelection, applyDiscoverySnapshot,
 } from './product.mjs';
 import { createDiscovery, createLogin } from './connection.mjs';
+import { intentMarkup, interviewMarkup, interviewAnswer, deliveryMarkup, designGalleryMarkup, researchActivityMarkup } from './experience.mjs';
 
 const api = new ConsoleApi();
 const $ = (selector, root = document) => root.querySelector(selector);
@@ -31,6 +32,7 @@ const state = {
   discovery: null, discoveryGeneration: 0, discoveryState: 'IDLE', discoveryError: '',
   choiceGeneration: 0, welcomeAfterDiscovery: false,
   login: null, loginBusy: false,
+  designCatalog: [],
 };
 
 function selectedProvider(selection = state.preferred) {
@@ -165,14 +167,14 @@ function renderWelcome() {
   $('#main-content').innerHTML = `
     <section class="welcome">
       <span class="eyebrow">FROM INTENT TO IMPACT</span>
-      <h1>전하고 싶은 생각을,<br>근거 있는 슬라이드로.</h1>
-      <p class="welcome-intro">대화로 의도를 정하고, 조사로 내용을 채우고,<br>검토를 거쳐 슬라이드를 완성합니다.<br>세 단계의 입력과 결과를 내 작업실에서 확인하세요.</p>
+      <h1>슬라이드보다 먼저,<br>당신의 의도를 묻습니다.</h1>
+      <p class="welcome-intro">누가 보고, 무엇을 이해하고, 어떤 행동을 해야 할까요?<br>짧은 질문으로 방향을 함께 정하고,<br>그 의도를 근거와 시각적 이야기로 완성합니다.</p>
       ${discoveryMarkup()}
       <button class="button primary" data-action="new-project">첫 프로젝트 시작하기 <span aria-hidden="true">→</span></button>
       <div class="welcome-track">
-        <article class="welcome-stage"><span class="number">01</span><h2>의도·구조 확정</h2><p>청중, 목적, 메시지와 구성을 정리합니다.<br>확정한 내용은 승인본으로 남깁니다.</p></article>
-        <article class="welcome-stage"><span class="number">02</span><h2>리서치·분석</h2><p>주장에서 근거까지 연결합니다.<br>가정과 한계도 함께 확인합니다.</p></article>
-        <article class="welcome-stage"><span class="number">03</span><h2>제작·검증·출고</h2><p>디자인을 검토하고 페이지를 만듭니다.<br>검사를 통과한 결과물을 전달합니다.</p></article>
+        <article class="welcome-stage"><span class="number">01</span><h2>내 의도가 선명해지는 질문</h2><p>이해한 의도와 꼭 필요한 질문을 먼저.<br>전달 전략에 동의하면 조사를 시작합니다.</p></article>
+        <article class="welcome-stage"><span class="number">02</span><h2>눈에 보이는 근거의 과정</h2><p>어디를 살폈고, 무엇을 확인했는지.<br>출처·발췌·저장 위치까지 연결합니다.</p></article>
+        <article class="welcome-stage"><span class="number">03</span><h2>의도에 맞는 10가지 표현</h2><p>비교, 차트, 흐름, 관계로 구조화합니다.<br>나의 메시지를 담은 슬라이드로 완성합니다.</p></article>
       </div>
       <div class="welcome-footnote"><span>입력·출력 버전 기록</span><span>검증 기준으로 계산하는 진행률</span><span>수정 이력과 근거 추적</span></div>
     </section>`;
@@ -232,7 +234,7 @@ function populateExecutionOptions(id, selection = {}) {
   model.disabled = !models.length && !selection.model;
   const efforts = effortOptions(provider, model.value || null);
   const effort = document.getElementById(`${id}-effort`);
-  let effortMarkup = '<option value="">AI 도구 기본 추론 설정</option>' + efforts.map((item) => `<option value="${e(item.value)}">${e(item.label)}</option>`).join('');
+  let effortMarkup = '<option value="">모델 권장 추론 설정</option>' + efforts.map((item) => `<option value="${e(item.value)}">${e(item.label)}</option>`).join('');
   if (selection.effort && !efforts.some((item) => item.value === selection.effort)) effortMarkup += `<option value="${e(selection.effort)}">${e(selection.effort)} · 기존 설정, 지원 확인 필요</option>`;
   setSelectOptions(effort, effortMarkup);
   effort.value = selection.effort || '';
@@ -258,6 +260,8 @@ function startCreate() {
   if (!selectedProvider()?.ready) { state.welcomeAfterDiscovery = !state.run; renderSetup(); if (!state.providerBusy) discoverProviders(); return; }
   $('#create-error').hidden = true;
   populateProviderSelect('create-provider', state.preferred);
+  const previousDesign = $('#create-design-options input:checked')?.value || 'signal';
+  $('#create-design-options').innerHTML = designGalleryMarkup(state.designCatalog, previousDesign, false, 'create-design-preset');
   $('#create-dialog').showModal();
   $('#project-request').focus();
 }
@@ -331,7 +335,7 @@ function renderEvidence() {
 
 function renderTimeline() {
   const events = [...(state.run.events || [])].sort((a, b) => b.seq - a.seq);
-  return `<div class="section-heading"><div><h2>작업 기록</h2><p>단계 전환, 승인, 수정, 실행 결과를 시간순으로 기록합니다.</p></div><span class="muted small">${events.length}개 기록</span></div>
+  return `${researchActivityMarkup(state.run.research_activity, state.run)}<div class="section-heading"><div><h2>작업 기록</h2><p>단계 전환, 승인, 수정, 실행 결과를 시간순으로 기록합니다.</p></div><span class="muted small">${events.length}개 기록</span></div>
     ${state.run.historical_findings?.length ? `<details class="stage-panel"><summary>이전 시도의 검사 기록 ${state.run.historical_findings.length}개</summary><p>완료되거나 새 시도로 대체된 중간 검사 기록입니다. 현재 결과의 검토 상태는 위 체크포인트를 따릅니다.</p>${state.run.historical_findings.map((finding) => `<p>${e(findingText(finding))}</p>`).join('')}</details>` : ''}
     ${events.length ? `<ol class="activity-list">${events.map((event) => `<li class="activity-item"><time class="activity-time" datetime="${e(event.created_at)}">${e(formatTime(event.created_at, true))}</time><div class="activity-content"><small>#${e(event.seq)} · ${e(event.kind)}</small><p>${e(event.message || event.kind)}</p></div></li>`).join('')}</ol>` : '<div class="empty-panel"><h3>아직 실행 기록이 없습니다.</h3><p>첫 대화와 실행부터 변경 이력을 남깁니다.</p></div>'}`;
 }
@@ -339,13 +343,28 @@ function renderTimeline() {
 function renderWorkPanel() {
   if (state.tab === 'evidence') return renderEvidence();
   if (state.tab === 'history') return renderTimeline();
+  if (state.tab === 'design') return renderDesignStudio();
   return renderReviews() + renderStages();
+}
+
+function renderDesignStudio() {
+  const run = state.run;
+  const disabled = state.pending || activeJobs(run).length > 0 || pendingQuestions(run).length > 0 || isReadOnly(run) || run.status === 'COMPLETE';
+  const selected = state.drafts.get(`design:${run.id}`) || run.design_preference?.preset_id;
+  const preset = state.designCatalog.find(p => p.id === run.design_preference?.preset_id);
+  return `<form id="design-form" data-run-id="${e(run.id)}"><div class="section-heading"><div><span class="eyebrow">03 · DESIGN FOR YOUR INTENT</span><h2>어떤 방식으로 전달할까요?</h2><p>의도와 근거는 그대로, 메시지가 가장 잘 보이는 표현을 고르세요.</p></div></div><p class="design-intro">Slide Master의 구조를 참고해 각 페이지를 새로 설계합니다. 아래는 구성 예시이며, 실제 차트와 도식은 자료에 맞춰 만듭니다.</p>${preset ? `<p class="current-design">적용 중: <strong>${e(preset.label)}</strong> · ${e(preset.delivery_guidance)}</p>` : '<p class="current-design">아직 디자인을 선택하지 않았습니다. 제작 전에 표현 방향을 골라 주세요.</p>'}<fieldset class="design-choices"><legend class="sr-only">10가지 디자인 중 하나 선택</legend>${designGalleryMarkup(state.designCatalog, selected, disabled)}</fieldset><p class="small muted">비교·수치·흐름·관계를 시각화합니다. 자료로 뒷받침되지 않는 수치나 장식용 차트는 만들지 않습니다.</p><div class="design-apply"><p>${run.status === 'COMPLETE' ? '완료 결과를 바꾸려면 먼저 디자인 수정 요청을 남겨 주세요.' : disabled ? '진행 중인 작업이나 질문을 마친 뒤 디자인을 변경할 수 있습니다.' : run.active_stage === 'design' ? '디자인을 바꾸면 제작 결과와 디자인 승인을 다시 확인합니다.' : '선택한 디자인은 이후 제작에 반영됩니다. 내용·근거 승인은 유지합니다.'}</p><button class="button primary" type="submit" ${disabled || !state.designCatalog.length ? 'disabled' : ''}>선택한 디자인 적용</button></div></form>`;
 }
 
 function renderQuestions() {
   return pendingQuestions(state.run).map((question) => question.provider_request_id !== null && question.provider_request_id !== undefined
     ? renderProviderQuestion(question)
+    : question.questions?.length ? interviewMarkup(question, state.run.id, state.drafts.get(`interview:${state.run.id}:${question.id}`), state.pending, false)
     : `<form class="question" data-question-form="${e(question.id)}" data-run-id="${e(state.run.id)}"><span class="eyebrow">결정이 필요합니다</span><h4>${e(question.question)}</h4>${question.impact ? `<p>${e(question.impact)}</p>` : ''}<label class="small muted" for="answer-${e(question.id)}">답변</label><textarea id="answer-${e(question.id)}" name="answer" required maxlength="12000" placeholder="현재 의도에 맞는 답변을 남겨주세요.">${e(state.drafts.get(`question:${state.run.id}:${question.id}`) || '')}</textarea><button class="button primary" type="submit" ${state.pending ? 'disabled' : ''}>답변 전달</button></form>`).join('');
+}
+
+function renderDecisions(run) {
+  if (!pendingQuestions(run).length) return '';
+  return `<section class="decision-panel" id="decision-panel" tabindex="-1" aria-labelledby="decision-title"><div class="section-heading"><div><span class="eyebrow">답변을 기다리고 있어요</span><h2 id="decision-title">${run.active_stage === 'intent' ? '의도를 선명하게 만드는 질문' : '다음으로 가기 전에 확인할 내용'}</h2></div></div>${renderQuestions()}</section>`;
 }
 
 function renderProviderQuestion(question) {
@@ -392,6 +411,9 @@ function preserveDrafts() {
   for (const form of document.querySelectorAll('[data-provider-input]')) {
     state.drafts.set(`provider:${form.dataset.runId}:${form.dataset.providerInput}`, Object.fromEntries(new FormData(form)));
   }
+  for (const form of document.querySelectorAll('[data-interview-form]')) {
+    state.drafts.set(`interview:${form.dataset.runId}:${form.dataset.interviewForm}`, Object.fromEntries(new FormData(form)));
+  }
   for (const form of document.querySelectorAll('[data-elicitation-form]')) {
     state.drafts.set(`elicitation:${form.dataset.runId}:${form.dataset.elicitationForm}`, Object.fromEntries(new FormData(form)));
   }
@@ -422,6 +444,7 @@ function renderRun() {
   if (!run) return renderWelcome();
   preserveDrafts();
   const activeElement = document.activeElement;
+  const openDetails = [...document.querySelectorAll('#main-content details[open][id]')].map(item => item.id);
   const focused = activeElement?.id;
   const selection = typeof activeElement?.selectionStart === 'number' ? [activeElement.selectionStart, activeElement.selectionEnd] : null;
   const chatBefore = $('#chat-messages');
@@ -435,8 +458,9 @@ function renderRun() {
   const provider = selectedProvider(execution);
   $('#breadcrumb').textContent = run.title;
   $('#last-updated').textContent = `${formatTime(run.updated_at)} 갱신`;
-  $('#main-content').innerHTML = `<div class="workspace-content"><div class="project-heading"><div><span class="eyebrow">${e(STAGES.find((stage) => stage.id === run.active_stage)?.label || '내 프레젠테이션')}</span><h1>${e(run.title)}</h1><div class="project-subtitle">${badge(run.status)}<span>${e(({hybrid: '제공 자료 + 외부 조사', provided_only: '제공 자료만 사용', external: '외부 조사 중심'})[run.source_mode] || '자료 범위 확인 중')}</span><button class="text-button" data-action="provider-settings" ${state.pending || isBusy || readonly ? 'disabled' : ''}>${e(provider?.label || ({ codex: 'Codex', claude: 'Claude Code' })[execution.provider] || execution.provider)} 설정</button></div></div><div class="project-actions">${actionMarkup(action)}${isBusy ? `<button class="text-button" data-command="cancel" ${state.pending ? 'disabled' : ''}>작업 취소</button>` : ''}${!readonly && action.kind !== 'download' ? `<button class="text-button" data-request-changes="${e(run.active_stage || 'intent')}" ${state.pending ? 'disabled' : ''}>수정 요청</button>` : ''}</div></div>${readonly ? '<p class="read-only-banner">기존 기록을 읽기 전용으로 보존합니다. 새로운 승인이나 진행률을 만들지 않습니다.</p>' : ''}${renderProgress(run)}<div class="next-action"><strong>지금 할 일</strong><span>${e(action.detail)}</span></div>${renderPageExecution(run)}${run.findings?.length ? `<section class="recovery-panel"><h2>확인할 사항</h2>${run.findings.slice(0, 3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('')}<button class="text-button" data-action="setup">AI 연결과 준비 상태 확인</button><details><summary>진행 기록 전체 보기</summary>${run.findings.slice(3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('') || '<p>추가 확인 사항이 없습니다.</p>'}</details></section>` : ''}${pendingQuestions(run).length ? `<section class="decision-panel" id="decision-panel" tabindex="-1" aria-labelledby="decision-title"><div class="section-heading"><div><span class="eyebrow">답변을 기다리고 있어요</span><h2 id="decision-title">다음으로 가기 전에 확인할 내용</h2></div><span class="badge warning">${pendingQuestions(run).length}개</span></div>${renderQuestions()}</section>` : ''}${renderRelease(run)}<div class="workspace-grid"><aside class="conversation" aria-labelledby="chat-title"><header class="conversation-header"><h2 id="chat-title">함께 내용 정리하기</h2><p>목적과 생각을 이야기해 주세요. 필요한 질문은 위에 표시합니다.</p></header><div class="chat-messages" id="chat-messages" role="log" aria-label="프로젝트 대화" aria-live="polite" aria-relevant="additions">${renderChat()}</div><form class="composer" id="message-form" data-run-id="${e(run.id)}"><label for="message-input" class="small muted">의도와 피드백 전달</label><textarea id="message-input" name="content" rows="3" maxlength="20000" placeholder="생각, 자료 설명, 바꾸고 싶은 부분을 남겨주세요." ${readonly ? 'disabled' : ''}>${e(state.drafts.get(run.id) || '')}</textarea><div class="composer-footer"><button class="attach-button" type="button" data-action="attach" ${state.pending || readonly ? 'disabled' : ''}>＋ 자료 첨부</button><button class="button primary send-button" type="submit" ${state.pending || readonly ? 'disabled' : ''}>보내기 ↑</button></div><input type="file" id="attachment-input" hidden></form><p class="composer-help">⌘ / Ctrl + Enter로 전송 · 승인은 검토 화면에서 기록합니다.</p></aside><div class="workspace-left"><div class="tabs" role="tablist" aria-label="작업 정보">${[['work', '단계와 결과'], ['evidence', '근거와 분석'], ['history', '작업 기록']].map(([id, label]) => `<button class="tab" id="tab-${id}" role="tab" aria-selected="${state.tab === id}" aria-controls="work-panel" tabindex="${state.tab === id ? 0 : -1}" data-tab="${id}">${label}${id === 'work' && pendingReviews(run).length ? `<span class="tab-count">${pendingReviews(run).length}</span>` : ''}</button>`).join('')}</div><section id="work-panel" role="tabpanel" aria-labelledby="tab-${state.tab}">${renderWorkPanel()}</section></div></div></div>`;
+  $('#main-content').innerHTML = `<div class="workspace-content"><div class="project-heading"><div><span class="eyebrow">${e(STAGES.find((stage) => stage.id === run.active_stage)?.label || '내 프레젠테이션')}</span><h1>${e(run.title)}</h1><div class="project-subtitle">${badge(run.status)}<span>${e(({hybrid: '제공 자료 + 외부 조사', provided_only: '제공 자료만 사용', external: '외부 조사 중심'})[run.source_mode] || '자료 범위 확인 중')}</span><button class="text-button" data-action="provider-settings" ${state.pending || isBusy || readonly ? 'disabled' : ''}>${e(provider?.label || ({ codex: 'Codex', claude: 'Claude Code' })[execution.provider] || execution.provider)} 설정</button></div></div><div class="project-actions">${actionMarkup(action)}${isBusy ? `<button class="text-button" data-command="cancel" ${state.pending ? 'disabled' : ''}>작업 취소</button>` : ''}${!readonly && action.kind !== 'download' ? `<button class="text-button" data-request-changes="${e(run.active_stage || 'intent')}" ${state.pending ? 'disabled' : ''}>수정 요청</button>` : ''}</div></div>${readonly ? '<p class="read-only-banner">기존 기록을 읽기 전용으로 보존합니다. 새로운 승인이나 진행률을 만들지 않습니다.</p>' : ''}${intentMarkup(run)}${renderDecisions(run)}${renderProgress(run)}<div class="next-action"><strong>지금 할 일</strong><span>${e(action.detail)}</span></div>${renderPageExecution(run)}${run.findings?.length ? `<section class="recovery-panel"><h2>확인할 사항</h2>${run.findings.slice(0, 3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('')}<button class="text-button" data-action="setup">AI 연결과 준비 상태 확인</button><details><summary>진행 기록 전체 보기</summary>${run.findings.slice(3).map((finding) => `<p>${e(findingText(finding))}</p>`).join('') || '<p>추가 확인 사항이 없습니다.</p>'}</details></section>` : ''}${run.active_stage === 'research' && state.tab !== 'history' ? researchActivityMarkup(run.research_activity, run) : ''}${renderRelease(run)}<div class="workspace-grid"><aside class="conversation" aria-labelledby="chat-title"><header class="conversation-header"><h2 id="chat-title">함께 내용 정리하기</h2><p>목적과 생각을 이야기해 주세요. 필요한 질문은 위에 표시합니다.</p></header><div class="chat-messages" id="chat-messages" role="log" aria-label="프로젝트 대화" aria-live="polite" aria-relevant="additions">${renderChat()}</div><form class="composer" id="message-form" data-run-id="${e(run.id)}"><label for="message-input" class="small muted">의도와 피드백 전달</label><textarea id="message-input" name="content" rows="3" maxlength="20000" placeholder="생각, 자료 설명, 바꾸고 싶은 부분을 남겨주세요." ${readonly ? 'disabled' : ''}>${e(state.drafts.get(run.id) || '')}</textarea><div class="composer-footer"><button class="attach-button" type="button" data-action="attach" ${state.pending || readonly ? 'disabled' : ''}>＋ 자료 첨부</button><button class="button primary send-button" type="submit" ${state.pending || readonly ? 'disabled' : ''}>보내기 ↑</button></div><input type="file" id="attachment-input" hidden></form><p class="composer-help">⌘ / Ctrl + Enter로 전송 · 승인은 검토 화면에서 기록합니다.</p></aside><div class="workspace-left"><div class="tabs" role="tablist" aria-label="작업 정보">${[['work', '단계와 결과'], ['evidence', '근거와 분석'], ['design', '디자인 10'], ['history', '작업 기록']].map(([id, label]) => `<button class="tab" id="tab-${id}" role="tab" aria-selected="${state.tab === id}" aria-controls="work-panel" tabindex="${state.tab === id ? 0 : -1}" data-tab="${id}">${label}${id === 'work' && pendingReviews(run).length ? `<span class="tab-count">${pendingReviews(run).length}</span>` : ''}</button>`).join('')}</div><section id="work-panel" role="tabpanel" aria-labelledby="tab-${state.tab}">${renderWorkPanel()}</section></div></div></div>`;
   const chat = $('#chat-messages');
+  for (const id of openDetails) { const element = document.getElementById(id); if (element?.tagName === 'DETAILS') element.open = true; }
   chat.scrollTop = atBottom ? chat.scrollHeight : scrollTop;
   if (focused && document.getElementById(focused)) {
     const element = document.getElementById(focused);
@@ -463,6 +487,10 @@ function acceptSnapshot(snapshot) {
 }
 
 async function refreshRun(id = state.run?.id) {
+  if (!state.designCatalog.length) {
+    try { state.designCatalog = (await api.request('/api/v2/design-presets')).presets || []; }
+    catch (error) { if ([401, 403].includes(error.status)) throw error; }
+  }
   if (!id || state.authExpired) return;
   const generation = state.selection;
   const snapshot = await api.request(`/api/v2/runs/${encodeURIComponent(id)}`);
@@ -663,10 +691,11 @@ function semanticReview(review, view) {
   const data = view.data;
   if (review.gate === 'G1') {
     const labels = { topic: '주제', audience: '누가 보나요?', objective: '어떤 행동을 바라나요?', success_criteria: '무엇이면 성공인가요?', slide_count: '슬라이드 수' };
-    return `<section class="semantic-review"><h3>이 내용을 기준으로 조사합니다.</h3><dl class="intent-summary">${Object.entries(labels).map(([key, label]) => { const field = data.fields?.[key]; return `<dt>${label}</dt><dd>${e(displayValue(field?.value) || '아직 정하지 않았습니다')}${field?.state === 'proposed' ? '<small>제안된 내용 · 승인 전에 확인해 주세요</small>' : ''}</dd>`; }).join('')}</dl>${(data.requirements || []).length ? `<details class="artifact-group"><summary>조사에서 확인할 질문 ${data.requirements.length}개</summary><ol class="slide-outline">${data.requirements.map((item) => `<li><span>${e(data.slides?.find((slide) => slide.uid === item.slide_uid)?.display_id || '')}</span><div><p>${e(item.question)}</p></div></li>`).join('')}</ol></details>` : ''}<h3>전달할 이야기의 순서</h3><ol class="slide-outline">${(data.slides || []).map((slide) => `<li><span>${e(slide.display_id)}</span><div><h4>${e(slide.title)}</h4><p>${e(displayValue(slide.purpose))}</p>${slide.content ? `<p>${e(displayValue(slide.content))}</p>` : ''}</div></li>`).join('')}</ol></section>`;
+    return `<section class="semantic-review"><h3>이 내용을 기준으로 조사합니다.</h3>${data.intent_summary ? `<p class="intent-statement">${e(data.intent_summary)}</p>` : ''}${deliveryMarkup(data.delivery_strategy)}<dl class="intent-summary">${Object.entries(labels).map(([key, label]) => { const field = data.fields?.[key]; return `<dt>${label}</dt><dd>${e(displayValue(field?.value) || '아직 정하지 않았습니다')}${field?.state === 'proposed' ? '<small>제안된 내용 · 승인 전에 확인해 주세요</small>' : ''}</dd>`; }).join('')}</dl>${(data.requirements || []).length ? `<details class="artifact-group"><summary>조사에서 확인할 질문 ${data.requirements.length}개</summary><ol class="slide-outline">${data.requirements.map((item) => `<li><span>${e(data.slides?.find((slide) => slide.uid === item.slide_uid)?.display_id || '')}</span><div><p>${e(item.question)}</p></div></li>`).join('')}</ol></details>` : ''}<h3>전달할 이야기의 순서</h3><ol class="slide-outline">${(data.slides || []).map((slide) => `<li><span>${e(slide.display_id)}</span><div><h4>${e(slide.title)}</h4><p>${e(displayValue(slide.purpose))}</p>${slide.content ? `<p>${e(displayValue(slide.content))}</p>` : ''}${slide.visual_intent ? `<p class="slide-visual-intent">시각화: ${e(displayValue(slide.visual_intent))}</p>` : ''}</div></li>`).join('')}</ol></section>`;
   }
   if (review.gate === 'G2') return `<section class="semantic-review"><h3>조사로 확인한 내용</h3>${renderResearchSummary(researchSummary(data), view.artifacts.filter((artifact) => ['analysis_pdf', 'analysis_report'].includes(artifact.kind)))}<h3>슬라이드에 전달할 메시지</h3><ol class="slide-outline">${(data.messages || []).map((item) => `<li><span>${e(state.run.intent?.slides?.find((slide) => slide.uid === item.slide_uid)?.display_id || '')}</span><div><p>${e(displayValue(item.message))}</p></div></li>`).join('')}</ol><div class="review-actions"><button class="button secondary" data-action="review-evidence">주장별 근거 자세히 보기 ↗</button></div></section>`;
-  return `<section class="semantic-review"><h3>이 방향으로 슬라이드를 제작합니다.</h3><p>${e(displayValue(data.summary) || '연결된 디자인 방향 파일과 미리보기를 확인해 주세요.')}</p>${view.previews.length ? `<div class="direction-previews">${view.previews.map((artifact) => `<button data-artifact="${e(artifact.id)}"><img src="${e(safeArtifactUrl(artifact, state.run.id))}" alt="${e(artifact.name)} 디자인 방향 미리보기"><span>${e(artifact.name)} 확대 ↗</span></button>`).join('')}</div>` : '<p class="muted">별도 미리보기가 등록되지 않았습니다. 아래 디자인 방향 원문을 확인해 주세요.</p>'}<details class="technical-details"><summary>디자인 규칙 자세히 보기</summary><pre class="source-text">${e(JSON.stringify({ design_spec: data.design_spec, spec_lock: data.spec_lock }, null, 2))}</pre></details></section>`;
+  const preset = state.designCatalog.find(item => item.id === data.preset_id);
+  return `<section class="semantic-review"><h3>이 방향으로 슬라이드를 제작합니다.</h3>${preset ? `<p class="current-design">선택한 디자인: <strong>${e(preset.label)}</strong></p>` : ''}<p>${e(displayValue(data.summary) || '연결된 디자인 방향 파일과 미리보기를 확인해 주세요.')}</p>${view.previews.length ? `<div class="direction-previews">${view.previews.map((artifact) => `<button data-artifact="${e(artifact.id)}"><img src="${e(safeArtifactUrl(artifact, state.run.id))}" alt="${e(artifact.name)} 디자인 방향 미리보기"><span>${e(artifact.name)} 확대 ↗</span></button>`).join('')}</div>` : '<p class="muted">별도 미리보기가 등록되지 않았습니다. 아래 디자인 방향 원문을 확인해 주세요.</p>'}<details class="technical-details"><summary>디자인 규칙 자세히 보기</summary><pre class="source-text">${e(JSON.stringify({ design_spec: data.design_spec, spec_lock: data.spec_lock }, null, 2))}</pre></details></section>`;
 }
 
 function showReview(id) {
@@ -741,6 +770,12 @@ document.addEventListener('click', async (event) => {
   if (button.dataset.action === 'reconnect-session') return boot();
   if (state.authExpired) return renderSessionRequired();
   if (button.dataset.selectRun) return selectRun(button.dataset.selectRun);
+  if (button.hasAttribute('data-research-history')) {
+    const section = button.closest('.research-live');
+    const history = section?.querySelector('.research-history');
+    if (history) { history.open = true; history.querySelector('summary')?.focus(); history.scrollIntoView({block:'nearest'}); }
+    return;
+  }
   if (button.id === 'new-run' || button.dataset.action === 'new-project') return startCreate();
   if (button.dataset.action === 'setup' || button.id === 'capabilities-button') { state.welcomeAfterDiscovery = false; renderSetup(); return; }
   if (button.dataset.action === 'home') { stopDiscovery(); preserveDrafts(); state.welcomeAfterDiscovery = false; state.screen = 'home'; renderWelcome(); return; }
@@ -867,7 +902,7 @@ document.addEventListener('submit', async (event) => {
       const request = String(data.get('request') || '').trim();
       if (!request) throw new Error('첫 이야기를 입력해 주세요.');
       const execution = validateExecutionSelection(provider, readExecutionForm('create-provider'));
-      const payload = { title: String(data.get('title') || '').trim() || request.replace(/\s+/g, ' ').slice(0, 60), request, source_mode: data.get('source_mode'), execution };
+      const payload = { title: String(data.get('title') || '').trim() || request.replace(/\s+/g, ' ').slice(0, 60), request, source_mode: data.get('source_mode'), execution, design_preference: data.get('create-design-preset') ? {preset_id: data.get('create-design-preset')} : null };
       const key = JSON.stringify(payload);
       if (state.createAttempt?.key !== key) state.createAttempt = { key, operation_id: operationId() };
       const snapshot = await api.request('/api/v2/runs', { method: 'POST', body: { ...payload, operation_id: state.createAttempt.operation_id } });
@@ -919,6 +954,27 @@ document.addEventListener('submit', async (event) => {
       renderRun();
       $('#message-input')?.focus();
     } catch { /* Keep the draft visible for a deliberate retry. */ }
+  } else if (form.id === 'design-form') {
+    event.preventDefault();
+    const presetId = new FormData(form).get('design-preset');
+    if (!presetId) return announce('디자인을 하나 선택해 주세요.', 'warning');
+    try {
+      await sendCommand('select_design', {preset_id: presetId});
+      state.drafts.delete(`design:${form.dataset.runId}`);
+      announce('선택한 디자인을 저장했습니다. 의도와 근거에 맞춰 제작에 반영합니다.');
+    } catch { /* Preserve selection for a deliberate retry. */ }
+  } else if (form.dataset.interviewForm) {
+    event.preventDefault();
+    const question = state.run.questions?.find(q => q.id === form.dataset.interviewForm && q.status === 'PENDING');
+    if (!question) return;
+    try {
+      const answer = interviewAnswer(question.questions, Object.fromEntries(new FormData(form)));
+      await sendCommand('answer', {question_id: question.id, answer});
+      state.drafts.delete(`interview:${form.dataset.runId}:${question.id}`);
+    } catch (error) {
+      const visible = document.querySelector(`[data-interview-form="${CSS.escape(question.id)}"] [data-interview-error]`);
+      if (visible) { visible.textContent = error.message; visible.hidden = false; }
+    }
   } else if (form.dataset.questionForm) {
     event.preventDefault();
     const answer = form.elements.answer.value.trim();
@@ -972,6 +1028,10 @@ document.addEventListener('submit', async (event) => {
 });
 
 document.addEventListener('change', (event) => {
+  if (event.target.name === 'design-preset') {
+    const form = event.target.closest('#design-form');
+    if (form) state.drafts.set(`design:${form.dataset.runId}`, event.target.value);
+  }
   if (['create-provider', 'run-provider'].includes(event.target.id)) {
     state.choiceGeneration += 1;
     populateExecutionOptions(event.target.id); updateProviderStatus(event.target.id);
@@ -995,9 +1055,9 @@ document.addEventListener('keydown', (event) => {
   }
   if (event.target.matches('[role="tab"]') && ['ArrowLeft', 'ArrowRight', 'Home', 'End'].includes(event.key)) {
     event.preventDefault();
-    const tabs = ['work', 'evidence', 'history'];
+    const tabs = ['work', 'evidence', 'design', 'history'];
     const index = tabs.indexOf(state.tab);
-    state.tab = event.key === 'Home' ? tabs[0] : event.key === 'End' ? tabs[2] : tabs[(index + (event.key === 'ArrowRight' ? 1 : 2)) % 3];
+    state.tab = event.key === 'Home' ? tabs[0] : event.key === 'End' ? tabs.at(-1) : tabs[(index + (event.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
     renderRun(); $(`#tab-${state.tab}`).focus();
   }
 });
@@ -1028,10 +1088,11 @@ async function boot() {
     if (generation !== state.bootGeneration) return;
     state.authExpired = false; state.connected = true;
     announce('');
-    const results = await Promise.allSettled([api.request('/api/v2/runs'), api.request('/api/v2/capabilities')]);
+    const results = await Promise.allSettled([api.request('/api/v2/runs'), api.request('/api/v2/capabilities'), api.request('/api/v2/design-presets')]);
     if (generation !== state.bootGeneration) return;
     if (results[0].status === 'rejected') throw results[0].reason;
     state.runs = results[0].value.runs || [];
+    state.designCatalog = results[2].status === 'fulfilled' ? results[2].value.presets || [] : [];
     if (results[1].status === 'fulfilled') state.capabilities = results[1].value;
     else { state.capabilities = {}; if ([401, 403].includes(results[1].reason?.status)) throw results[1].reason; }
     if (choice === state.choiceGeneration && state.preferred.provider !== 'codex') state.preferred = { provider: 'codex', model: null, effort: null };
